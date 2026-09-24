@@ -1,0 +1,307 @@
+import { Article } from './types/article';
+
+export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-gold-surge-2026',
+    title: 'Why Did Gold Prices Surge Today?',
+    slug: 'why-did-gold-prices-surge-today',
+    summary:
+      'Gold prices in India have experienced a steep uptick driven by MCX futures movements, heightened geopolitical tensions, US Federal Reserve interest rate expectations, and strong domestic wedding and festival bullion demand across major jewelry hubs.',
+    category: 'Gold & Commodities',
+    relatedCalculator: 'gold',
+    sources: [
+      { label: 'India Bullion and Jewellers Association (IBJA) Benchmark', url: 'https://ibja.co' },
+      { label: 'Multi Commodity Exchange of India (MCX) Bullion Index', url: 'https://www.mcxindia.com' },
+      { label: 'Ministry of Commerce & Industry Bullion Trade Statistics', url: 'https://commerce.gov.in' },
+      { label: 'World Gold Council Central Bank Demand Report', url: 'https://www.gold.org' },
+    ],
+    publishedAt: '2026-09-22T09:30:00.000Z',
+    updatedAt: '2026-09-23T14:15:00.000Z',
+    fullContent: `
+### Key Takeaways for Indian Gold Buyers
+
+- **MCX Spot Momentum**: Domestic gold contracts on the Multi Commodity Exchange (MCX) have risen sharply in tandem with COMEX global spot price breakouts.
+- **Geopolitical Safe-Haven Flow**: Escalations in global trade friction and currency volatility have triggered massive central bank bullion reserve acquisitions worldwide.
+- **Rupee Dynamics**: The INR exchange rate against the US Dollar directly dictates landed costs because India imports over 90% of its pure bullion demand.
+- **Showroom Pricing Protection**: Always calculate base 24K and 22K (Hallmark 916) bullion rates before entering a showroom to prevent hidden margins.
+
+---
+
+### What Is Driving the Current Bullion Rally?
+
+Over recent trading sessions, retail gold prices across major Indian bullion centres (Mumbai, Zaveri Bazaar, Delhi Karol Bagh, Chennai, and Bengaluru) have registered a sharp upswing. To understand why physical gold is surging today, consumers must analyze three interlinked macro drivers:
+
+#### 1. Central Bank Reserve Accumulation
+Central banks across emerging economies have diversified their sovereign foreign reserves away from fiat currencies into physical gold bars. The Reserve Bank of India (RBI), along with the People's Bank of China and central banks in Europe, has consistently expanded physical gold holdings, establishing a solid institutional floor under international spot prices.
+
+#### 2. Federal Reserve Interest Rate Trajectory
+Gold yields zero nominal interest or dividends. Consequently, when global sovereign bond yields and interest rates soften or when market participants price in rate cuts, the opportunity cost of holding non-yielding precious metals drops precipitously. Global hedge funds and bullion ETFs rapidly shift liquidity into physical spot contracts.
+
+#### 3. Import Duty Realities Post-Budget 2024
+While the Union Budget 2024 brought welcome relief by reducing Customs Import Duty from 15% to 6% (5% Basic Customs Duty + 1% AIDC), international spot price rallies have now outpaced that statutory tax relief. Indian landed spot prices equal:
+
+$$\\text{Landed Gold} = (\\text{International Spot} \\times \\text{USD/INR Rate}) + 6\\% \\text{ Customs Duty} + \\text{Local Bullion Premium}$$
+
+---
+
+### How Jewelry Showrooms Price Gold Ornaments
+
+When purchasing jewelry, showrooms quote a consolidated price that often conceals the real bullion rate. Every buyer must insist on an itemized breakdown:
+
+| Component | Standard Statutory Rate | Common Showroom Malpractice |
+| :--- | :--- | :--- |
+| **Pure Gold (22K / 18K)** | Calculated exactly as $(24K \\div 24) \\times 22$ | Charging 24K rate for 22K or 18K ornaments |
+| **Making Charges** | 8% to 16% transparent artisan fee | Bundling arbitrary "melting loss" or "wastage" |
+| **Gemstones / Beads** | Billed separately by carat weight | Adding stone weight to gold gross weight |
+| **GST** | 3.0% composite tax on invoice | Applying GST on unitemized estimated totals |
+| **Hallmarking Fee** | Fixed ₹45 + 18% GST (₹53.10) per article | Overcharging ₹150–₹300 under "admin charges" |
+
+---
+
+### Checklist Before Buying Gold Today
+
+1. **Verify Live IBJA Benchmark**: Check the opening and closing rates issued by the India Bullion and Jewellers Association.
+2. **Demand 6-Digit HUID**: Ensure every gold article has a laser-engraved Bureau of Indian Standards (BIS) triangular hallmark and unique 6-digit alphanumeric HUID.
+3. **Deduct Stone Weight**: Verify that the weighing scale tare weight excludes cubic zirconia, pearls, and enamel before applying the gold rate.
+4. **Use BharatCalc's Live Invoice Calculator**: Calculate your estimated making charges, stone deductions, and exact 3% GST prior to showroom billing negotiations.
+`,
+  },
+  {
+    id: 'art-salary-tax-2025-26',
+    title: 'New Tax Regime FY 2025-26: How the ₹75,000 Standard Deduction Impacts Your In-Hand Paycheck',
+    slug: 'new-tax-regime-fy-2025-26-standard-deduction-in-hand-salary',
+    summary:
+      'Salaried employees in FY 2025-26 benefit from an increased standard deduction of ₹75,000 under Section 115BAC, wider tax slabs, and Section 87A rebate. Explore detailed slab breakdowns, zero tax thresholds up to ₹7.75 Lakhs, and take-home salary calculations.',
+    category: 'Tax & Salary',
+    relatedCalculator: 'salary',
+    sources: [
+      { label: 'Income Tax Department (Section 115BAC Tax Slabs)', url: 'https://www.incometax.gov.in' },
+      { label: 'Ministry of Finance Union Budget Highlights', url: 'https://finmin.nic.in' },
+      { label: 'Employees’ Provident Fund Organisation (EPFO) Statutory Rules', url: 'https://www.epfindia.gov.in' },
+    ],
+    publishedAt: '2026-09-20T11:00:00.000Z',
+    updatedAt: '2026-09-23T12:00:00.000Z',
+    fullContent: `
+### Overview: Why FY 2025-26 Is More Favourable for Salaried Class
+
+Under the statutory provisions of the Finance Act governing **Financial Year 2025-26 (Assessment Year 2026-27)**, the New Tax Regime (Section 115BAC) serves as the default income tax regime. Substantial amendments were introduced to ease middle-class tax liabilities:
+
+- **Enhanced Standard Deduction**: Hiked from ₹50,000 to **₹75,000** exclusively for salaried individuals and pensioners.
+- **Effective Zero-Tax Income Threshold**: Anyone earning a gross salary up to **₹7,75,000** pays **₹0 income tax**, combining the ₹75,000 deduction with the ₹25,000 tax rebate under Section 87A.
+- **Expanded Lower Slabs**: The 5% slab spans ₹3,00,000 to ₹7,00,000, and the 10% slab covers ₹7,00,000 to ₹10,00,000, creating direct annual tax savings of up to ₹17,500.
+
+---
+
+### FY 2025-26 Section 115BAC Slabs Table
+
+| Taxable Income Slabs (Post-Deduction) | Applicable Tax Rate | Cumulative Tax at Slab Ceiling |
+| :--- | :--- | :--- |
+| **Up to ₹3,00,000** | **Nil (0%)** | ₹0 |
+| **₹3,00,001 to ₹7,00,000** | **5%** | ₹20,000 |
+| **₹7,00,001 to ₹10,00,000** | **10%** | ₹50,000 |
+| **₹10,00,001 to ₹12,00,000** | **15%** | ₹80,000 |
+| **₹12,00,001 to ₹15,00,000** | **20%** | ₹1,40,000 |
+| **Above ₹15,00,000** | **30%** | Surcharge + 4% Health & Education Cess |
+
+---
+
+### CTC vs Monthly In-Hand Salary: Where Does Your Money Go?
+
+When companies offer a Cost to Company (CTC) package, the actual amount credited to your bank account on payday is reduced by statutory withholdings:
+
+1. **Employee Provident Fund (EPF)**: 12% of statutory Basic Salary is deducted and deposited into your EPFO account, matched equally by your employer.
+2. **Professional Tax (PT)**: State-level tax (typically ₹200/month or capped at ₹2,500/year in states like Maharashtra, Karnataka, and West Bengal).
+3. **Tax Deducted at Source (TDS)**: Your annual income tax liability divided evenly across 12 monthly pay cycles.
+4. **Gratuity & Employer Component**: Often inflated inside CTC packages as non-cash deferred retirement reserves.
+
+### Example Comparison: CTC ₹12 Lakhs vs ₹18 Lakhs in FY 2025-26
+
+| Package | Standard Deduction | Taxable Income | Total Annual Tax (incl. 4% Cess) | Est. Monthly In-Hand |
+| :--- | :--- | :--- | :--- | :--- |
+| **₹8,00,000 CTC** | ₹75,000 | ₹7,25,000 | ₹23,400 | **~₹58,500 / month** |
+| **₹12,00,000 CTC** | ₹75,000 | ₹11,25,000 | ₹71,500 | **~₹84,200 / month** |
+| **₹18,00,000 CTC** | ₹75,000 | ₹17,25,000 | ₹2,15,800 | **~₹1,18,500 / month** |
+
+Use the interactive BharatCalc In-Hand Salary tool on this page to adjust your Basic Salary percentage, HRA, Metro status, and Voluntary PF contributions.
+`,
+  },
+  {
+    id: 'art-silver-purity-2026',
+    title: 'Silver 999 vs 925: Understanding Hallmark Purity and Showroom Billing Secrets',
+    slug: 'silver-999-vs-925-hallmark-purity-and-billing',
+    summary:
+      'Before purchasing silver coins, bars, or sterling jewelry, understand the vital difference between 999 Fine Silver and 925 Sterling Silver. Learn how BIS hallmarking works, how making charges are computed, and how to verify the 3% statutory GST on invoices.',
+    category: 'Gold & Commodities',
+    relatedCalculator: 'silver',
+    sources: [
+      { label: 'Bureau of Indian Standards (BIS) Silver Hallmarking Portal', url: 'https://www.bis.gov.in' },
+      { label: 'Goods and Services Tax (GST) Council Advisory on Bullion', url: 'https://www.gst.gov.in' },
+      { label: 'All India Gem & Jewellery Domestic Council (GJC)', url: 'https://gjc.org.in' },
+    ],
+    publishedAt: '2026-09-18T10:00:00.000Z',
+    updatedAt: '2026-09-21T08:30:00.000Z',
+    fullContent: `
+### The Silver Bullion Boom in India
+
+Silver has emerged as both a high-performing investment asset and an industrial commodity driven by solar photovoltaic cell manufacturing, electric vehicle batteries, and high-conductivity electronics. When buying silver articles in India, consumers encounter different purity standards and billing mechanisms.
+
+---
+
+### Understanding Silver Purity Grades (BIS Standards)
+
+The Bureau of Indian Standards (BIS) officially recognizes four purity classifications for silver:
+
+#### 1. 999 Fine Silver (99.9% Pure)
+- **Primary Use**: Investment bullion bars, commemorative minted coins, and religious idols (Lakshmi/Ganesh silver coins).
+- **Physical Property**: Exceptionally soft, prone to denting and scratching; unsuitable for intricate jewelry.
+- **Benchmark Pricing**: The headline rate quoted per 1 kilogram on MCX and commodity exchanges is always for 999 Fine Silver.
+
+#### 2. 925 Sterling Silver (92.5% Pure)
+- **Primary Use**: Fine jewelry (rings, bracelets, necklaces, earrings), high-end cutlery, and luxury tableware.
+- **Composition**: 92.5% pure silver alloyed with 7.5% copper or zinc for mechanical strength and durability.
+- **Price Calculation**: $\\text{Rate per gram} = \\frac{\\text{999 1kg Spot Rate}}{1000} \\times 0.925$.
+
+#### 3. 900 Coin Silver & 800 Silver
+- **900 Grade (90% Pure)**: Used in traditional heavy utensils and legacy antique silverware.
+- **800 Grade (80% Pure)**: Common in heavy traditional anklets (payals) and toe rings where structural hardness is paramount.
+
+---
+
+### Silver Hallmark Verification Checklist
+
+Authentic hallmarked silver carries three mandatory laser-engraved marks:
+1. **The BIS Triangular Emblem**
+2. **Purity & Fineness Mark**: e.g., \`999\` for fine silver, \`925\` for sterling silver, \`900\`, or \`800\`.
+3. **Assaying Centre & Hallmarking Identifier**
+
+Hallmarking charges for silver are fixed by the government at **₹35 + 18% GST (₹41.30 per article)** regardless of weight. Beware of showrooms quoting ₹100+ for silver hallmarking.
+
+---
+
+### Calculating Your True Silver Invoice Cost
+
+A transparent invoice formula for silver jewelry is:
+
+$$\\text{Final Bill} = [(\\text{Silver Weight} \\times \\text{Adjusted Purity Rate}) + \\text{Making Charges} + \\text{Gemstones}] \\times 1.03 + \\text{Hallmarking Fee}$$
+
+Use our live Silver & Gold Invoice calculator to enter the current spot per kg rate, select grams, tolas, or kilograms, and see an uncompromised breakdown before buying.
+`,
+  },
+  {
+    id: 'art-petrol-ev-2026',
+    title: 'Petrol vs EV Commuting in India: Daily Running Costs and Break-Even Mileage in 2026',
+    slug: 'petrol-vs-ev-commuting-india-daily-cost-break-even-2026',
+    summary:
+      'With urban metro petrol prices stabilizing around ₹100–₹105 per litre and residential electricity tariffs at ₹7–₹9 per unit, EV running costs are roughly 70% to 85% lower per kilometre. Analyze break-even timelines, battery replacement reserves, and monthly commuter savings.',
+    category: 'Fuel & Energy',
+    relatedCalculator: 'petrol',
+    sources: [
+      { label: 'Petroleum Planning & Analysis Cell (PPAC) Daily Fuel Bulletin', url: 'https://www.ppac.gov.in' },
+      { label: 'Bureau of Energy Efficiency (BEE) Electric Vehicle Cost Analysis', url: 'https://beeindia.gov.in' },
+      { label: 'Ministry of Heavy Industries Faster Adoption of EVs (FAME/EMPS)', url: 'https://heavyindustries.gov.in' },
+    ],
+    publishedAt: '2026-09-15T08:00:00.000Z',
+    updatedAt: '2026-09-22T16:00:00.000Z',
+    fullContent: `
+### The Indian Commuter's Dilemma: Petrol or Electric?
+
+Fuel expenses represent one of the largest recurring discretionary drains on middle-class household budgets. In major metropolitan corridors (Delhi-NCR, Mumbai, Bengaluru, Hyderabad, and Pune), daily round-trip work commutes typically range from 25 km to 60 km.
+
+---
+
+### Direct Cost-Per-Kilometre Comparison
+
+| Metric | Internal Combustion (Petrol Hatchback) | Electric Vehicle (Tata Tiago/Punch EV) |
+| :--- | :--- | :--- |
+| **Fuel / Energy Price** | ~₹103 / Litre (Avg Metro Rate) | ~₹7.50 / kWh (Domestic DISCOM Unit) |
+| **Real-World Efficiency** | 13.5 km / Litre (Stop-and-go AC traffic) | 8.5 km / kWh (AC in City Traffic) |
+| **Running Cost Per Km** | **₹7.63 / km** | **₹0.88 / km** |
+| **Monthly Fuel for 1,200 km** | **₹9,156** | **₹1,056** |
+| **Monthly Pure Savings** | — | **₹8,100 / month saved** |
+| **Annual Fuel Savings** | — | **₹97,200 / year saved** |
+
+---
+
+### Understanding the EV Capital Premium & Payback Period
+
+While daily running costs heavily favour electric vehicles, an EV typically carries an upfront acquisition premium of ₹2.5 Lakhs to ₹4.0 Lakhs over an equivalent ICE petrol variant.
+
+#### Calculating Payback Break-Even:
+$$\\text{Break-Even Kilometres} = \\frac{\\text{Upfront Price Premium}}{\\text{Running Cost Savings per Km}}$$
+
+For a ₹3,00,000 premium with ₹6.75/km net savings:
+$$\\text{Break-Even} = \\frac{3,00,000}{6.75} \\approx 44,444 \\text{ kilometres}$$
+
+If you commute **40 km daily** (~14,600 km annually), you will break even on the additional EV purchase cost in **just over 3 years**. Thereafter, you pocket almost ₹1 Lakh every year in direct operational cash savings.
+
+---
+
+### Hidden Costs & Realities to Watch
+
+1. **Fast-Charging Commercial Premiums**: Charging at high-speed public highway chargers costs ₹18–₹24 per unit, tripling running costs to ~₹2.50/km compared to home charging.
+2. **Battery Degradation & Warranty**: Reputable manufacturers offer 8-year or 1,60,000 km battery warranties. Factoring a 10% residual value depreciation remains prudent.
+3. **Zero Emissions in City Driving**: Beyond financial savings, electric commuting eliminates tailpipe toxic emissions in congested urban centres.
+
+Use the BharatCalc Commute Fuel & Mileage Expense tool to input your vehicle mileage, daily distance, fuel price, and calculate your exact monthly commute drain.
+`,
+  },
+  {
+    id: 'art-home-loan-prepay-2026',
+    title: 'RBI Floating Rate Mortgage Rules: How 1 Extra EMI Cuts 8 Years Off Your Home Loan',
+    slug: 'rbi-floating-rate-mortgage-rules-extra-emi-strategy',
+    summary:
+      'Because long-term bank home loans front-load interest in the first decade, regular EMIs barely touch your principal. Discover how RBI foreclosure guidelines empower individual borrowers to prepay with zero penalties, cutting 20-year tenures down to 12 years.',
+    category: 'Market Trends',
+    relatedCalculator: 'none',
+    sources: [
+      { label: 'Reserve Bank of India Master Circular on Loan Prepayment Charges', url: 'https://www.rbi.org.in' },
+      { label: 'National Housing Bank Housing Finance Directives', url: 'https://nhb.org.in' },
+      { label: 'Indian Banks Association (IBA) Retail Lending Code', url: 'https://www.iba.org.in' },
+    ],
+    publishedAt: '2026-09-12T14:00:00.000Z',
+    updatedAt: '2026-09-20T10:00:00.000Z',
+    fullContent: `
+### The Compounding Math of Indian Mortgages
+
+When a borrower takes a ₹50,00,000 home loan at 8.5% interest for 20 years, the monthly Equated Monthly Instalment (EMI) comes to approximately **₹43,391**. Over the 20-year lifespan of the loan:
+- **Principal Borrowed**: ₹50,00,000
+- **Total Interest Paid to Bank**: ₹54,13,879
+- **Total Repaid to Bank**: **₹1,04,13,879 (Over double the loan!)**
+
+---
+
+### The Front-Loaded Amortization Trap
+
+In the early years of a home loan, almost 75% to 80% of every rupee paid in EMI goes directly to servicing interest, leaving the principal balance virtually untouched.
+
+For example, on Month 1:
+- **EMI Paid**: ₹43,391
+- **Interest Collected by Bank**: ₹35,417
+- **Actual Principal Reduced**: Only ₹7,974
+
+---
+
+### The 1 Extra EMI Strategy: Mathematical Powerhouse
+
+By making just **one extra EMI payment every calendar year** (e.g., using an annual performance bonus, Diwali incentive, or tax refund), **100% of that payment directly erodes the loan principal**.
+
+#### What Happens When You Pay 1 Extra EMI / Year:
+- **Original Tenure**: 240 months (20 Years)
+- **Reduced Tenure**: ~182 months (15.2 Years)
+- **Tenure Cut**: **Nearly 5 Years Eliminated**
+- **Direct Bank Interest Saved**: **₹13,20,000+**
+
+If you combine 1 extra EMI per year with a modest **5% annual step-up** in your monthly EMI as your salary grows, the entire 20-year mortgage is extinguished in **just 11.5 years**, saving over **₹22,00,000** in compounding bank interest.
+
+---
+
+### RBI Directives: Zero Prepayment Penalties Guaranteed
+
+Borrowers frequently fear hidden bank foreclosure fines. The Reserve Bank of India (RBI) issued explicit binding circulars stating:
+
+> *"Scheduled Commercial Banks and NBFC-HFCs shall not levy foreclosure charges or pre-payment penalties on floating rate loans sanctioned for purposes other than business to individual borrowers."*
+
+You have the statutory legal right to prepay ₹10,000, ₹50,000, or ₹5 Lakhs whenever liquidity permits, directly through net banking or UPI, with zero penalty. Always instruct your lender to apply the payment toward **Tenure Reduction** rather than EMI reduction to maximize compounding savings.
+`,
+  },
+];

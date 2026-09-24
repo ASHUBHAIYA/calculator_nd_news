@@ -1,0 +1,18 @@
+# Cloudflare Pages Edge Security & Caching Headers
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Aggressive immutable caching for Vite compiled assets (fingerprinted js/css/images)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache control for sitemap and robots
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=86400

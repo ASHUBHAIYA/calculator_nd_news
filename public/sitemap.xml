@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc>https://bharatcalc.in/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Calculators -->
+  <url>
+    <loc>https://bharatcalc.in/calculators/in-hand-salary</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/calculators/gold-jewelry-bill</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/calculators/home-loan-prepayment</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/calculators/commute-fuel</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/calculators/solar-rooftop</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Explainers Hub -->
+  <url>
+    <loc>https://bharatcalc.in/explainers</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Dynamic Trending Explainers -->
+  <url>
+    <loc>https://bharatcalc.in/explainers/why-did-gold-prices-surge-today</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/explainers/new-tax-regime-fy-2025-26-standard-deduction-in-hand-salary</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/explainers/silver-999-vs-925-hallmark-purity-and-billing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/explainers/petrol-vs-ev-commuting-india-daily-cost-break-even-2026</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bharatcalc.in/explainers/rbi-floating-rate-mortgage-rules-extra-emi-strategy</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

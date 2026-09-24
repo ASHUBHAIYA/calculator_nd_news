@@ -1,0 +1,6 @@
+{
+  "name": "BharatCalc",
+  "description": "Modern, high-performance financial and utility calculators for India: CTC to In-Hand Salary, Gold Jewelry Invoice, Home Loan Prepayment, Fuel Spend, and PM Surya Ghar Solar Subsidy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

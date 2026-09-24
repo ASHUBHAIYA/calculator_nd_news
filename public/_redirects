@@ -1,0 +1,3 @@
+# Cloudflare Pages SPA Routing Rules
+# Enables direct URL deep-linking for all dynamic routes (/explainers/:slug, /calculators/*)
+/*    /index.html   200
