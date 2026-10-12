@@ -1,4 +1,7 @@
-# Cloudflare Pages SPA Routing Rules
-# Enables direct URL deep-linking for all dynamic routes (/explainers/:slug, /calculators/*)
 /bharatcalc/assets/*    /assets/:splat    200
+/sitemap.xml            /sitemap.xml      200
+/robots.txt             /robots.txt       200
+/bharatcalc/sitemap.xml /sitemap.xml      200
+/bharatcalc/robots.txt  /robots.txt       200
+/bharatcalc/*           /index.html       200
 /*                      /index.html       200
