@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
+import { RunningTickerBanner } from '@/components/RunningTickerBanner';
 import { Footer } from '@/components/Footer';
 import { ComplianceModal, ComplianceTab } from '@/components/ComplianceModal';
 
@@ -40,6 +41,9 @@ export const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-100 selection:text-emerald-950 font-sans">
       {/* Sticky Header */}
       <Navbar onOpenComplianceModal={handleOpenCompliance} />
+
+      {/* Live Running Ticker Banner (Animated from right to left) */}
+      <RunningTickerBanner />
 
       {/* Main Page Body */}
       <main className="flex-1 w-full flex flex-col">

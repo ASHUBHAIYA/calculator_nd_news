@@ -19,6 +19,11 @@ export interface SolarInput {
   systemCostPerKw?: number; // default ₹60,000 / kW
   stateSubsidyAmount?: number; // optional state-specific top-up (e.g. UP, Gujarat, Delhi)
   availableRoofAreaSqFt?: number; // optional area check
+  subsidy1Kw?: number;
+  subsidy2Kw?: number;
+  subsidy3KwPlus?: number;
+  unitsPerKwPerMonth?: number;
+  sqftPerKw?: number;
 }
 
 export interface SolarSubsidyBreakdown {
@@ -54,25 +59,35 @@ export const SQFT_PER_KW = 100;
 /**
  * Calculates central subsidy as per PM Surya Ghar Guidelines
  */
-export function calculateCentralSubsidy(capacityKw: number): number {
+export function calculateCentralSubsidy(
+  capacityKw: number,
+  sub1: number = 30000,
+  sub2: number = 60000,
+  subMax: number = 78000
+): number {
   if (capacityKw <= 0) return 0;
   if (capacityKw <= 1) {
-    return Math.round(capacityKw * 30000);
+    return Math.round(capacityKw * sub1);
   }
   if (capacityKw <= 2) {
-    return 30000 + Math.round((capacityKw - 1) * 30000);
+    return sub1 + Math.round((capacityKw - 1) * (sub2 - sub1));
   }
   if (capacityKw <= 3) {
-    return 60000 + Math.round((capacityKw - 2) * 18000);
+    return sub2 + Math.round((capacityKw - 2) * (subMax - sub2));
   }
-  return CENTRAL_SUBSIDY_MAX; // Capped at ₹78,000 for residential
+  return subMax; // Capped at maximum central subsidy
 }
 
 export function calculateSolarSubsidy(input: SolarInput): SolarSubsidyBreakdown {
   const bill = Math.max(0, input.monthlyElectricityBill);
   const tariff = Math.max(1, input.electricityTariffPerUnit ?? DEFAULT_TARIFF_PER_UNIT);
-  const costPerKw = Math.max(30000, input.systemCostPerKw ?? DEFAULT_COST_PER_KW);
+  const costPerKw = Math.max(10000, input.systemCostPerKw ?? DEFAULT_COST_PER_KW);
   const stateSubsidy = Math.max(0, input.stateSubsidyAmount ?? 0);
+  const sub1 = input.subsidy1Kw ?? 30000;
+  const sub2 = input.subsidy2Kw ?? 60000;
+  const subMax = input.subsidy3KwPlus ?? CENTRAL_SUBSIDY_MAX;
+  const unitsPerKw = input.unitsPerKwPerMonth ?? UNITS_PER_KW_PER_MONTH;
+  const sqftPerKw = input.sqftPerKw ?? SQFT_PER_KW;
 
   // Monthly electricity consumption (units/kWh)
   const monthlyUnitsConsumed = Math.round(bill / tariff);
@@ -83,17 +98,17 @@ export function calculateSolarSubsidy(input: SolarInput): SolarSubsidyBreakdown 
     capacityKw = Number(input.customCapacityKw.toFixed(1));
   } else {
     // Recommend capacity to offset 90% - 100% of consumption
-    const rawKw = monthlyUnitsConsumed / UNITS_PER_KW_PER_MONTH;
+    const rawKw = monthlyUnitsConsumed / unitsPerKw;
     capacityKw = Math.max(1, Math.min(10, Math.ceil(rawKw)));
   }
 
-  const rooftopAreaRequiredSqFt = Math.round(capacityKw * SQFT_PER_KW);
+  const rooftopAreaRequiredSqFt = Math.round(capacityKw * sqftPerKw);
 
-  const monthlySolarUnitsGenerated = Math.round(capacityKw * UNITS_PER_KW_PER_MONTH);
+  const monthlySolarUnitsGenerated = Math.round(capacityKw * unitsPerKw);
   const annualSolarUnitsGenerated = monthlySolarUnitsGenerated * 12;
 
   const grossSystemCost = Math.round(capacityKw * costPerKw);
-  const centralSubsidy = calculateCentralSubsidy(capacityKw);
+  const centralSubsidy = calculateCentralSubsidy(capacityKw, sub1, sub2, subMax);
   const totalSubsidy = Math.min(grossSystemCost, centralSubsidy + stateSubsidy);
   const netInvestmentCost = Math.max(0, grossSystemCost - totalSubsidy);
 

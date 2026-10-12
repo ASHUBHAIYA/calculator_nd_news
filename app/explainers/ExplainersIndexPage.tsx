@@ -9,7 +9,6 @@ import {
   Clock,
   ArrowRight,
   TrendingUp,
-  Sparkles,
   CheckCircle2,
   Tag,
 } from 'lucide-react';
@@ -17,7 +16,6 @@ import { Article, ArticleCategory } from '@/lib/types/article';
 import { INITIAL_ARTICLES } from '@/lib/articlesData';
 import { fetchArticles as fetchArticlesSupabase, getSupabaseStatus } from '@/lib/supabase';
 import { CreateExplainerModal } from '@/components/CreateExplainerModal';
-import { SupabaseCloudflareModal } from '@/components/SupabaseCloudflareModal';
 import { SeoHead } from '@/components/SeoHead';
 import { AdBanner } from '@/components/AdBanner';
 
@@ -83,7 +81,6 @@ export const ExplainersIndexPage: React.FC = () => {
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<'supabase' | 'fallback'>('fallback');
 
@@ -141,7 +138,6 @@ export const ExplainersIndexPage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-2 max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Regulatory Grounding & Financial Intelligence</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-black text-slate-950 font-display tracking-tight">
@@ -153,19 +149,6 @@ export const ExplainersIndexPage: React.FC = () => {
             </div>
 
             <div className="shrink-0 flex flex-wrap items-center gap-2.5">
-              <button
-                onClick={() => setIsArchitectureModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all shadow-2xs cursor-pointer"
-                title="View Supabase & Cloudflare Pages Configuration"
-              >
-                <span
-                  className={`w-2 h-2 rounded-full ${
-                    supabaseStatus.isConfigured ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
-                  }`}
-                />
-                <span>Supabase & Cloudflare</span>
-              </button>
-
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
@@ -211,9 +194,9 @@ export const ExplainersIndexPage: React.FC = () => {
       </section>
 
       {/* AdSense Banner with safe margin */}
-      <div className="max-w-7xl mx-auto px-4 mt-8">
+      {/* <div className="max-w-7xl mx-auto px-4 mt-8">
         <AdBanner format="leaderboard" slotId="explainers-hub-top" />
-      </div>
+      </div> */}
 
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-10">
@@ -327,12 +310,6 @@ export const ExplainersIndexPage: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onCreated={handleArticleCreated}
-      />
-
-      {/* Supabase & Cloudflare Architecture Diagnostics Modal */}
-      <SupabaseCloudflareModal
-        isOpen={isArchitectureModalOpen}
-        onClose={() => setIsArchitectureModalOpen(false)}
       />
     </div>
   );

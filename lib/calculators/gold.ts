@@ -23,6 +23,8 @@ export interface GoldInvoiceInput {
   makingChargeValue: number; // e.g. 12% or ₹650/gram
   stoneValue?: number; // optional gemstone value
   includeHallmarking?: boolean; // ₹53.10 standard BIS fee
+  hallmarkingFeeAmount?: number; // Configured BIS fee
+  gstPercentage?: number; // Configured GST rate (default 3.0%)
   discountAmount?: number;
 }
 
@@ -34,6 +36,8 @@ export interface SilverInvoiceInput {
   makingChargeValue: number; // e.g. 15% or ₹35/gram
   stoneValue?: number;
   includeHallmarking?: boolean; // ₹41.30 standard BIS fee
+  hallmarkingFeeAmount?: number; // Configured BIS fee
+  gstPercentage?: number; // Configured GST rate (default 3.0%)
   discountAmount?: number;
 }
 
@@ -190,13 +194,16 @@ export function calculateGoldInvoice(input: GoldInvoiceInput): GoldInvoiceBreakd
   const subtotalBeforeTax = rawGoldCost + makingChargesTotal + stoneValue;
   const netTaxableAmount = Math.max(0, subtotalBeforeTax - discount);
 
-  // 3% GST on jewelry (1.5% CGST + 1.5% SGST)
-  const cgstAmount = Number((netTaxableAmount * 0.015).toFixed(2));
-  const sgstAmount = Number((netTaxableAmount * 0.015).toFixed(2));
+  // GST on jewelry (CGST + SGST)
+  const gstRate = (input.gstPercentage ?? 3.0) / 100;
+  const halfGst = gstRate / 2;
+  const cgstAmount = Number((netTaxableAmount * halfGst).toFixed(2));
+  const sgstAmount = Number((netTaxableAmount * halfGst).toFixed(2));
   const totalGST = Number((cgstAmount + sgstAmount).toFixed(2));
 
   // BIS Hallmarking
-  const hallmarkingFee = input.includeHallmarking !== false ? BIS_GOLD_HALLMARKING_FEE : 0;
+  const configuredFee = input.hallmarkingFeeAmount ?? BIS_GOLD_HALLMARKING_FEE;
+  const hallmarkingFee = input.includeHallmarking !== false ? configuredFee : 0;
 
   const totalInvoiceAmount = Math.round(netTaxableAmount + totalGST + hallmarkingFee);
   const effectiveCostPerGram = weight > 0 ? Math.round(totalInvoiceAmount / weight) : 0;
@@ -263,13 +270,16 @@ export function calculateSilverInvoice(input: SilverInvoiceInput): BullionInvoic
   const subtotalBeforeTax = rawMetalCost + makingChargesTotal + stoneValue;
   const netTaxableAmount = Math.max(0, subtotalBeforeTax - discount);
 
-  // 3% GST on Silver (1.5% CGST + 1.5% SGST)
-  const cgstAmount = Number((netTaxableAmount * 0.015).toFixed(2));
-  const sgstAmount = Number((netTaxableAmount * 0.015).toFixed(2));
+  // GST on Silver (CGST + SGST)
+  const gstRate = (input.gstPercentage ?? 3.0) / 100;
+  const halfGst = gstRate / 2;
+  const cgstAmount = Number((netTaxableAmount * halfGst).toFixed(2));
+  const sgstAmount = Number((netTaxableAmount * halfGst).toFixed(2));
   const totalGST = Number((cgstAmount + sgstAmount).toFixed(2));
 
-  // BIS Silver Hallmarking fee (₹35 + 18% GST = ₹41.30)
-  const hallmarkingFee = input.includeHallmarking !== false ? BIS_SILVER_HALLMARKING_FEE : 0;
+  // BIS Silver Hallmarking fee
+  const configuredFee = input.hallmarkingFeeAmount ?? BIS_SILVER_HALLMARKING_FEE;
+  const hallmarkingFee = input.includeHallmarking !== false ? configuredFee : 0;
 
   const totalInvoiceAmount = Math.round(netTaxableAmount + totalGST + hallmarkingFee);
   const effectiveCostPerGram = weight > 0 ? Math.round(totalInvoiceAmount / weight) : 0;

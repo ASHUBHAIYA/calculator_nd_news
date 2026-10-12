@@ -16,6 +16,11 @@ export interface SalaryInput {
   includeGratuityInCTC?: boolean; // 4.81% of basic
   professionalTaxAnnual?: number; // default ₹2,400
   otherTaxDeductions?: number; // optional employee NPS tier 1 (Sec 80CCD(2))
+  standardDeduction?: number; // FY 2025-26 statutory ₹75,000 or admin config
+  sec87aRebateLimit?: number; // default ₹7,00,000
+  epfStatutoryRate?: number; // default 8.25% p.a.
+  employerPfRate?: number; // default 12%
+  healthEducationCess?: number; // default 4%
 }
 
 export interface TaxSlabBreakdown {
@@ -92,12 +97,13 @@ export function calculateInHandSalary(input: SalaryInput): SalaryBreakdown {
   let annualEmployerEPF = 0;
   let annualEmployeeEPF = 0;
 
+  const pfRate = (input.employerPfRate ?? 12) / 100;
   if (epfType === 'actual') {
-    annualEmployerEPF = annualBasic * 0.12;
-    annualEmployeeEPF = annualBasic * 0.12;
+    annualEmployerEPF = annualBasic * pfRate;
+    annualEmployeeEPF = annualBasic * pfRate;
   } else if (epfType === 'capped') {
     // Statutory ceiling: 12% of ₹15,000 = ₹1,800/month = ₹21,600/year
-    const cappedAnnual = Math.min(annualBasic * 0.12, 1800 * 12);
+    const cappedAnnual = Math.min(annualBasic * pfRate, 1800 * 12);
     annualEmployerEPF = cappedAnnual;
     annualEmployeeEPF = cappedAnnual;
   }
@@ -115,7 +121,8 @@ export function calculateInHandSalary(input: SalaryInput): SalaryBreakdown {
   const annualSpecialAllowance = Math.max(0, annualGrossSalary - annualBasic - annualHRA);
 
   // 5. Tax Calculation under FY 2025-26 New Tax Regime (Sec 115BAC)
-  const standardDeduction = annualGrossSalary > 0 ? Math.min(STANDARD_DEDUCTION_NEW_REGIME, annualGrossSalary) : 0;
+  const stdDeductionCap = input.standardDeduction ?? STANDARD_DEDUCTION_NEW_REGIME;
+  const standardDeduction = annualGrossSalary > 0 ? Math.min(stdDeductionCap, annualGrossSalary) : 0;
   const additionalDeductions = Math.max(0, input.otherTaxDeductions ?? 0);
   const taxableIncome = Math.max(0, annualGrossSalary - standardDeduction - additionalDeductions);
 
@@ -123,19 +130,20 @@ export function calculateInHandSalary(input: SalaryInput): SalaryBreakdown {
 
   // Section 87A Rebate:
   // In the New Regime, if taxable income <= ₹7,00,000, tax rebate is 100% (up to ₹25,000).
+  const sec87aLimit = input.sec87aRebateLimit ?? 700000;
   let section87aRebate = 0;
   let taxAfterRebate = taxBeforeRebate;
 
-  if (taxableIncome <= 700000) {
+  if (taxableIncome <= sec87aLimit) {
     section87aRebate = taxBeforeRebate;
     taxAfterRebate = 0;
   } else {
     // Marginal relief under Section 87A:
     // If taxable income > 7,00,000, the income tax payable cannot exceed (Taxable Income - 7,00,000).
-    const excessOver7Lakh = taxableIncome - 700000;
-    if (taxBeforeRebate > excessOver7Lakh) {
-      taxAfterRebate = excessOver7Lakh;
-      section87aRebate = taxBeforeRebate - excessOver7Lakh;
+    const excessOverLimit = taxableIncome - sec87aLimit;
+    if (taxBeforeRebate > excessOverLimit) {
+      taxAfterRebate = excessOverLimit;
+      section87aRebate = taxBeforeRebate - excessOverLimit;
     }
   }
 
@@ -157,8 +165,9 @@ export function calculateInHandSalary(input: SalaryInput): SalaryBreakdown {
     surcharge = Math.round(taxAfterRebate * surchargeRate);
   }
 
-  // 4% Health & Education Cess (calculated on Tax + Surcharge)
-  const educationCess = Math.round((taxAfterRebate + surcharge) * 0.04);
+  // Health & Education Cess (calculated on Tax + Surcharge)
+  const cessRate = (input.healthEducationCess ?? 4) / 100;
+  const educationCess = Math.round((taxAfterRebate + surcharge) * cessRate);
   const totalAnnualTax = Math.round(taxAfterRebate + surcharge + educationCess);
   const totalMonthlyTax = Math.round(totalAnnualTax / 12);
 

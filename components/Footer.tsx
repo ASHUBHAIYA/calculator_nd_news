@@ -94,28 +94,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
             </ul>
           </div>
 
-          {/* Utility Engines Column */}
+          {/* Educational Resources & Guides Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Daily Utilities
+              Guides &amp; Explainers
             </h4>
             <ul className="space-y-2 text-xs">
-              <li>
-                <Link
-                  to="/calculators/commute-fuel"
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  Commute Fuel Spend Calculator
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/calculators/solar-rooftop"
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  PM Surya Ghar Solar Subsidy Calculator
-                </Link>
-              </li>
               <li>
                 <Link
                   to="/explainers"
@@ -129,10 +113,26 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/guide"
                   className="text-slate-400 hover:text-white transition-colors"
                 >
-                  Live Benchmark Rates Ticker
+                  Financial &amp; Tax Calculation Guides
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/faq"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  Frequently Asked Questions (FAQ)
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  Contact Us &amp; Grievance Desk
                 </Link>
               </li>
             </ul>
@@ -141,48 +141,53 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
           {/* Regulatory & AdSense Compliance Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Compliance & Legal
+              Compliance &amp; Legal
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <button
-                  onClick={() => onOpenComplianceModal?.('about')}
+                <Link
+                  to="/about-us"
                   className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5"
-                  id="footer-about-link"
                 >
                   <Info className="w-3.5 h-3.5 text-slate-400" />
                   About BharatCalc
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => onOpenComplianceModal?.('privacy')}
+                <Link
+                  to="/privacy-policy"
                   className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5"
-                  id="footer-privacy-link"
                 >
                   <Lock className="w-3.5 h-3.5 text-slate-400" />
-                  Privacy Policy
-                </button>
+                  Privacy &amp; Cookie Policy
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => onOpenComplianceModal?.('terms')}
+                <Link
+                  to="/terms-of-service"
                   className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5"
-                  id="footer-terms-link"
                 >
                   <FileText className="w-3.5 h-3.5 text-slate-400" />
                   Terms of Service
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => onOpenComplianceModal?.('disclaimer')}
+                <Link
+                  to="/disclaimer"
                   className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5"
-                  id="footer-disclaimer-link"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
                   Statutory Disclaimer
-                </button>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                >
+                  <Info className="w-3.5 h-3.5 text-slate-400" />
+                  Contact Support
+                </Link>
               </li>
             </ul>
           </div>

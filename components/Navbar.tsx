@@ -9,12 +9,11 @@ import {
   Sun,
   Menu,
   X,
-  Sparkles,
-  ShieldCheck,
   ChevronDown,
   ArrowRight,
   TrendingUp,
 } from 'lucide-react';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 interface NavbarProps {
   onOpenComplianceModal?: (tab: 'about' | 'privacy' | 'terms' | 'disclaimer') => void;
@@ -84,21 +83,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // Synced live bullion rates for navbar ticker pill
-  const [navGold24K, setNavGold24K] = useState<number>(76850);
-  const [navSilverKg, setNavSilverKg] = useState<number>(92500);
-
-  useEffect(() => {
-    fetch('/api/bullion-rates')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.gold24KPer10g && data?.silver999PerKg) {
-          setNavGold24K(data.gold24KPer10g);
-          setNavSilverKg(data.silver999PerKg);
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const { config } = useSiteConfig();
+  const navGold24K = config.bullion?.gold24KPer10g || 76850;
+  const navSilverKg = config.bullion?.silver999PerKg || 92500;
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -247,7 +234,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
 
                   <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] px-1 text-slate-500">
                     <span className="flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                       All calculators calibrated for FY 2025-26
                     </span>
                     <Link
@@ -310,15 +296,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
                 New
               </span>
             </Link>
-
-            <button
-              onClick={() => onOpenComplianceModal?.('about')}
-              id="btn-nav-standards"
-              className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors flex items-center gap-1"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Statutory Rules</span>
-            </button>
           </nav>
 
           {/* Right Action / Compact Live Bullion Ticker Pill */}
@@ -339,7 +316,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
               to="/calculators/in-hand-salary"
               className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-all active:scale-95"
             >
-              <Sparkles className="w-3.5 h-3.5" />
               <span>Calculate CTC</span>
             </Link>
           </div>
@@ -428,24 +404,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
             );
           })}
 
-          <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenComplianceModal?.('about');
-              }}
-              className="text-xs text-center py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
-            >
-              Statutory Rules
-            </button>
+          <div className="pt-3 border-t border-slate-100">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenComplianceModal?.('privacy');
               }}
-              className="text-xs text-center py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+              className="w-full text-xs text-center py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold"
             >
-              Privacy Policy
+              Privacy &amp; Terms
             </button>
           </div>
         </div>

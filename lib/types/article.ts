@@ -2,9 +2,31 @@ export type ArticleCategory =
   | 'Gold & Commodities'
   | 'Tax & Salary'
   | 'Fuel & Energy'
-  | 'Market Trends';
+  | 'Market Trends'
+  | 'Real Estate & Home Loans'
+  | 'Personal Finance'
+  | 'Banking & RBI'
+  | (string & {});
 
-export type RelatedCalculator = 'gold' | 'silver' | 'petrol' | 'salary' | 'none';
+export const ARTICLE_CATEGORIES: string[] = [
+  'Gold & Commodities',
+  'Tax & Salary',
+  'Fuel & Energy',
+  'Market Trends',
+  'Real Estate & Home Loans',
+  'Personal Finance',
+  'Banking & RBI',
+];
+
+export type RelatedCalculator =
+  | 'gold'
+  | 'silver'
+  | 'petrol'
+  | 'salary'
+  | 'loan'
+  | 'fuel'
+  | 'solar'
+  | 'none';
 
 export interface ArticleSource {
   label: string;

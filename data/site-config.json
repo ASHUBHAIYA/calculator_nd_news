@@ -1,0 +1,976 @@
+{
+  "version": 3,
+  "lastUpdated": "2026-10-07T03:54:00.999Z",
+  "updatedBy": "Admin Portal API",
+  "bullion": {
+    "gold24KPer10g": 76850,
+    "gold22KPer10g": 14208,
+    "gold18KPer10g": 11625,
+    "silver999PerKg": 92500,
+    "silver925Per10g": 2419,
+    "makingChargeDefaultPercent": 12,
+    "makingChargeDefaultPerGram": 650,
+    "goldHallmarkingFee": 53.1,
+    "silverHallmarkingFee": 41.3,
+    "gstPercentage": 3,
+    "cities": [
+      {
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "gold24K": 76850,
+        "gold22K": 70446,
+        "silver1Kg": 92500
+      },
+      {
+        "city": "Pune",
+        "state": "Maharashtra",
+        "gold24K": 76870,
+        "gold22K": 70464,
+        "silver1Kg": 92550
+      },
+      {
+        "city": "Nagpur",
+        "state": "Maharashtra",
+        "gold24K": 76910,
+        "gold22K": 70501,
+        "silver1Kg": 92600
+      },
+      {
+        "city": "Nashik",
+        "state": "Maharashtra",
+        "gold24K": 76880,
+        "gold22K": 70473,
+        "silver1Kg": 92580
+      },
+      {
+        "city": "Aurangabad (Chhatrapati Sambhajinagar)",
+        "state": "Maharashtra",
+        "gold24K": 76890,
+        "gold22K": 70483,
+        "silver1Kg": 92590
+      },
+      {
+        "city": "Kolhapur",
+        "state": "Maharashtra",
+        "gold24K": 76880,
+        "gold22K": 70473,
+        "silver1Kg": 92580
+      },
+      {
+        "city": "Delhi",
+        "state": "Delhi NCR",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Noida",
+        "state": "Uttar Pradesh (NCR)",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Gurugram",
+        "state": "Haryana (NCR)",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Ghaziabad",
+        "state": "Uttar Pradesh (NCR)",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Faridabad",
+        "state": "Haryana (NCR)",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Chennai",
+        "state": "Tamil Nadu",
+        "gold24K": 76950,
+        "gold22K": 70538,
+        "silver1Kg": 96000
+      },
+      {
+        "city": "Coimbatore",
+        "state": "Tamil Nadu",
+        "gold24K": 76960,
+        "gold22K": 70547,
+        "silver1Kg": 96000
+      },
+      {
+        "city": "Madurai",
+        "state": "Tamil Nadu",
+        "gold24K": 76960,
+        "gold22K": 70547,
+        "silver1Kg": 96000
+      },
+      {
+        "city": "Salem",
+        "state": "Tamil Nadu",
+        "gold24K": 76960,
+        "gold22K": 70547,
+        "silver1Kg": 96000
+      },
+      {
+        "city": "Tiruchirappalli (Trichy)",
+        "state": "Tamil Nadu",
+        "gold24K": 76960,
+        "gold22K": 70547,
+        "silver1Kg": 96000
+      },
+      {
+        "city": "Tirunelveli",
+        "state": "Tamil Nadu",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 96000
+      },
+      {
+        "city": "Bengaluru",
+        "state": "Karnataka",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94000
+      },
+      {
+        "city": "Mysuru",
+        "state": "Karnataka",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 94000
+      },
+      {
+        "city": "Mangaluru",
+        "state": "Karnataka",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94000
+      },
+      {
+        "city": "Hubballi-Dharwad",
+        "state": "Karnataka",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 94000
+      },
+      {
+        "city": "Belagavi",
+        "state": "Karnataka",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 94000
+      },
+      {
+        "city": "Hyderabad",
+        "state": "Telangana",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Warangal",
+        "state": "Telangana",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Nizamabad",
+        "state": "Telangana",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Karimnagar",
+        "state": "Telangana",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Vijayawada",
+        "state": "Andhra Pradesh",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Visakhapatnam",
+        "state": "Andhra Pradesh",
+        "gold24K": 76960,
+        "gold22K": 70547,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Guntur",
+        "state": "Andhra Pradesh",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Tirupati",
+        "state": "Andhra Pradesh",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Nellore",
+        "state": "Andhra Pradesh",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Kurnool",
+        "state": "Andhra Pradesh",
+        "gold24K": 76975,
+        "gold22K": 70560,
+        "silver1Kg": 94500
+      },
+      {
+        "city": "Kolkata",
+        "state": "West Bengal",
+        "gold24K": 76930,
+        "gold22K": 70519,
+        "silver1Kg": 92700
+      },
+      {
+        "city": "Siliguri",
+        "state": "West Bengal",
+        "gold24K": 76950,
+        "gold22K": 70538,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Asansol",
+        "state": "West Bengal",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 92720
+      },
+      {
+        "city": "Durgapur",
+        "state": "West Bengal",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 92720
+      },
+      {
+        "city": "Ahmedabad",
+        "state": "Gujarat",
+        "gold24K": 76890,
+        "gold22K": 70483,
+        "silver1Kg": 92600
+      },
+      {
+        "city": "Surat",
+        "state": "Gujarat",
+        "gold24K": 76890,
+        "gold22K": 70483,
+        "silver1Kg": 92600
+      },
+      {
+        "city": "Vadodara",
+        "state": "Gujarat",
+        "gold24K": 76900,
+        "gold22K": 70492,
+        "silver1Kg": 92600
+      },
+      {
+        "city": "Rajkot",
+        "state": "Gujarat",
+        "gold24K": 76895,
+        "gold22K": 70487,
+        "silver1Kg": 92600
+      },
+      {
+        "city": "Bhavnagar",
+        "state": "Gujarat",
+        "gold24K": 76900,
+        "gold22K": 70492,
+        "silver1Kg": 92610
+      },
+      {
+        "city": "Jamnagar",
+        "state": "Gujarat",
+        "gold24K": 76900,
+        "gold22K": 70492,
+        "silver1Kg": 92610
+      },
+      {
+        "city": "Lucknow",
+        "state": "Uttar Pradesh",
+        "gold24K": 77010,
+        "gold22K": 70593,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Kanpur",
+        "state": "Uttar Pradesh",
+        "gold24K": 77010,
+        "gold22K": 70593,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Varanasi",
+        "state": "Uttar Pradesh",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92900
+      },
+      {
+        "city": "Agra",
+        "state": "Uttar Pradesh",
+        "gold24K": 77005,
+        "gold22K": 70588,
+        "silver1Kg": 92820
+      },
+      {
+        "city": "Prayagraj (Allahabad)",
+        "state": "Uttar Pradesh",
+        "gold24K": 77015,
+        "gold22K": 70597,
+        "silver1Kg": 92860
+      },
+      {
+        "city": "Meerut",
+        "state": "Uttar Pradesh",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Gorakhpur",
+        "state": "Uttar Pradesh",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92880
+      },
+      {
+        "city": "Bareilly",
+        "state": "Uttar Pradesh",
+        "gold24K": 77010,
+        "gold22K": 70593,
+        "silver1Kg": 92840
+      },
+      {
+        "city": "Jaipur",
+        "state": "Rajasthan",
+        "gold24K": 76990,
+        "gold22K": 70574,
+        "silver1Kg": 92780
+      },
+      {
+        "city": "Jodhpur",
+        "state": "Rajasthan",
+        "gold24K": 76995,
+        "gold22K": 70579,
+        "silver1Kg": 92790
+      },
+      {
+        "city": "Udaipur",
+        "state": "Rajasthan",
+        "gold24K": 76995,
+        "gold22K": 70579,
+        "silver1Kg": 92790
+      },
+      {
+        "city": "Kota",
+        "state": "Rajasthan",
+        "gold24K": 76995,
+        "gold22K": 70579,
+        "silver1Kg": 92790
+      },
+      {
+        "city": "Bikaner",
+        "state": "Rajasthan",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Ajmer",
+        "state": "Rajasthan",
+        "gold24K": 76990,
+        "gold22K": 70574,
+        "silver1Kg": 92780
+      },
+      {
+        "city": "Kochi",
+        "state": "Kerala",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 95700
+      },
+      {
+        "city": "Thiruvananthapuram",
+        "state": "Kerala",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 95700
+      },
+      {
+        "city": "Kozhikode",
+        "state": "Kerala",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 95700
+      },
+      {
+        "city": "Thrissur",
+        "state": "Kerala",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 95700
+      },
+      {
+        "city": "Kollam",
+        "state": "Kerala",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 95700
+      },
+      {
+        "city": "Kannur",
+        "state": "Kerala",
+        "gold24K": 76940,
+        "gold22K": 70528,
+        "silver1Kg": 95700
+      },
+      {
+        "city": "Chandigarh",
+        "state": "Punjab / Haryana / UT",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Ludhiana",
+        "state": "Punjab",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Amritsar",
+        "state": "Punjab",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Jalandhar",
+        "state": "Punjab",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Patiala",
+        "state": "Punjab",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Panipat",
+        "state": "Haryana",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Ambala",
+        "state": "Haryana",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Hisar",
+        "state": "Haryana",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Karnal",
+        "state": "Haryana",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Rohtak",
+        "state": "Haryana",
+        "gold24K": 77000,
+        "gold22K": 70583,
+        "silver1Kg": 92800
+      },
+      {
+        "city": "Bhopal",
+        "state": "Madhya Pradesh",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Indore",
+        "state": "Madhya Pradesh",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Jabalpur",
+        "state": "Madhya Pradesh",
+        "gold24K": 76990,
+        "gold22K": 70574,
+        "silver1Kg": 92770
+      },
+      {
+        "city": "Gwalior",
+        "state": "Madhya Pradesh",
+        "gold24K": 76985,
+        "gold22K": 70570,
+        "silver1Kg": 92760
+      },
+      {
+        "city": "Ujjain",
+        "state": "Madhya Pradesh",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Patna",
+        "state": "Bihar",
+        "gold24K": 77030,
+        "gold22K": 70611,
+        "silver1Kg": 92900
+      },
+      {
+        "city": "Gaya",
+        "state": "Bihar",
+        "gold24K": 77040,
+        "gold22K": 70620,
+        "silver1Kg": 92920
+      },
+      {
+        "city": "Muzaffarpur",
+        "state": "Bihar",
+        "gold24K": 77040,
+        "gold22K": 70620,
+        "silver1Kg": 92920
+      },
+      {
+        "city": "Bhagalpur",
+        "state": "Bihar",
+        "gold24K": 77040,
+        "gold22K": 70620,
+        "silver1Kg": 92920
+      },
+      {
+        "city": "Darbhanga",
+        "state": "Bihar",
+        "gold24K": 77040,
+        "gold22K": 70620,
+        "silver1Kg": 92920
+      },
+      {
+        "city": "Bhubaneswar",
+        "state": "Odisha",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Cuttack",
+        "state": "Odisha",
+        "gold24K": 76970,
+        "gold22K": 70556,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Rourkela",
+        "state": "Odisha",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 92760
+      },
+      {
+        "city": "Berhampur",
+        "state": "Odisha",
+        "gold24K": 76975,
+        "gold22K": 70560,
+        "silver1Kg": 92750
+      },
+      {
+        "city": "Sambalpur",
+        "state": "Odisha",
+        "gold24K": 76980,
+        "gold22K": 70565,
+        "silver1Kg": 92760
+      },
+      {
+        "city": "Ranchi",
+        "state": "Jharkhand",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Jamshedpur",
+        "state": "Jharkhand",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Dhanbad",
+        "state": "Jharkhand",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Bokaro",
+        "state": "Jharkhand",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Raipur",
+        "state": "Chhattisgarh",
+        "gold24K": 76990,
+        "gold22K": 70574,
+        "silver1Kg": 92780
+      },
+      {
+        "city": "Bilaspur",
+        "state": "Chhattisgarh",
+        "gold24K": 76995,
+        "gold22K": 70579,
+        "silver1Kg": 92790
+      },
+      {
+        "city": "Durg-Bhilai",
+        "state": "Chhattisgarh",
+        "gold24K": 76990,
+        "gold22K": 70574,
+        "silver1Kg": 92780
+      },
+      {
+        "city": "Guwahati",
+        "state": "Assam",
+        "gold24K": 77040,
+        "gold22K": 70620,
+        "silver1Kg": 92950
+      },
+      {
+        "city": "Dibrugarh",
+        "state": "Assam",
+        "gold24K": 77050,
+        "gold22K": 70629,
+        "silver1Kg": 92980
+      },
+      {
+        "city": "Silchar",
+        "state": "Assam",
+        "gold24K": 77050,
+        "gold22K": 70629,
+        "silver1Kg": 92980
+      },
+      {
+        "city": "Jorhat",
+        "state": "Assam",
+        "gold24K": 77050,
+        "gold22K": 70629,
+        "silver1Kg": 92980
+      },
+      {
+        "city": "Panaji",
+        "state": "Goa",
+        "gold24K": 76920,
+        "gold22K": 70510,
+        "silver1Kg": 92650
+      },
+      {
+        "city": "Margao",
+        "state": "Goa",
+        "gold24K": 76920,
+        "gold22K": 70510,
+        "silver1Kg": 92650
+      },
+      {
+        "city": "Dehradun",
+        "state": "Uttarakhand",
+        "gold24K": 77010,
+        "gold22K": 70593,
+        "silver1Kg": 92820
+      },
+      {
+        "city": "Haridwar",
+        "state": "Uttarakhand",
+        "gold24K": 77010,
+        "gold22K": 70593,
+        "silver1Kg": 92820
+      },
+      {
+        "city": "Haldwani",
+        "state": "Uttarakhand",
+        "gold24K": 77015,
+        "gold22K": 70597,
+        "silver1Kg": 92830
+      },
+      {
+        "city": "Rishikesh",
+        "state": "Uttarakhand",
+        "gold24K": 77010,
+        "gold22K": 70593,
+        "silver1Kg": 92820
+      },
+      {
+        "city": "Shimla",
+        "state": "Himachal Pradesh",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Dharamshala",
+        "state": "Himachal Pradesh",
+        "gold24K": 77025,
+        "gold22K": 70606,
+        "silver1Kg": 92860
+      },
+      {
+        "city": "Mandi",
+        "state": "Himachal Pradesh",
+        "gold24K": 77025,
+        "gold22K": 70606,
+        "silver1Kg": 92860
+      },
+      {
+        "city": "Solan",
+        "state": "Himachal Pradesh",
+        "gold24K": 77020,
+        "gold22K": 70602,
+        "silver1Kg": 92850
+      },
+      {
+        "city": "Srinagar",
+        "state": "Jammu & Kashmir",
+        "gold24K": 77050,
+        "gold22K": 70629,
+        "silver1Kg": 93000
+      },
+      {
+        "city": "Jammu",
+        "state": "Jammu & Kashmir",
+        "gold24K": 77030,
+        "gold22K": 70611,
+        "silver1Kg": 92900
+      },
+      {
+        "city": "Anantnag",
+        "state": "Jammu & Kashmir",
+        "gold24K": 77050,
+        "gold22K": 70629,
+        "silver1Kg": 93000
+      },
+      {
+        "city": "Leh",
+        "state": "Ladakh",
+        "gold24K": 77070,
+        "gold22K": 70648,
+        "silver1Kg": 93050
+      },
+      {
+        "city": "Puducherry",
+        "state": "Puducherry",
+        "gold24K": 76950,
+        "gold22K": 70538,
+        "silver1Kg": 95900
+      },
+      {
+        "city": "Agartala",
+        "state": "Tripura",
+        "gold24K": 77060,
+        "gold22K": 70638,
+        "silver1Kg": 93000
+      },
+      {
+        "city": "Shillong",
+        "state": "Meghalaya",
+        "gold24K": 77050,
+        "gold22K": 70629,
+        "silver1Kg": 92980
+      },
+      {
+        "city": "Imphal",
+        "state": "Manipur",
+        "gold24K": 77070,
+        "gold22K": 70648,
+        "silver1Kg": 93020
+      },
+      {
+        "city": "Kohima",
+        "state": "Nagaland",
+        "gold24K": 77070,
+        "gold22K": 70648,
+        "silver1Kg": 93020
+      },
+      {
+        "city": "Dimapur",
+        "state": "Nagaland",
+        "gold24K": 77060,
+        "gold22K": 70638,
+        "silver1Kg": 93000
+      },
+      {
+        "city": "Aizawl",
+        "state": "Mizoram",
+        "gold24K": 77070,
+        "gold22K": 70648,
+        "silver1Kg": 93020
+      },
+      {
+        "city": "Itanagar",
+        "state": "Arunachal Pradesh",
+        "gold24K": 77070,
+        "gold22K": 70648,
+        "silver1Kg": 93020
+      },
+      {
+        "city": "Gangtok",
+        "state": "Sikkim",
+        "gold24K": 77040,
+        "gold22K": 70620,
+        "silver1Kg": 92950
+      },
+      {
+        "city": "Port Blair",
+        "state": "Andaman & Nicobar",
+        "gold24K": 77030,
+        "gold22K": 70611,
+        "silver1Kg": 92900
+      },
+      {
+        "city": "Daman",
+        "state": "Dadra & Nagar Haveli and Daman & Diu",
+        "gold24K": 76900,
+        "gold22K": 70492,
+        "silver1Kg": 92600
+      },
+      {
+        "city": "Silvassa",
+        "state": "Dadra & Nagar Haveli and Daman & Diu",
+        "gold24K": 76900,
+        "gold22K": 70492,
+        "silver1Kg": 92600
+      }
+    ]
+  },
+  "taxAndSalary": {
+    "standardDeduction": 75000,
+    "sec87aRebateLimit": 700000,
+    "epfStatutoryRate": 8.25,
+    "employerPfRate": 12,
+    "healthEducationCess": 4,
+    "professionalTaxDefault": 200
+  },
+  "homeLoan": {
+    "primeRateMin": 8.4,
+    "primeRateMax": 8.65,
+    "defaultInterestRate": 8.5,
+    "defaultTenureYears": 20
+  },
+  "fuelAndEv": {
+    "petrolPricePerLitre": 104.2,
+    "dieselPricePerLitre": 92.8,
+    "cngPricePerKg": 78.5,
+    "evHomeKwhRate": 7.5,
+    "evCommercialKwhRate": 14,
+    "petrolAvgMileageKmpl": 15,
+    "dieselAvgMileageKmpl": 18,
+    "evAvgEfficiencyKmPerKwh": 7
+  },
+  "solarRooftop": {
+    "benchmarkCostPerKw": 60000,
+    "subsidy1Kw": 30000,
+    "subsidy2Kw": 60000,
+    "subsidy3KwPlus": 78000,
+    "dailyUnitsGeneratedPerKw": 4.2
+  },
+  "liveTickerBenchmarks": [
+    {
+      "id": "gold-24k",
+      "label": "Gold 24K (per 10g)",
+      "value": "₹76,850",
+      "delta": "Live Spot",
+      "isPositive": true,
+      "category": "Bullion (MCX / IBJA)"
+    },
+    {
+      "id": "gold-22k",
+      "label": "Gold 22K (Hallmark 916)",
+      "value": "₹14,208",
+      "delta": "Live Spot",
+      "isPositive": true,
+      "category": "Jewelry Benchmark"
+    },
+    {
+      "id": "silver-999",
+      "label": "Silver 999 (per 1kg)",
+      "value": "₹92,500",
+      "delta": "Live Spot",
+      "isPositive": true,
+      "category": "MCX Spot Bullion"
+    },
+    {
+      "id": "repo-rate",
+      "label": "Home Loan Prime Rate",
+      "value": "8.4% – 8.65%",
+      "delta": "RBI Steady",
+      "isPositive": true,
+      "category": "Monetary Policy"
+    },
+    {
+      "id": "std-deduction",
+      "label": "Standard Deduction (FY 2025-26)",
+      "value": "₹75,000",
+      "delta": "Sec 115BAC",
+      "isPositive": true,
+      "category": "FY 2025-26"
+    },
+    {
+      "id": "surya-ghar",
+      "label": "PM Surya Ghar Subsidy (3kW)",
+      "value": "₹78,000",
+      "delta": "Direct DBT",
+      "isPositive": true,
+      "category": "Central Scheme"
+    },
+    {
+      "id": "epf-rate",
+      "label": "EPF Statutory Rate",
+      "value": "8.25% p.a.",
+      "delta": "Compounded",
+      "isPositive": true,
+      "category": "EPFO India"
+    }
+  ]
+}

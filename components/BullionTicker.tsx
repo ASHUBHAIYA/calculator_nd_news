@@ -11,9 +11,12 @@ import {
   BullionMarketRate,
 } from '@/lib/calculators/gold';
 import { formatINR } from '@/lib/formatters';
+import { useSiteConfig } from '@/lib/siteConfig';
+import { computeAllIndianCityRates, CityBullionRate } from '@/lib/indianCitiesBullion';
 
 interface BullionTickerProps {
   onSelectRate?: (rate: BullionMarketRate) => void;
+  onSelectCity?: (city: CityBullionRate) => void;
   compact?: boolean;
 }
 
@@ -21,16 +24,11 @@ interface ServerBullionResponse {
   gold24KPer10g: number;
   gold22KPer10g: number;
   silver999PerKg: number;
-  cities: Array<{
-    city: string;
-    state: string;
-    gold24K: number;
-    gold22K: number;
-    silver1Kg: number;
-  }>;
+  cities: CityBullionRate[];
 }
 
-export const BullionTicker: React.FC<BullionTickerProps> = ({ onSelectRate, compact = false }) => {
+export const BullionTicker: React.FC<BullionTickerProps> = ({ onSelectRate, onSelectCity, compact = false }) => {
+  const { config } = useSiteConfig();
   const [selectedCity, setSelectedCity] = useState<string>('Mumbai');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [serverData, setServerData] = useState<ServerBullionResponse | null>(null);
@@ -55,11 +53,19 @@ export const BullionTicker: React.FC<BullionTickerProps> = ({ onSelectRate, comp
     fetchRates();
   }, []);
 
-  const activeCityList = serverData?.cities && serverData.cities.length > 0 ? serverData.cities : MAJOR_CITY_RATES;
+  const defaultGold24K = config.bullion?.gold24KPer10g || 76850;
+  const defaultSilverKg = config.bullion?.silver999PerKg || 92500;
+
+  const dynamicCities = (config.bullion.cities && config.bullion.cities.length > 0)
+    ? config.bullion.cities
+    : computeAllIndianCityRates(defaultGold24K, defaultSilverKg);
+
+  // Directly prioritize config.bullion rates configured by admin
+  const activeCityList: CityBullionRate[] = dynamicCities;
   const cityData =
     activeCityList.find((c) => c.city.toLowerCase() === selectedCity.toLowerCase()) ||
     activeCityList[0] ||
-    MAJOR_CITY_RATES[0];
+    dynamicCities[0];
 
   const handleCardClick = (metal: 'gold' | 'silver', purity: string, rate: number, unit: string) => {
     if (onSelectRate) {
@@ -110,13 +116,20 @@ export const BullionTicker: React.FC<BullionTickerProps> = ({ onSelectRate, comp
             <MapPin className="w-3.5 h-3.5 text-slate-400" />
             <select
               value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="bg-transparent font-medium text-slate-800 focus:outline-hidden text-xs cursor-pointer"
-              aria-label="Select City"
+              onChange={(e) => {
+                const cityName = e.target.value;
+                setSelectedCity(cityName);
+                if (onSelectCity) {
+                  const found = activeCityList.find((c) => c.city.toLowerCase() === cityName.toLowerCase());
+                  if (found) onSelectCity(found);
+                }
+              }}
+              className="bg-transparent font-medium text-slate-800 focus:outline-hidden text-xs cursor-pointer max-w-[180px] sm:max-w-[260px] truncate"
+              aria-label="Select City or State"
             >
               {activeCityList.map((c) => (
-                <option key={c.city} value={c.city}>
-                  {c.city}
+                <option key={`${c.city}-${c.state}`} value={c.city}>
+                  {c.city} • {c.state}
                 </option>
               ))}
             </select>

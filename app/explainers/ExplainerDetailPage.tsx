@@ -245,9 +245,9 @@ export const ExplainerDetailPage: React.FC = () => {
             </div>
 
             {/* AdSense In-Article Placement with safe clearance */}
-            <div className="my-8">
+            {/* <div className="my-8">
               <AdBanner format="rectangle" slotId={`explainer-${article.slug}-inarticle`} />
-            </div>
+            </div> */}
 
             {/* Sources Box: Primary Sources & References */}
             {normalizedSources.length > 0 && (
@@ -294,7 +294,7 @@ export const ExplainerDetailPage: React.FC = () => {
               <ExplainerCalculatorWidget relatedCalculator={article.relatedCalculator} />
 
               {/* Sidebar Ad Placement */}
-              <AdBanner format="rectangle" slotId={`explainer-${article.slug}-sidebar`} />
+              {/* <AdBanner format="rectangle" slotId={`explainer-${article.slug}-sidebar`} /> */}
             </div>
           </aside>
         </div>

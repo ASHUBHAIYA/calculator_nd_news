@@ -6,7 +6,6 @@ import {
   HelpCircle,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   Info,
   CheckCircle2,
   TrendingUp,
@@ -27,8 +26,11 @@ import { formatINR, formatNumberIN } from '@/lib/formatters';
 import { AdBanner } from '@/components/AdBanner';
 import { BullionTicker } from '@/components/BullionTicker';
 import { SeoHead } from '@/components/SeoHead';
+import { useSiteConfig } from '@/lib/siteConfig';
+import { CityBullionRate } from '@/lib/indianCitiesBullion';
 
 export const GoldJewelryBillPage: React.FC = () => {
+  const { config } = useSiteConfig();
   const rateId = useId();
   const weightId = useId();
   const makingTypeId = useId();
@@ -39,12 +41,12 @@ export const GoldJewelryBillPage: React.FC = () => {
   // Metal Selection: Gold or Silver
   const [metal, setMetal] = useState<BullionMetal>('gold');
 
-  // Gold Parameters
-  const [goldRate24K, setGoldRate24K] = useState<number>(143115); // per 10g
+  // Gold Parameters - Reactively initialized from site config
+  const [goldRate24K, setGoldRate24K] = useState<number>(config.bullion?.gold24KPer10g || 76850); // per 10g
   const [goldPurity, setGoldPurity] = useState<GoldPurity>('22K');
 
-  // Silver Parameters
-  const [silverRate999PerKg, setSilverRate999PerKg] = useState<number>(216670); // per 1 kg
+  // Silver Parameters - Reactively initialized from site config
+  const [silverRate999PerKg, setSilverRate999PerKg] = useState<number>(config.bullion?.silver999PerKg || 92500); // per 1 kg
   const [silverPurity, setSilverPurity] = useState<SilverPurity>('925');
   const [silverWeightUnit, setSilverWeightUnit] = useState<'grams' | 'kg' | 'tola'>('grams');
   const [silverWeightInput, setSilverWeightInput] = useState<number>(50);
@@ -52,27 +54,30 @@ export const GoldJewelryBillPage: React.FC = () => {
   // Common Parameters
   const [goldWeightGrams, setGoldWeightGrams] = useState<number>(12.5);
   const [makingType, setMakingType] = useState<'percentage' | 'perGram'>('percentage');
-  const [makingRate, setMakingRate] = useState<number>(12); // 12% or ₹650/g
+  const [makingRate, setMakingRate] = useState<number>(config.bullion?.makingChargeDefaultPercent || 12);
   const [stoneValue, setStoneValue] = useState<number>(0);
   const [discountAmount, setDiscountAmount] = useState<number>(0);
   const [includeHallmark, setIncludeHallmark] = useState<boolean>(true);
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [syncedFeedSource, setSyncedFeedSource] = useState<string>('');
+  const [syncedFeedSource, setSyncedFeedSource] = useState<string>('Site Admin Landed Benchmark');
 
-  // Synchronize with server live bullion rates on mount
+  // Reactively sync with admin config updates immediately
   useEffect(() => {
-    fetch('/api/bullion-rates')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.gold24KPer10g && data?.silver999PerKg) {
-          setGoldRate24K(data.gold24KPer10g);
-          setSilverRate999PerKg(data.silver999PerKg);
-          setSyncedFeedSource(data.sourceDescription || data.source);
-        }
-      })
-      .catch(() => {});
-  }, []);
+    if (config.bullion?.gold24KPer10g) {
+      setGoldRate24K(config.bullion.gold24KPer10g);
+    }
+    if (config.bullion?.silver999PerKg) {
+      setSilverRate999PerKg(config.bullion.silver999PerKg);
+    }
+    if (config.bullion?.makingChargeDefaultPercent !== undefined) {
+      setMakingRate(config.bullion.makingChargeDefaultPercent);
+    }
+  }, [
+    config.bullion?.gold24KPer10g,
+    config.bullion?.silver999PerKg,
+    config.bullion?.makingChargeDefaultPercent,
+  ]);
 
   // Compute effective weight in grams for Silver
   const effectiveSilverWeightGrams =
@@ -93,6 +98,8 @@ export const GoldJewelryBillPage: React.FC = () => {
           makingChargeValue: makingRate,
           stoneValue,
           includeHallmarking: includeHallmark,
+          hallmarkingFeeAmount: config.bullion?.goldHallmarkingFee,
+          gstPercentage: config.bullion?.gstPercentage,
           discountAmount,
         })
       : calculateSilverInvoice({
@@ -103,8 +110,20 @@ export const GoldJewelryBillPage: React.FC = () => {
           makingChargeValue: makingRate,
           stoneValue,
           includeHallmarking: includeHallmark,
+          hallmarkingFeeAmount: config.bullion?.silverHallmarkingFee,
+          gstPercentage: config.bullion?.gstPercentage,
           discountAmount,
         });
+
+  const handleApplyCityRate = (city: CityBullionRate) => {
+    if (metal === 'gold') {
+      setGoldRate24K(city.gold24K);
+      setSyncedFeedSource(`${city.city} (${city.state}) Spot Rate`);
+    } else {
+      setSilverRate999PerKg(city.silver1Kg);
+      setSyncedFeedSource(`${city.city} (${city.state}) Spot Rate`);
+    }
+  };
 
   const handleApplyTickerRate = (marketRate: BullionMarketRate) => {
     if (marketRate.metal === 'gold') {
@@ -215,13 +234,13 @@ export const GoldJewelryBillPage: React.FC = () => {
 
       {/* Live Bullion Ticker Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <BullionTicker onSelectRate={handleApplyTickerRate} />
+        <BullionTicker onSelectRate={handleApplyTickerRate} onSelectCity={handleApplyCityRate} />
       </section>
 
       {/* Top Advertisement Banner with >= 32px safe clearance */}
-      <div className="max-w-7xl mx-auto px-4 mt-4">
+      {/* <div className="max-w-7xl mx-auto px-4 mt-4">
         <AdBanner format="leaderboard" slotId="gold-top-leaderboard" />
-      </div>
+      </div> */}
 
       {/* Calculator Main Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
@@ -287,18 +306,17 @@ export const GoldJewelryBillPage: React.FC = () => {
                       id={rateId}
                       type="number"
                       step="100"
-                      min="30000"
-                      max="250000"
+                      min="100"
+                      max="1000000"
                       value={goldRate24K || ''}
                       onChange={(e) => setGoldRate24K(Math.max(0, Number(e.target.value)))}
                       className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-slate-900 font-mono font-semibold text-sm focus:outline-hidden focus:ring-2 focus:ring-amber-500 bg-slate-50/50"
-                      placeholder="e.g. 143115"
+                      placeholder={`e.g. ${goldRate24K}`}
                     />
                   </div>
                   {/* Purity Explanation Pill */}
                   <div className="flex items-center justify-between text-[11px] bg-amber-50/80 px-2.5 py-1.5 rounded-lg border border-amber-200/80 text-amber-950">
                     <span className="flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                       <span>Benchmark for 24K pure bullion.</span>
                     </span>
                     <span className="font-bold">
@@ -307,7 +325,13 @@ export const GoldJewelryBillPage: React.FC = () => {
                   </div>
                   {/* Quick Preset Buttons for Gold */}
                   <div className="flex flex-wrap gap-1.5 pt-0.5">
-                    {[140000, 142000, 143115, 145000, 148000].map((rate) => (
+                    {[
+                      Math.round(goldRate24K - 2000),
+                      Math.round(goldRate24K - 1000),
+                      Math.round(goldRate24K),
+                      Math.round(goldRate24K + 1000),
+                      Math.round(goldRate24K + 2000),
+                    ].map((rate) => (
                       <button
                         key={rate}
                         type="button"
@@ -318,7 +342,7 @@ export const GoldJewelryBillPage: React.FC = () => {
                             : 'bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200'
                         }`}
                       >
-                        ₹{(rate / 1000).toFixed(0)}k
+                        ₹{(rate / 1000).toFixed(1)}k
                       </button>
                     ))}
                   </div>
@@ -409,17 +433,23 @@ export const GoldJewelryBillPage: React.FC = () => {
                       id={rateId}
                       type="number"
                       step="500"
-                      min="40000"
-                      max="350000"
+                      min="100"
+                      max="1000000"
                       value={silverRate999PerKg || ''}
                       onChange={(e) => setSilverRate999PerKg(Math.max(0, Number(e.target.value)))}
                       className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-slate-900 font-mono font-semibold text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 bg-slate-50/50"
-                      placeholder="e.g. 216670"
+                      placeholder={`e.g. ${silverRate999PerKg}`}
                     />
                   </div>
                   {/* Quick Preset Buttons for Silver */}
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {[210000, 215000, 216670, 220000, 225000].map((rate) => (
+                    {[
+                      Math.round(silverRate999PerKg - 3000),
+                      Math.round(silverRate999PerKg - 1500),
+                      Math.round(silverRate999PerKg),
+                      Math.round(silverRate999PerKg + 1500),
+                      Math.round(silverRate999PerKg + 3000),
+                    ].map((rate) => (
                       <button
                         key={rate}
                         type="button"
@@ -430,7 +460,7 @@ export const GoldJewelryBillPage: React.FC = () => {
                             : 'bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200'
                         }`}
                       >
-                        ₹{(rate / 1000).toFixed(0)}k/kg
+                        ₹{(rate / 1000).toFixed(1)}k/kg
                       </button>
                     ))}
                   </div>
@@ -793,9 +823,9 @@ export const GoldJewelryBillPage: React.FC = () => {
       </div>
 
       {/* Middle Advertisement */}
-      <div className="max-w-4xl mx-auto px-4 mt-6">
+      {/* <div className="max-w-4xl mx-auto px-4 mt-6">
         <AdBanner format="in-feed" slotId="gold-in-feed-slot" />
-      </div>
+      </div> */}
 
       {/* Comprehensive Structured Explanation */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 space-y-8 text-slate-700 text-sm leading-relaxed">
@@ -861,9 +891,9 @@ export const GoldJewelryBillPage: React.FC = () => {
       </article>
 
       {/* Bottom Ad */}
-      <div className="max-w-7xl mx-auto px-4 mt-8">
+      {/* <div className="max-w-7xl mx-auto px-4 mt-8">
         <AdBanner format="leaderboard" slotId="gold-bottom-leaderboard" />
-      </div>
+      </div> */}
     </div>
   );
 };

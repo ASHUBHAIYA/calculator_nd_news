@@ -6,7 +6,6 @@ import {
   Info,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   PieChart as PieIcon,
   Table as TableIcon,
 } from 'lucide-react';
@@ -14,8 +13,10 @@ import { calculateInHandSalary, SalaryBreakdown } from '@/lib/calculators/salary
 import { formatINR, formatNumberIN, formatCompactINR } from '@/lib/formatters';
 import { AdBanner } from '@/components/AdBanner';
 import { SeoHead } from '@/components/SeoHead';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 export const InHandSalaryPage: React.FC = () => {
+  const { config } = useSiteConfig();
   const ctcInputId = useId();
   const basicPctId = useId();
   const epfTypeId = useId();
@@ -26,10 +27,17 @@ export const InHandSalaryPage: React.FC = () => {
   const [basicPct, setBasicPct] = useState<number>(40);
   const [epfType, setEpfType] = useState<'actual' | 'capped' | 'none'>('actual');
   const [includeGratuity, setIncludeGratuity] = useState<boolean>(false);
-  const [ptAnnual, setPtAnnual] = useState<number>(2400);
+  const [ptAnnual, setPtAnnual] = useState<number>((config.taxAndSalary?.professionalTaxDefault ?? 200) * 12);
   const [otherDeductions, setOtherDeductions] = useState<number>(0);
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  // Sync PT if config updates
+  React.useEffect(() => {
+    if (config.taxAndSalary?.professionalTaxDefault !== undefined) {
+      setPtAnnual(config.taxAndSalary.professionalTaxDefault * 12);
+    }
+  }, [config.taxAndSalary?.professionalTaxDefault]);
 
   // Compute breakdown reactive
   const breakdown: SalaryBreakdown = calculateInHandSalary({
@@ -39,6 +47,11 @@ export const InHandSalaryPage: React.FC = () => {
     includeGratuityInCTC: includeGratuity,
     professionalTaxAnnual: ptAnnual,
     otherTaxDeductions: otherDeductions,
+    standardDeduction: config.taxAndSalary?.standardDeduction,
+    sec87aRebateLimit: config.taxAndSalary?.sec87aRebateLimit,
+    epfStatutoryRate: config.taxAndSalary?.epfStatutoryRate,
+    employerPfRate: config.taxAndSalary?.employerPfRate,
+    healthEducationCess: config.taxAndSalary?.healthEducationCess,
   });
 
   const toggleFaq = (index: number) => {
@@ -129,7 +142,9 @@ export const InHandSalaryPage: React.FC = () => {
                 <IndianRupee className="w-4 h-4 text-emerald-600" />
                 <span>Salary Parameters</span>
               </h2>
-              <span className="text-[11px] font-medium text-slate-500">Instant Local Calculation</span>
+              <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                Std Deduction: {formatINR(config.taxAndSalary?.standardDeduction || 75000)}
+              </span>
             </div>
 
             {/* Annual CTC Input */}

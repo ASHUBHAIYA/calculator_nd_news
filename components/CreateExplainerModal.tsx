@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Sparkles, Plus, Trash2, ArrowRight, BookOpen } from 'lucide-react';
+import { X, Plus, Trash2, ArrowRight, BookOpen } from 'lucide-react';
 import { Article, ArticleCategory, RelatedCalculator, generateSlug } from '@/lib/types/article';
 import { insertArticle } from '@/lib/supabase';
 

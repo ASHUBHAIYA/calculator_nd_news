@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import crypto from 'crypto';
 import { createServer as createViteServer } from 'vite';
 import {
   getAllArticles,
@@ -8,6 +9,8 @@ import {
   updateArticle,
   deleteArticle,
 } from './lib/serverArticlesStorage';
+import { getStoredSiteConfig, updateStoredSiteConfig } from './lib/serverSiteConfig';
+import { computeAllIndianCityRates } from './lib/indianCitiesBullion';
 
 // In-memory Bullion Cache to strictly enforce the 6-hour TTL & save API quota
 interface CachedRates {
@@ -37,48 +40,28 @@ interface CachedRates {
 let bullionCache: CachedRates | null = null;
 const CACHE_DURATION_MS = 6 * 60 * 60 * 1000; // 6 Hours (Max 4 requests/day = ~88/month max)
 
-const CITY_FACTORS = [
-  { city: 'Mumbai', state: 'Maharashtra', goldDelta: 0, silverDelta: 0 },
-  { city: 'Delhi', state: 'Delhi NCR', goldDelta: 150, silverDelta: 300 },
-  { city: 'Chennai', state: 'Tamil Nadu', goldDelta: 100, silverDelta: 3500 },
-  { city: 'Kolkata', state: 'West Bengal', goldDelta: 0, silverDelta: 200 },
-  { city: 'Ahmedabad', state: 'Gujarat', goldDelta: 50, silverDelta: 100 },
-  { city: 'Bengaluru', state: 'Karnataka', goldDelta: 120, silverDelta: 1500 },
-  { city: 'Hyderabad', state: 'Telangana', goldDelta: 120, silverDelta: 2000 },
-];
-
 function buildCityRates(baseGold24K: number, baseSilverKg: number) {
-  return CITY_FACTORS.map((c) => {
-    const gold24K = baseGold24K + c.goldDelta;
-    const gold22K = Math.round((gold24K / 24) * 22);
-    const silver1Kg = baseSilverKg + c.silverDelta;
-    return {
-      city: c.city,
-      state: c.state,
-      gold24K,
-      gold22K,
-      silver1Kg,
-    };
-  });
+  return computeAllIndianCityRates(baseGold24K, baseSilverKg);
 }
 
 function getStatutoryBenchmarkFallback(log: string[] = []): CachedRates {
-  const baseGold24K = 76850;
-  const baseSilverKg = 92500;
+  const cfg = getStoredSiteConfig();
+  const baseGold24K = cfg.bullion?.gold24KPer10g || 76850;
+  const baseSilverKg = cfg.bullion?.silver999PerKg || 92500;
   return {
     source: 'ibja_benchmark',
-    sourceDescription: 'Official IBJA Statutory Benchmark & MCX Reference Rates',
+    sourceDescription: 'Admin Configured Spot Benchmark & Official IBJA Reference',
     totalKeysConfigured: 0,
     keyFailoverOccurred: false,
     failoverLog: log,
     timestamp: Date.now(),
     lastUpdatedIso: new Date().toISOString(),
     gold24KPer10g: baseGold24K,
-    gold22KPer10g: Math.round((baseGold24K / 24) * 22),
-    gold18KPer10g: Math.round((baseGold24K / 24) * 18),
+    gold22KPer10g: cfg.bullion?.gold22KPer10g || Math.round((baseGold24K / 24) * 22),
+    gold18KPer10g: cfg.bullion?.gold18KPer10g || Math.round((baseGold24K / 24) * 18),
     silver999PerKg: baseSilverKg,
-    silver925Per10g: Math.round((baseSilverKg / 100) * 0.925),
-    cities: buildCityRates(baseGold24K, baseSilverKg),
+    silver925Per10g: cfg.bullion?.silver925Per10g || Math.round((baseSilverKg / 100) * 0.925),
+    cities: cfg.bullion?.cities && cfg.bullion.cities.length > 0 ? cfg.bullion.cities : buildCityRates(baseGold24K, baseSilverKg),
   };
 }
 
@@ -428,6 +411,35 @@ async function startServer() {
       const force = req.query.force === 'true';
       const requestedSource = (req.query.source as 'auto' | 'yahoo' | 'goldapi') || 'auto';
       const now = Date.now();
+      const cfg = getStoredSiteConfig();
+
+      // If requestedSource is 'auto', prioritize the Admin Configured & Stored Site Benchmark!
+      if (requestedSource === 'auto' && cfg?.bullion?.gold24KPer10g) {
+        const b = cfg.bullion;
+        const base24K = Number(b.gold24KPer10g);
+        const baseSilver = Number(b.silver999PerKg);
+        const rates: CachedRates = {
+          source: 'ibja_benchmark',
+          sourceDescription: 'Admin Configured Spot Rates & Official Landed Benchmark',
+          totalKeysConfigured: 0,
+          keyFailoverOccurred: false,
+          timestamp: Date.now(),
+          lastUpdatedIso: cfg.lastUpdated || new Date().toISOString(),
+          gold24KPer10g: base24K,
+          gold22KPer10g: Number(b.gold22KPer10g) || Math.round((base24K / 24) * 22),
+          gold18KPer10g: Number(b.gold18KPer10g) || Math.round((base24K / 24) * 18),
+          silver999PerKg: baseSilver,
+          silver925Per10g: Number(b.silver925Per10g) || Math.round((baseSilver / 100) * 0.925),
+          cities: b.cities && b.cities.length > 0 ? b.cities : buildCityRates(base24K, baseSilver),
+        };
+        bullionCache = rates;
+        return res.json({
+          ...rates,
+          isCached: true,
+          cacheAgeMinutes: 0,
+          quotaSavedNotice: 'Served from Admin Configured Spot Benchmark',
+        });
+      }
 
       // Check if memory cache exists and is still valid (within 6 hours) unless source changed or force=true
       if (
@@ -560,6 +572,84 @@ async function startServer() {
     } catch (err: any) {
       console.error('Error deleting article:', err);
       return res.status(500).json({ success: false, error: err.message || 'Failed to delete article' });
+    }
+  });
+
+  // ==========================================
+  // Site Financial Rates & Config Admin API
+  // ==========================================
+
+  // Get site financial configuration
+  app.get('/api/site-config', (req, res) => {
+    try {
+      const config = getStoredSiteConfig();
+      return res.json({ success: true, config });
+    } catch (err: any) {
+      console.error('Error fetching site config:', err);
+      return res.status(500).json({ success: false, error: err.message || 'Failed to get site config' });
+    }
+  });
+
+  // Update site financial configuration (Admin)
+  app.put('/api/site-config', (req, res) => {
+    try {
+      const updated = updateStoredSiteConfig(req.body, 'Admin Portal API');
+
+      // If bullion rates were updated, refresh bullionCache immediately
+      if (req.body.bullion?.gold24KPer10g || req.body.bullion?.silver999PerKg) {
+        const b = updated.bullion;
+        bullionCache = {
+          source: 'ibja_benchmark',
+          sourceDescription: 'Admin Configured Spot Rates',
+          totalKeysConfigured: 0,
+          keyFailoverOccurred: false,
+          timestamp: Date.now(),
+          lastUpdatedIso: new Date().toISOString(),
+          gold24KPer10g: Number(b.gold24KPer10g),
+          gold22KPer10g: Number(b.gold22KPer10g) || Math.round((Number(b.gold24KPer10g) / 24) * 22),
+          gold18KPer10g: Number(b.gold18KPer10g) || Math.round((Number(b.gold24KPer10g) / 24) * 18),
+          silver999PerKg: Number(b.silver999PerKg),
+          silver925Per10g: Number(b.silver925Per10g) || Math.round((Number(b.silver999PerKg) / 100) * 0.925),
+          cities: b.cities && b.cities.length > 0 ? b.cities : buildCityRates(Number(b.gold24KPer10g), Number(b.silver999PerKg)),
+        };
+      }
+
+      return res.json({ success: true, config: updated });
+    } catch (err: any) {
+      console.error('Error updating site config:', err);
+      return res.status(500).json({ success: false, error: err.message || 'Failed to update site config' });
+    }
+  });
+
+  // Admin authentication password verification (One-Way SHA-256 Hash Verification)
+  const ADMIN_PASSWORD_HASH = '4020402f0536b159c465519a18a6ef966319cdedff00d5ec3a77b2fdc3b00999';
+  const ADMIN_DIRECT_HASH = '12c1da68fd1ea5d459348134e7908ab2939e7f05ba5a28167f069b84c25e1245';
+  const SALT = 'bharatcalc_secure_salt_2026';
+
+  app.post('/api/admin/verify', (req, res) => {
+    try {
+      const { password, hash } = req.body;
+      let isValid = false;
+
+      if (hash && (hash === ADMIN_PASSWORD_HASH || hash === ADMIN_DIRECT_HASH)) {
+        isValid = true;
+      } else if (password && typeof password === 'string') {
+        const trimmed = password.trim();
+        const salted = crypto.createHash('sha256').update(`${trimmed}:${SALT}`).digest('hex');
+        const direct = crypto.createHash('sha256').update(trimmed).digest('hex');
+        isValid = salted === ADMIN_PASSWORD_HASH || direct === ADMIN_DIRECT_HASH;
+      }
+
+      if (!isValid) {
+        return res.status(401).json({ success: false, error: 'Invalid admin credentials' });
+      }
+      return res.json({
+        success: true,
+        authenticated: true,
+        timestamp: Date.now(),
+      });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: 'Auth check failed' });
     }
   });
 

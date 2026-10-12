@@ -7,7 +7,6 @@ import {
   HelpCircle,
   ChevronDown,
   ChevronUp,
-  Sparkles,
 } from 'lucide-react';
 import {
   calculateFuelSpend,
@@ -18,27 +17,61 @@ import {
 import { formatINR, formatNumberIN } from '@/lib/formatters';
 import { AdBanner } from '@/components/AdBanner';
 import { SeoHead } from '@/components/SeoHead';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 export const CommuteFuelPage: React.FC = () => {
+  const { config } = useSiteConfig();
   const distId = useId();
   const fuelTypeId = useId();
   const priceId = useId();
   const mileageId = useId();
   const daysId = useId();
 
+  const getPriceForType = (type: FuelType): number => {
+    switch (type) {
+      case 'petrol':
+        return config.fuelAndEv?.petrolPricePerLitre ?? DEFAULT_FUEL_PRICES.petrol.defaultPrice;
+      case 'diesel':
+        return config.fuelAndEv?.dieselPricePerLitre ?? DEFAULT_FUEL_PRICES.diesel.defaultPrice;
+      case 'cng':
+        return config.fuelAndEv?.cngPricePerKg ?? DEFAULT_FUEL_PRICES.cng.defaultPrice;
+      case 'electric':
+        return config.fuelAndEv?.evHomeKwhRate ?? DEFAULT_FUEL_PRICES.electric.defaultPrice;
+    }
+  };
+
+  const getMileageForType = (type: FuelType): number => {
+    switch (type) {
+      case 'petrol':
+        return config.fuelAndEv?.petrolAvgMileageKmpl ?? DEFAULT_FUEL_PRICES.petrol.defaultMileage;
+      case 'diesel':
+        return config.fuelAndEv?.dieselAvgMileageKmpl ?? DEFAULT_FUEL_PRICES.diesel.defaultMileage;
+      case 'cng':
+        return 24.0;
+      case 'electric':
+        return config.fuelAndEv?.evAvgEfficiencyKmPerKwh ?? DEFAULT_FUEL_PRICES.electric.defaultMileage;
+    }
+  };
+
   // State
   const [dailyDistance, setDailyDistance] = useState<number>(35); // km round trip
   const [fuelType, setFuelType] = useState<FuelType>('petrol');
-  const [price, setPrice] = useState<number>(DEFAULT_FUEL_PRICES.petrol.defaultPrice);
-  const [mileage, setMileage] = useState<number>(DEFAULT_FUEL_PRICES.petrol.defaultMileage);
+  const [price, setPrice] = useState<number>(getPriceForType('petrol'));
+  const [mileage, setMileage] = useState<number>(getMileageForType('petrol'));
   const [workingDays, setWorkingDays] = useState<number>(26);
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
+  // Sync prices when config updates from admin
+  React.useEffect(() => {
+    setPrice(getPriceForType(fuelType));
+    setMileage(getMileageForType(fuelType));
+  }, [config.fuelAndEv, fuelType]);
+
   const handleFuelTypeChange = (newType: FuelType) => {
     setFuelType(newType);
-    setPrice(DEFAULT_FUEL_PRICES[newType].defaultPrice);
-    setMileage(DEFAULT_FUEL_PRICES[newType].defaultMileage);
+    setPrice(getPriceForType(newType));
+    setMileage(getMileageForType(newType));
   };
 
   const spend: FuelSpendBreakdown = calculateFuelSpend({

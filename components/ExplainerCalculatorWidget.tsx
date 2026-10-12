@@ -7,46 +7,45 @@ import {
   ArrowRight,
   ExternalLink,
   Calculator,
-  Sparkles,
   ShieldCheck,
   TrendingUp,
 } from 'lucide-react';
 import { RelatedCalculator } from '@/lib/types/article';
 import { formatINR } from '@/lib/formatters';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 interface Props {
   relatedCalculator: RelatedCalculator;
 }
 
 export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }) => {
+  const { config } = useSiteConfig();
+
   // Gold interactive mini-state
   const [goldWeight, setGoldWeight] = useState<number>(10);
   const [goldPurity, setGoldPurity] = useState<'24K' | '22K' | '18K'>('22K');
-  const [liveGold24K, setLiveGold24K] = useState<number>(139974);
+  const [liveGold24K, setLiveGold24K] = useState<number>(config.bullion?.gold24KPer10g || 76850);
 
   // Silver interactive mini-state
   const [silverWeight, setSilverWeight] = useState<number>(50);
   const [silverPurity, setSilverPurity] = useState<'999' | '925'>('925');
-  const [liveSilverKg, setLiveSilverKg] = useState<number>(216670);
+  const [liveSilverKg, setLiveSilverKg] = useState<number>(config.bullion?.silver999PerKg || 92500);
 
   // Salary interactive mini-state
   const [ctc, setCtc] = useState<number>(1200000);
 
   // Petrol interactive mini-state
   const [dailyKm, setDailyKm] = useState<number>(30);
-  const [mileage, setMileage] = useState<number>(14);
-  const [fuelPrice, setFuelPrice] = useState<number>(103);
+  const [mileage, setMileage] = useState<number>(config.fuelAndEv?.petrolAvgMileageKmpl || 15);
+  const [fuelPrice, setFuelPrice] = useState<number>(config.fuelAndEv?.petrolPricePerLitre || 104.2);
 
-  // Fetch live market benchmarks on mount
+  // Sync state whenever site config updates
   useEffect(() => {
-    fetch('/api/bullion-rates')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.gold24KPer10g) setLiveGold24K(data.gold24KPer10g);
-        if (data?.silver999PerKg) setLiveSilverKg(data.silver999PerKg);
-      })
-      .catch(() => {});
-  }, []);
+    if (config.bullion?.gold24KPer10g) setLiveGold24K(config.bullion.gold24KPer10g);
+    if (config.bullion?.silver999PerKg) setLiveSilverKg(config.bullion.silver999PerKg);
+    if (config.fuelAndEv?.petrolPricePerLitre) setFuelPrice(config.fuelAndEv.petrolPricePerLitre);
+    if (config.fuelAndEv?.petrolAvgMileageKmpl) setMileage(config.fuelAndEv.petrolAvgMileageKmpl);
+  }, [config]);
 
   // Gold calculation
   const goldRatePerGram =

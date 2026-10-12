@@ -2,8 +2,27 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Article, ArticleCategory, RelatedCalculator, generateSlug } from './types/article';
 import { INITIAL_ARTICLES } from './articlesData';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Safe environment variable helper working in Vite (browser), Node.js, and Cloudflare Pages
+function getEnvVar(key: string): string {
+  try {
+    if (typeof import.meta !== 'undefined' && import.meta && (import.meta as any).env) {
+      const val = (import.meta as any).env[key];
+      if (typeof val === 'string' && val.trim().length > 0) return val.trim();
+    }
+  } catch {}
+
+  try {
+    if (typeof process !== 'undefined' && process && process.env) {
+      const val = process.env[key];
+      if (typeof val === 'string' && val.trim().length > 0) return val.trim();
+    }
+  } catch {}
+
+  return '';
+}
+
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL') || getEnvVar('SUPABASE_URL');
+const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY') || getEnvVar('SUPABASE_ANON_KEY');
 
 // Validate whether real credentials (not placeholders) are provided
 export const isSupabaseConfigured = (): boolean => {
@@ -140,7 +159,9 @@ export async function fetchArticleBySlug(
 
       if (!error && data) {
         // Fire-and-forget view count increment
-        supabase.rpc('increment_article_views', { article_slug: cleanSlug }).catch(() => {});
+        try {
+          supabase.rpc('increment_article_views', { article_slug: cleanSlug }).then(() => {});
+        } catch {}
         return { article: mapRowToArticle(data), source: 'supabase' };
       }
     } catch (err) {
@@ -215,6 +236,94 @@ export async function insertArticle(articleData: Partial<Article>): Promise<Arti
 
   const json = await res.json();
   return json.article;
+}
+
+export async function updateArticleInSupabase(
+  idOrSlug: string,
+  articleData: Partial<Article>
+): Promise<Article> {
+  const now = new Date().toISOString();
+  const payload: Record<string, any> = {
+    updated_at: now,
+  };
+
+  if (articleData.title !== undefined) payload.title = articleData.title.trim();
+  if (articleData.slug !== undefined) payload.slug = generateSlug(articleData.slug);
+  if (articleData.summary !== undefined) payload.summary = articleData.summary.trim();
+  if (articleData.fullContent !== undefined) payload.full_content = articleData.fullContent;
+  if (articleData.category !== undefined) payload.category = articleData.category;
+  if (articleData.relatedCalculator !== undefined)
+    payload.related_calculator = articleData.relatedCalculator;
+  if (articleData.sources !== undefined) payload.sources = articleData.sources;
+
+  if (supabase) {
+    try {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        idOrSlug
+      );
+      const query = isUuid
+        ? supabase.from('articles').update(payload).eq('id', idOrSlug)
+        : supabase.from('articles').update(payload).eq('slug', idOrSlug);
+
+      const { data, error } = await query.select().single();
+      if (!error && data) {
+        return mapRowToArticle(data);
+      }
+      if (error) {
+        console.warn('Supabase update warning:', error.message);
+      }
+    } catch (err) {
+      console.warn('Supabase update error:', err);
+    }
+  }
+
+  // Fallback to Server API
+  const res = await fetch(`/api/articles/${idOrSlug}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(articleData),
+  });
+
+  if (!res.ok) {
+    const errJson = await res.json().catch(() => ({}));
+    throw new Error(errJson.error || 'Failed to update article');
+  }
+
+  const json = await res.json();
+  return json.article;
+}
+
+export async function deleteArticleFromSupabase(idOrSlug: string): Promise<boolean> {
+  if (supabase) {
+    try {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        idOrSlug
+      );
+      const query = isUuid
+        ? supabase.from('articles').delete().eq('id', idOrSlug)
+        : supabase.from('articles').delete().eq('slug', idOrSlug);
+
+      const { error } = await query;
+      if (!error) return true;
+      if (error) {
+        console.warn('Supabase delete warning:', error.message);
+      }
+    } catch (err) {
+      console.warn('Supabase delete error:', err);
+    }
+  }
+
+  // Fallback to Server API
+  const res = await fetch(`/api/articles/${idOrSlug}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) {
+    const errJson = await res.json().catch(() => ({}));
+    throw new Error(errJson.error || 'Failed to delete article');
+  }
+
+  return true;
 }
 
 // ==============================================================================

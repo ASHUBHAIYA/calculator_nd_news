@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   Zap,
   CheckCircle2,
-  Sparkles,
   Calculator,
   ChevronRight,
   HelpCircle,
@@ -26,6 +25,7 @@ import { SeoHead } from '@/components/SeoHead';
 import { formatINR } from '@/lib/formatters';
 import { INITIAL_ARTICLES } from '@/lib/articlesData';
 import { Article } from '@/lib/types/article';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 interface BenchmarkItem {
   id: string;
@@ -167,28 +167,10 @@ export const HomePage: React.FC = () => {
   const [quickSalaryCTC, setQuickSalaryCTC] = useState<number>(1200000);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  // Real-time bullion rates for the floating live ticker
-  const [liveGold24K, setLiveGold24K] = useState<string>('₹1,39,974');
-  const [liveGold22K, setLiveGold22K] = useState<string>('₹1,28,310');
-  const [liveSilver999, setLiveSilver999] = useState<string>('₹2,16,670');
+  const { config } = useSiteConfig();
   const [trendingArticles, setTrendingArticles] = useState<Article[]>(INITIAL_ARTICLES.slice(0, 3));
 
   useEffect(() => {
-    fetch('/api/bullion-rates')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.gold24KPer10g) {
-          setLiveGold24K(formatINR(data.gold24KPer10g));
-        }
-        if (data?.gold22KPer10g) {
-          setLiveGold22K(formatINR(data.gold22KPer10g));
-        }
-        if (data?.silver999PerKg) {
-          setLiveSilver999(formatINR(data.silver999PerKg));
-        }
-      })
-      .catch(() => {});
-
     fetch('/api/articles')
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
@@ -199,64 +181,10 @@ export const HomePage: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const liveBenchmarks: BenchmarkItem[] = [
-    {
-      id: 'gold-24k',
-      label: 'Gold 24K (per 10g)',
-      value: liveGold24K,
-      delta: 'Live Spot',
-      isPositive: true,
-      category: 'Bullion (MCX / IBJA)',
-    },
-    {
-      id: 'gold-22k',
-      label: 'Gold 22K (Hallmark 916)',
-      value: liveGold22K,
-      delta: 'Live Spot',
-      isPositive: true,
-      category: 'Jewelry Benchmark',
-    },
-    {
-      id: 'silver-999',
-      label: 'Silver 999 (per 1kg)',
-      value: liveSilver999,
-      delta: 'Live Spot',
-      isPositive: true,
-      category: 'MCX Spot Bullion',
-    },
-    {
-      id: 'repo-rate',
-      label: 'Home Loan Prime Rate',
-      value: '8.40% – 8.65%',
-      delta: 'RBI Steady',
-      isPositive: true,
-      category: 'Monetary Policy',
-    },
-    {
-      id: 'std-deduction',
-      label: 'Standard Deduction (FY 2025-26)',
-      value: '₹75,000',
-      delta: 'Sec 115BAC',
-      isPositive: true,
-      category: 'FY 2025-26',
-    },
-    {
-      id: 'surya-ghar',
-      label: 'PM Surya Ghar Subsidy (3kW)',
-      value: '₹78,000',
-      delta: 'Direct DBT',
-      isPositive: true,
-      category: 'Central Scheme',
-    },
-    {
-      id: 'epf-rate',
-      label: 'EPF Statutory Rate',
-      value: '8.25% p.a.',
-      delta: 'Compounded',
-      isPositive: true,
-      category: 'EPFO India',
-    },
-  ];
+  const liveBenchmarks: BenchmarkItem[] =
+    config.liveTickerBenchmarks && config.liveTickerBenchmarks.length > 0
+      ? config.liveTickerBenchmarks
+      : INITIAL_BENCHMARKS;
 
   const HOME_FAQS = [
     {
@@ -294,40 +222,6 @@ export const HomePage: React.FC = () => {
         breadcrumbs={[{ name: 'Home', path: '/' }]}
         faqs={HOME_FAQS}
       />
-      {/* 1. Floating Live Benchmark Ribbon (No horizontal scroll, wraps gracefully) */}
-      <section
-        aria-label="Live Benchmark Ticker"
-        className="w-full bg-slate-900 border-b border-slate-800 text-white py-2.5 px-4"
-      >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-2.5 sm:gap-3">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 shrink-0 uppercase tracking-wider bg-slate-800/90 px-2.5 py-1 rounded-lg border border-slate-700 shadow-2xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>Live Ticker</span>
-          </div>
-
-          {/* Floating Benchmark Badges without horizontal scroll */}
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            {liveBenchmarks.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-lg transition-colors"
-              >
-                <span className="text-slate-400 text-[11px] whitespace-nowrap">{item.label}:</span>
-                <span className="font-bold text-slate-100 font-mono whitespace-nowrap">{item.value}</span>
-                <span
-                  className={`text-[10px] font-semibold px-1 rounded whitespace-nowrap ${
-                    item.isPositive ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' : 'text-slate-400'
-                  }`}
-                >
-                  {item.delta}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 2. Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100/50 py-12 md:py-16 border-b border-slate-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -335,7 +229,6 @@ export const HomePage: React.FC = () => {
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Engineered for Indian Taxpayers, Homeowners & Consumers</span>
               </div>
 
@@ -460,9 +353,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Standard Google AdSense Banner (Enforcing >= 32px safe clearance) */}
-      <div className="max-w-7xl mx-auto px-4 w-full">
+      {/* <div className="max-w-7xl mx-auto px-4 w-full">
         <AdBanner format="leaderboard" slotId="home-leaderboard-top" />
-      </div>
+      </div> */}
 
       {/* Live Bullion & Precious Metals Ticker */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
@@ -678,9 +571,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* In-Feed Responsive Ad Container */}
-      <div className="max-w-4xl mx-auto px-4 w-full">
+      {/* <div className="max-w-4xl mx-auto px-4 w-full">
         <AdBanner format="in-feed" slotId="home-bottom-in-feed" />
-      </div>
+      </div> */}
     </div>
   );
 };

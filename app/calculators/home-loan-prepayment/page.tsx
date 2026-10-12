@@ -8,7 +8,6 @@ import {
   HelpCircle,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   Award,
   CheckCircle2,
 } from 'lucide-react';
@@ -20,17 +19,19 @@ import {
 import { formatINR, formatCompactINR } from '@/lib/formatters';
 import { AdBanner } from '@/components/AdBanner';
 import { SeoHead } from '@/components/SeoHead';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 export const HomeLoanPrepaymentPage: React.FC = () => {
+  const { config } = useSiteConfig();
   const principalId = useId();
   const rateId = useId();
   const tenureId = useId();
   const strategyId = useId();
 
-  // State
+  // State - reactively initialized from site config
   const [principal, setPrincipal] = useState<number>(5000000); // ₹50 Lakhs
-  const [annualRate, setAnnualRate] = useState<number>(8.5); // 8.5%
-  const [tenureYears, setTenureYears] = useState<number>(20); // 20 years
+  const [annualRate, setAnnualRate] = useState<number>(config.homeLoan?.defaultInterestRate || 8.5); // 8.5%
+  const [tenureYears, setTenureYears] = useState<number>(config.homeLoan?.defaultTenureYears || 20); // 20 years
 
   const [strategy, setStrategy] = useState<LoanInput['prepaymentStrategy']>('extra_emi_yearly');
   const [recurringExtra, setRecurringExtra] = useState<number>(5000);
@@ -40,6 +41,16 @@ export const HomeLoanPrepaymentPage: React.FC = () => {
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [showAmortization, setShowAmortization] = useState<boolean>(false);
+
+  // Sync state when admin updates home loan config
+  React.useEffect(() => {
+    if (config.homeLoan?.defaultInterestRate) {
+      setAnnualRate(config.homeLoan.defaultInterestRate);
+    }
+    if (config.homeLoan?.defaultTenureYears) {
+      setTenureYears(config.homeLoan.defaultTenureYears);
+    }
+  }, [config.homeLoan?.defaultInterestRate, config.homeLoan?.defaultTenureYears]);
 
   const result: LoanPrepaymentResult = calculateLoanPrepayment({
     principal,
@@ -133,8 +144,8 @@ export const HomeLoanPrepaymentPage: React.FC = () => {
                 <Home className="w-4 h-4 text-blue-600" />
                 <span>Loan Parameters</span>
               </h2>
-              <span className="text-[11px] font-mono text-slate-500">
-                Regular EMI: {formatINR(result.baseMonthlyEMI)}/mo
+              <span className="text-[11px] font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                Prime Rate: {config.homeLoan?.primeRateMin || 8.4}% – {config.homeLoan?.primeRateMax || 8.65}%
               </span>
             </div>
 

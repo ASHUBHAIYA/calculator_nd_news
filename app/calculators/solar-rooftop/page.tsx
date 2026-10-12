@@ -8,7 +8,6 @@ import {
   HelpCircle,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   TreePine,
 } from 'lucide-react';
 import {
@@ -19,8 +18,10 @@ import {
 import { formatINR, formatNumberIN, formatCompactINR } from '@/lib/formatters';
 import { AdBanner } from '@/components/AdBanner';
 import { SeoHead } from '@/components/SeoHead';
+import { useSiteConfig } from '@/lib/siteConfig';
 
 export const SolarRooftopPage: React.FC = () => {
+  const { config } = useSiteConfig();
   const billId = useId();
   const tariffId = useId();
   const capId = useId();
@@ -39,6 +40,14 @@ export const SolarRooftopPage: React.FC = () => {
     electricityTariffPerUnit: tariff,
     customCapacityKw: customKw > 0 ? customKw : undefined,
     stateSubsidyAmount: stateSubsidy,
+    systemCostPerKw: config.solarRooftop?.benchmarkCostPerKw,
+    subsidy1Kw: config.solarRooftop?.subsidy1Kw,
+    subsidy2Kw: config.solarRooftop?.subsidy2Kw,
+    subsidy3KwPlus: config.solarRooftop?.subsidy3KwPlus,
+    unitsPerKwPerMonth: config.solarRooftop?.dailyUnitsGeneratedPerKw
+      ? Math.round(config.solarRooftop.dailyUnitsGeneratedPerKw * 30)
+      : 120,
+    sqftPerKw: 100,
   });
 
   const FAQS = [
@@ -107,9 +116,9 @@ export const SolarRooftopPage: React.FC = () => {
       </section>
 
       {/* Top Banner Ad */}
-      <div className="max-w-7xl mx-auto px-4">
+      {/* <div className="max-w-7xl mx-auto px-4">
         <AdBanner format="leaderboard" slotId="solar-top-leaderboard" />
-      </div>
+      </div> */}
 
       {/* Main Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2">
@@ -121,8 +130,8 @@ export const SolarRooftopPage: React.FC = () => {
                 <Sun className="w-4 h-4 text-yellow-600" />
                 <span>Rooftop Solar Parameters</span>
               </h2>
-              <span className="text-[11px] font-mono text-slate-500">
-                Recommended: {solar.recommendedCapacityKw} kW
+              <span className="text-[11px] font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                MNRE Benchmark: {formatINR(config.solarRooftop?.benchmarkCostPerKw || 60000)}/kW
               </span>
             </div>
 
@@ -194,9 +203,9 @@ export const SolarRooftopPage: React.FC = () => {
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 text-slate-900 text-xs bg-slate-50/50 font-medium"
                 >
                   <option value="0">Auto-Recommend ({solar.recommendedCapacityKw} kW)</option>
-                  <option value="1">1 kW System (₹30,000 Subsidy)</option>
-                  <option value="2">2 kW System (₹60,000 Subsidy)</option>
-                  <option value="3">3 kW System (₹78,000 Max Subsidy)</option>
+                  <option value="1">1 kW System ({formatINR(config.solarRooftop?.subsidy1Kw ?? 30000)} Subsidy)</option>
+                  <option value="2">2 kW System ({formatINR(config.solarRooftop?.subsidy2Kw ?? 60000)} Subsidy)</option>
+                  <option value="3">3 kW System ({formatINR(config.solarRooftop?.subsidy3KwPlus ?? 78000)} Max Subsidy)</option>
                   <option value="4">4 kW System</option>
                   <option value="5">5 kW System</option>
                 </select>
@@ -309,9 +318,9 @@ export const SolarRooftopPage: React.FC = () => {
       </div>
 
       {/* Middle Advertisement */}
-      <div className="max-w-4xl mx-auto px-4">
+      {/* <div className="max-w-4xl mx-auto px-4">
         <AdBanner format="in-feed" slotId="solar-middle-in-feed" />
-      </div>
+      </div> */}
 
       {/* FAQs */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
@@ -350,9 +359,9 @@ export const SolarRooftopPage: React.FC = () => {
       </article>
 
       {/* Bottom Ad */}
-      <div className="max-w-7xl mx-auto px-4 mt-8">
+      {/* <div className="max-w-7xl mx-auto px-4 mt-8">
         <AdBanner format="leaderboard" slotId="solar-bottom-leaderboard" />
-      </div>
+      </div> */}
     </div>
   );
 };
