@@ -33,7 +33,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/bharatcalc">
       <ScrollToTop />
       <RootLayout>
         <Routes>
