@@ -64,7 +64,7 @@ export const BullionRatesTab: React.FC<BullionRatesTabProps> = ({ config, onSave
 
   // GitHub Persistent Data Store Configuration State
   const [gitHubConfig, setGitHubConfig] = useState<GitHubSyncConfig>(getStoredGitHubConfig());
-  const [isGitHubDrawerOpen, setIsGitHubDrawerOpen] = useState(false);
+  const [isGitHubDrawerOpen, setIsGitHubDrawerOpen] = useState(!getStoredGitHubConfig().token);
   const [showToken, setShowToken] = useState(false);
   const [isTestingGitHub, setIsTestingGitHub] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -227,10 +227,11 @@ export const BullionRatesTab: React.FC<BullionRatesTabProps> = ({ config, onSave
       }
     } else {
       // Fallback: No GitHub token configured
+      setIsGitHubDrawerOpen(true);
       setGitHubSyncStatus({
         state: 'fallback',
         message:
-          'Rates saved to local preview. To persist rates permanently across Cloudflare Pages deployments without Supabase, configure your GitHub Personal Access Token in the settings drawer above.',
+          'Rates saved to your local browser storage only. Warning: A GitHub Personal Access Token (PAT) is required to commit rates to GitHub and deploy them globally to Cloudflare Pages. Please enter your GitHub PAT in the settings drawer above.',
       });
     }
   };
@@ -492,10 +493,11 @@ export const BullionRatesTab: React.FC<BullionRatesTabProps> = ({ config, onSave
       )}
 
       {gitHubSyncStatus.state === 'fallback' && (
-        <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-2.5 animate-fade-in shadow-2xs">
-          <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <span className="font-bold">Local Preview Saved:</span> {gitHubSyncStatus.message}
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 text-xs flex items-start gap-3 animate-fade-in shadow-2xs">
+          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div className="flex-1 space-y-1">
+            <div className="font-bold text-amber-950 text-sm">Saved Locally Only (GitHub Token Required)</div>
+            <p className="text-[11px] text-amber-900 leading-relaxed">{gitHubSyncStatus.message}</p>
           </div>
         </div>
       )}

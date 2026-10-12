@@ -365,27 +365,6 @@ export async function saveSiteConfig(
     }
   }
 
-  // 4. Server API Fallback
-  try {
-    const res = await fetch('/api/site-config', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(merged),
-    });
-    if (res.ok) {
-      const json = await res.json();
-      if (json?.config) {
-        localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(json.config));
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('site_config_updated', { detail: json.config }));
-        }
-        return json.config;
-      }
-    }
-  } catch (err) {
-    console.warn('Server API save error:', err);
-  }
-
   return merged;
 }
 
@@ -430,20 +409,6 @@ export function useSiteConfig(): {
       } catch {}
     }
 
-    // Try Backend API
-    try {
-      const res = await fetch('/api/site-config');
-      if (res.ok) {
-        const json = await res.json();
-        if (json?.config) {
-          setConfig(json.config);
-          localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(json.config));
-          setLoading(false);
-          return;
-        }
-      }
-    } catch {}
- 
     // Try bundled static /data/site-config.json (for static hosts like Cloudflare Pages)
     try {
       const staticRes = await fetch('/data/site-config.json');
