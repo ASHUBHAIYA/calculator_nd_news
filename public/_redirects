@@ -1,3 +1,4 @@
 # Cloudflare Pages SPA Routing Rules
 # Enables direct URL deep-linking for all dynamic routes (/explainers/:slug, /calculators/*)
-/*    /index.html   200
+/bharatcalc/*    /bharatcalc/index.html   200
+/*               /bharatcalc/index.html   200
