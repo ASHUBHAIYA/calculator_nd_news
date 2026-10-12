@@ -81,7 +81,16 @@ export function updateStoredSiteConfig(
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(merged, null, 2), 'utf-8');
+    const jsonStr = JSON.stringify(merged, null, 2);
+    fs.writeFileSync(CONFIG_FILE_PATH, jsonStr, 'utf-8');
+
+    // Also keep public/data/site-config.json in sync for static exports/preview
+    const publicPath = path.join(process.cwd(), 'public', 'data', 'site-config.json');
+    const publicDir = path.dirname(publicPath);
+    if (!fs.existsSync(publicDir)) {
+      fs.mkdirSync(publicDir, { recursive: true });
+    }
+    fs.writeFileSync(publicPath, jsonStr, 'utf-8');
   } catch (err) {
     console.error('Failed to write site-config.json:', err);
   }

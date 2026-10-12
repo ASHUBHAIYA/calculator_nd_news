@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from './supabase';
 import { computeAllIndianCityRates, ALL_INDIAN_STATE_CITIES } from './indianCitiesBullion';
+import bundledSiteConfigJson from '../data/site-config.json';
 
 export interface BenchmarkCardConfig {
   id: string;
@@ -143,55 +144,63 @@ export const DEFAULT_BENCHMARKS: BenchmarkCardConfig[] = [
   },
 ];
 
+const bundled = (bundledSiteConfigJson || {}) as any;
+
 export const DEFAULT_SITE_CONFIG: SiteFinancialConfig = {
-  version: 1,
-  lastUpdated: new Date().toISOString(),
-  updatedBy: 'System Statutory Benchmark',
+  version: bundled.version || 1,
+  lastUpdated: bundled.lastUpdated || new Date().toISOString(),
+  updatedBy: bundled.updatedBy || 'System Statutory Benchmark',
   bullion: {
-    gold24KPer10g: 76850,
-    gold22KPer10g: 70450,
-    gold18KPer10g: 57640,
-    silver999PerKg: 92500,
-    silver925Per10g: 856,
-    makingChargeDefaultPercent: 12,
-    makingChargeDefaultPerGram: 650,
-    goldHallmarkingFee: 53.1,
-    silverHallmarkingFee: 41.3,
-    gstPercentage: 3.0,
-    cities: DEFAULT_CITY_RATES,
+    gold24KPer10g: Number(bundled.bullion?.gold24KPer10g) || 76850,
+    gold22KPer10g: Number(bundled.bullion?.gold22KPer10g) || 70450,
+    gold18KPer10g: Number(bundled.bullion?.gold18KPer10g) || 57640,
+    silver999PerKg: Number(bundled.bullion?.silver999PerKg) || 92500,
+    silver925Per10g: Number(bundled.bullion?.silver925Per10g) || 856,
+    makingChargeDefaultPercent: Number(bundled.bullion?.makingChargeDefaultPercent) || 12,
+    makingChargeDefaultPerGram: Number(bundled.bullion?.makingChargeDefaultPerGram) || 650,
+    goldHallmarkingFee: Number(bundled.bullion?.goldHallmarkingFee) || 53.1,
+    silverHallmarkingFee: Number(bundled.bullion?.silverHallmarkingFee) || 41.3,
+    gstPercentage: Number(bundled.bullion?.gstPercentage) || 3.0,
+    cities:
+      Array.isArray(bundled.bullion?.cities) && bundled.bullion.cities.length > 0
+        ? (bundled.bullion.cities as CityBullionRateConfig[])
+        : DEFAULT_CITY_RATES,
   },
   taxAndSalary: {
-    standardDeduction: 75000,
-    sec87aRebateLimit: 700000,
-    epfStatutoryRate: 8.25,
-    employerPfRate: 12.0,
-    healthEducationCess: 4.0,
-    professionalTaxDefault: 200,
+    standardDeduction: Number(bundled.taxAndSalary?.standardDeduction) || 75000,
+    sec87aRebateLimit: Number(bundled.taxAndSalary?.sec87aRebateLimit) || 700000,
+    epfStatutoryRate: Number(bundled.taxAndSalary?.epfStatutoryRate) || 8.25,
+    employerPfRate: Number(bundled.taxAndSalary?.employerPfRate) || 12.0,
+    healthEducationCess: Number(bundled.taxAndSalary?.healthEducationCess) || 4.0,
+    professionalTaxDefault: Number(bundled.taxAndSalary?.professionalTaxDefault) || 200,
   },
   homeLoan: {
-    primeRateMin: 8.4,
-    primeRateMax: 8.65,
-    defaultInterestRate: 8.5,
-    defaultTenureYears: 20,
+    primeRateMin: Number(bundled.homeLoan?.primeRateMin) || 8.4,
+    primeRateMax: Number(bundled.homeLoan?.primeRateMax) || 8.65,
+    defaultInterestRate: Number(bundled.homeLoan?.defaultInterestRate) || 8.5,
+    defaultTenureYears: Number(bundled.homeLoan?.defaultTenureYears) || 20,
   },
   fuelAndEv: {
-    petrolPricePerLitre: 104.2,
-    dieselPricePerLitre: 92.8,
-    cngPricePerKg: 78.5,
-    evHomeKwhRate: 7.5,
-    evCommercialKwhRate: 14.0,
-    petrolAvgMileageKmpl: 15.0,
-    dieselAvgMileageKmpl: 18.0,
-    evAvgEfficiencyKmPerKwh: 7.0,
+    petrolPricePerLitre: Number(bundled.fuelAndEv?.petrolPricePerLitre) || 104.2,
+    dieselPricePerLitre: Number(bundled.fuelAndEv?.dieselPricePerLitre) || 92.8,
+    cngPricePerKg: Number(bundled.fuelAndEv?.cngPricePerKg) || 78.5,
+    evHomeKwhRate: Number(bundled.fuelAndEv?.evHomeKwhRate) || 7.5,
+    evCommercialKwhRate: Number(bundled.fuelAndEv?.evCommercialKwhRate) || 14.0,
+    petrolAvgMileageKmpl: Number(bundled.fuelAndEv?.petrolAvgMileageKmpl) || 15.0,
+    dieselAvgMileageKmpl: Number(bundled.fuelAndEv?.dieselAvgMileageKmpl) || 18.0,
+    evAvgEfficiencyKmPerKwh: Number(bundled.fuelAndEv?.evAvgEfficiencyKmPerKwh) || 7.0,
   },
   solarRooftop: {
-    benchmarkCostPerKw: 60000,
-    subsidy1Kw: 30000,
-    subsidy2Kw: 60000,
-    subsidy3KwPlus: 78000,
-    dailyUnitsGeneratedPerKw: 4.2,
+    benchmarkCostPerKw: Number(bundled.solarRooftop?.benchmarkCostPerKw) || 60000,
+    subsidy1Kw: Number(bundled.solarRooftop?.subsidy1Kw) || 30000,
+    subsidy2Kw: Number(bundled.solarRooftop?.subsidy2Kw) || 60000,
+    subsidy3KwPlus: Number(bundled.solarRooftop?.subsidy3KwPlus) || 78000,
+    dailyUnitsGeneratedPerKw: Number(bundled.solarRooftop?.dailyUnitsGeneratedPerKw) || 4.2,
   },
-  liveTickerBenchmarks: DEFAULT_BENCHMARKS,
+  liveTickerBenchmarks:
+    Array.isArray(bundled.liveTickerBenchmarks) && bundled.liveTickerBenchmarks.length > 0
+      ? (bundled.liveTickerBenchmarks as BenchmarkCardConfig[])
+      : DEFAULT_BENCHMARKS,
 };
 
 const SITE_CONFIG_STORAGE_KEY = 'bharatcalc_site_config_v1';
@@ -429,6 +438,25 @@ export function useSiteConfig(): {
         if (json?.config) {
           setConfig(json.config);
           localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(json.config));
+          setLoading(false);
+          return;
+        }
+      }
+    } catch {}
+ 
+    // Try bundled static /data/site-config.json (for static hosts like Cloudflare Pages)
+    try {
+      const staticRes = await fetch('/data/site-config.json');
+      if (staticRes.ok) {
+        const staticJson = await staticRes.json();
+        if (staticJson?.bullion?.gold24KPer10g) {
+          const local = getLocalSiteConfig();
+          const chosen =
+            local.lastUpdated && new Date(local.lastUpdated) > new Date(staticJson.lastUpdated || 0)
+              ? local
+              : { ...DEFAULT_SITE_CONFIG, ...staticJson };
+          setConfig(chosen);
+          localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(chosen));
           setLoading(false);
           return;
         }

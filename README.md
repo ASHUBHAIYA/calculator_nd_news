@@ -40,7 +40,7 @@ Access the administration dashboard at **`/admin`** (or click the "Admin" link i
 - **Authentication**: One-way SHA-256 cryptographic hash verification (salted client-side Web Crypto verification with session tokens).
 - **Features**:
   1. **Explainers CMS**: Add new articles, edit existing Markdown articles, update categories, link calculators, attach primary citations, or delete articles.
-  2. **Bullion & Precious Metals**: Edit 24K, 22K (916), 18K Gold, 999 and 925 Silver spot benchmarks, making charges, GST %, BIS hallmarking fees, and city-level overrides (Mumbai, Delhi, Chennai, etc.).
+  2. **Bullion & Precious Metals (with GitHub Auto-Deploy)**: Edit 24K, 22K (916), 18K Gold, 999 and 925 Silver spot benchmarks, making charges, GST %, BIS hallmarking fees, and city-level overrides. Features direct GitHub REST API sync (`data/site-config.json` commit) triggering automatic Cloudflare Pages redeployment in ~60s without Supabase or Cloudflare KV.
   3. **Live Ticker Cards**: Customise the 7 homepage hero benchmark cards (labels, values, deltas, and trend tags).
   4. **Tax & Salary Rules**: Edit the Standard Deduction (default ₹75,000), Section 87A rebate ceiling (₹7,00,000), EPFO annual interest rate (8.25%), Cess (4%), and Employer PF contribution (12%).
   5. **Home Loan & Mortgages**: Modify RBI Prime benchmark lending rates (8.40% – 8.65%) and default tenures.
