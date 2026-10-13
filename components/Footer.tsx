@@ -91,6 +91,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
                   Home Loan Prepayment Saver
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/business-calculators"
+                  className="text-emerald-400 font-semibold hover:text-white transition-colors flex items-center gap-1"
+                >
+                  <span>Business &amp; Trade Calculators</span>
+                  <span className="text-[9px] px-1 py-0.2 bg-emerald-950 text-emerald-300 rounded border border-emerald-800">
+                    6 New
+                  </span>
+                </Link>
+              </li>
             </ul>
           </div>
 

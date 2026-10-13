@@ -18,6 +18,7 @@ import {
   ChevronUp,
   BookOpen,
   Clock,
+  Briefcase,
 } from 'lucide-react';
 import { AdBanner } from '@/components/AdBanner';
 import { BullionTicker } from '@/components/BullionTicker';
@@ -162,6 +163,19 @@ const CALCULATOR_CARDS = [
     badge: 'MNRE Scheme',
     badgeColor: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     stats: '25-Year Cumulative Savings Matrix',
+  },
+  {
+    id: 'business',
+    title: 'Business & Trade Calculators',
+    subtitle: '6 Wholesale, Vendor Scheme & GST Engines',
+    description:
+      'Engineered for Indian retailers, distributors & MSMEs: Wholesale Margins, "Buy 10 Get 1" Schemes, Landed Costs, Margin vs Markup, Credit Drag, and GST Invoicing.',
+    href: '/business-calculators',
+    icon: Briefcase,
+    accentColor: 'from-teal-600 to-emerald-800',
+    badge: '6 New Tools',
+    badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
+    stats: 'B2B Trade & Retail Suite',
   },
 ];
 

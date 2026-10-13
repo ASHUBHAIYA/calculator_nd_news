@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ArrowRight,
   TrendingUp,
+  Briefcase,
 } from 'lucide-react';
 import { useSiteConfig } from '@/lib/siteConfig';
 
@@ -233,9 +234,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
                   </div>
 
                   <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] px-1 text-slate-500">
-                    <span className="flex items-center gap-1">
-                      All calculators calibrated for FY 2025-26
-                    </span>
+                    <Link
+                      to="/business-calculators"
+                      className="font-bold text-slate-700 hover:text-emerald-700 flex items-center gap-1.5"
+                    >
+                      <Briefcase className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Business &amp; Trade Calculators</span>
+                      <span className="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold">
+                        New
+                      </span>
+                    </Link>
                     <Link
                       to="/"
                       className="font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1"
@@ -283,6 +291,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
             </Link>
 
             <Link
+              to="/business-calculators"
+              className={`px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                location.pathname.startsWith('/business-calculators')
+                  ? 'bg-emerald-50 text-emerald-800 font-bold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Briefcase className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Business</span>
+              <span className="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold">
+                New
+              </span>
+            </Link>
+
+            <Link
               to="/explainers"
               className={`px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                 location.pathname.startsWith('/explainers')
@@ -292,9 +315,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
             >
               <TrendingUp className="w-3.5 h-3.5 text-purple-600" />
               <span>Explainers</span>
-              <span className="text-[9px] px-1 py-0.2 bg-purple-100 text-purple-800 rounded font-bold">
-                New
-              </span>
             </Link>
           </nav>
 
@@ -357,6 +377,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
             Financial & Utility Calculators
           </div>
           <Link
+            to="/business-calculators"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              location.pathname.startsWith('/business-calculators')
+                ? 'bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200'
+                : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-1.5 rounded-md bg-emerald-50 text-emerald-600">
+                <Briefcase className="w-4 h-4" />
+              </div>
+              <span>Business &amp; Trade Calculators</span>
+            </div>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+              New Hub
+            </span>
+          </Link>
+          <Link
             to="/explainers"
             onClick={() => setMobileMenuOpen(false)}
             className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
@@ -371,9 +410,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenComplianceModal }) => {
               </div>
               <span>Trending Explainers</span>
             </div>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">
-              New Hub
-            </span>
           </Link>
           {NAV_LINKS.map((link) => {
             const Icon = link.icon;

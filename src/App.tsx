@@ -17,6 +17,13 @@ import { PrivacyPolicyPage } from '@/app/privacy-policy/page';
 import { TermsOfServicePage } from '@/app/terms-of-service/page';
 import { DisclaimerPage } from '@/app/disclaimer/page';
 import { AdminPage } from '@/app/admin/page';
+import { BusinessCalculatorsHubPage } from '@/app/business-calculators/page';
+import { WholesaleProfitMarginPage } from '@/app/business-calculators/wholesale-profit-margin/page';
+import { SupplierSchemePage } from '@/app/business-calculators/supplier-scheme-calculator/page';
+import { LandedCostPage } from '@/app/business-calculators/landed-cost-calculator/page';
+import { MarginVsMarkupPage } from '@/app/business-calculators/margin-vs-markup-calculator/page';
+import { CreditSaleCostPage } from '@/app/business-calculators/credit-sale-cost-calculator/page';
+import { GstInclusivePricePage } from '@/app/business-calculators/gst-inclusive-price-calculator/page';
 
 /**
  * Automatically scrolls window to top upon navigating to any route
@@ -43,6 +50,13 @@ export default function App() {
           <Route path="/calculators/home-loan-prepayment" element={<HomeLoanPrepaymentPage />} />
           <Route path="/calculators/commute-fuel" element={<CommuteFuelPage />} />
           <Route path="/calculators/solar-rooftop" element={<SolarRooftopPage />} />
+          <Route path="/business-calculators" element={<BusinessCalculatorsHubPage />} />
+          <Route path="/business-calculators/wholesale-profit-margin-calculator" element={<WholesaleProfitMarginPage />} />
+          <Route path="/business-calculators/supplier-scheme-calculator" element={<SupplierSchemePage />} />
+          <Route path="/business-calculators/landed-cost-calculator" element={<LandedCostPage />} />
+          <Route path="/business-calculators/margin-vs-markup-calculator" element={<MarginVsMarkupPage />} />
+          <Route path="/business-calculators/credit-sale-cost-calculator" element={<CreditSaleCostPage />} />
+          <Route path="/business-calculators/gst-inclusive-price-calculator" element={<GstInclusivePricePage />} />
           <Route path="/explainers" element={<ExplainersIndexPage />} />
           <Route path="/explainers/:slug" element={<ExplainerDetailPage />} />
           <Route path="/about-us" element={<AboutPage />} />
