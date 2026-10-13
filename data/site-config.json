@@ -3,11 +3,11 @@
   "lastUpdated": "2026-10-07T03:54:00.999Z",
   "updatedBy": "Admin Portal API",
   "bullion": {
-    "gold24KPer10g": 151530,
-    "gold22KPer10g": 138903,
-    "gold18KPer10g": 113648,
-    "silver999PerKg": 245000,
-    "silver925Per10g": 2266,
+    "gold24KPer10g": 149670,
+    "gold22KPer10g": 137198,
+    "gold18KPer10g": 112253,
+    "silver999PerKg": 238996,
+    "silver925Per10g": 2211,
     "makingChargeDefaultPercent": 12,
     "makingChargeDefaultPerGram": 650,
     "goldHallmarkingFee": 53.1,
@@ -17,870 +17,870 @@
       {
         "city": "Mumbai",
         "state": "Maharashtra",
-        "gold24K": 151530,
-        "gold22K": 138903,
-        "silver1Kg": 245000
+        "gold24K": 149670,
+        "gold22K": 137198,
+        "silver1Kg": 238996
       },
       {
         "city": "Pune",
         "state": "Maharashtra",
-        "gold24K": 151550,
-        "gold22K": 138921,
-        "silver1Kg": 245050
+        "gold24K": 149690,
+        "gold22K": 137216,
+        "silver1Kg": 239046
       },
       {
         "city": "Nagpur",
         "state": "Maharashtra",
-        "gold24K": 151590,
-        "gold22K": 138958,
-        "silver1Kg": 245100
+        "gold24K": 149730,
+        "gold22K": 137253,
+        "silver1Kg": 239096
       },
       {
         "city": "Nashik",
         "state": "Maharashtra",
-        "gold24K": 151560,
-        "gold22K": 138930,
-        "silver1Kg": 245080
+        "gold24K": 149700,
+        "gold22K": 137225,
+        "silver1Kg": 239076
       },
       {
         "city": "Aurangabad (Chhatrapati Sambhajinagar)",
         "state": "Maharashtra",
-        "gold24K": 151570,
-        "gold22K": 138939,
-        "silver1Kg": 245090
+        "gold24K": 149710,
+        "gold22K": 137234,
+        "silver1Kg": 239086
       },
       {
         "city": "Kolhapur",
         "state": "Maharashtra",
-        "gold24K": 151560,
-        "gold22K": 138930,
-        "silver1Kg": 245080
+        "gold24K": 149700,
+        "gold22K": 137225,
+        "silver1Kg": 239076
       },
       {
         "city": "Delhi",
         "state": "Delhi NCR",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Noida",
         "state": "Uttar Pradesh (NCR)",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Gurugram",
         "state": "Haryana (NCR)",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Ghaziabad",
         "state": "Uttar Pradesh (NCR)",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Faridabad",
         "state": "Haryana (NCR)",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Chennai",
         "state": "Tamil Nadu",
-        "gold24K": 151630,
-        "gold22K": 138994,
-        "silver1Kg": 248500
+        "gold24K": 149770,
+        "gold22K": 137289,
+        "silver1Kg": 242496
       },
       {
         "city": "Coimbatore",
         "state": "Tamil Nadu",
-        "gold24K": 151640,
-        "gold22K": 139003,
-        "silver1Kg": 248500
+        "gold24K": 149780,
+        "gold22K": 137298,
+        "silver1Kg": 242496
       },
       {
         "city": "Madurai",
         "state": "Tamil Nadu",
-        "gold24K": 151640,
-        "gold22K": 139003,
-        "silver1Kg": 248500
+        "gold24K": 149780,
+        "gold22K": 137298,
+        "silver1Kg": 242496
       },
       {
         "city": "Salem",
         "state": "Tamil Nadu",
-        "gold24K": 151640,
-        "gold22K": 139003,
-        "silver1Kg": 248500
+        "gold24K": 149780,
+        "gold22K": 137298,
+        "silver1Kg": 242496
       },
       {
         "city": "Tiruchirappalli (Trichy)",
         "state": "Tamil Nadu",
-        "gold24K": 151640,
-        "gold22K": 139003,
-        "silver1Kg": 248500
+        "gold24K": 149780,
+        "gold22K": 137298,
+        "silver1Kg": 242496
       },
       {
         "city": "Tirunelveli",
         "state": "Tamil Nadu",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 248500
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 242496
       },
       {
         "city": "Bengaluru",
         "state": "Karnataka",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 246500
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240496
       },
       {
         "city": "Mysuru",
         "state": "Karnataka",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 246500
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 240496
       },
       {
         "city": "Mangaluru",
         "state": "Karnataka",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 246500
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240496
       },
       {
         "city": "Hubballi-Dharwad",
         "state": "Karnataka",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 246500
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 240496
       },
       {
         "city": "Belagavi",
         "state": "Karnataka",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 246500
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 240496
       },
       {
         "city": "Hyderabad",
         "state": "Telangana",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 247000
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240996
       },
       {
         "city": "Warangal",
         "state": "Telangana",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 247000
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 240996
       },
       {
         "city": "Nizamabad",
         "state": "Telangana",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 247000
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 240996
       },
       {
         "city": "Karimnagar",
         "state": "Telangana",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 247000
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 240996
       },
       {
         "city": "Vijayawada",
         "state": "Andhra Pradesh",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 247000
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240996
       },
       {
         "city": "Visakhapatnam",
         "state": "Andhra Pradesh",
-        "gold24K": 151640,
-        "gold22K": 139003,
-        "silver1Kg": 247000
+        "gold24K": 149780,
+        "gold22K": 137298,
+        "silver1Kg": 240996
       },
       {
         "city": "Guntur",
         "state": "Andhra Pradesh",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 247000
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240996
       },
       {
         "city": "Tirupati",
         "state": "Andhra Pradesh",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 247000
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240996
       },
       {
         "city": "Nellore",
         "state": "Andhra Pradesh",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 247000
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 240996
       },
       {
         "city": "Kurnool",
         "state": "Andhra Pradesh",
-        "gold24K": 151655,
-        "gold22K": 139017,
-        "silver1Kg": 247000
+        "gold24K": 149795,
+        "gold22K": 137312,
+        "silver1Kg": 240996
       },
       {
         "city": "Kolkata",
         "state": "West Bengal",
-        "gold24K": 151610,
-        "gold22K": 138976,
-        "silver1Kg": 245200
+        "gold24K": 149750,
+        "gold22K": 137271,
+        "silver1Kg": 239196
       },
       {
         "city": "Siliguri",
         "state": "West Bengal",
-        "gold24K": 151630,
-        "gold22K": 138994,
-        "silver1Kg": 245250
+        "gold24K": 149770,
+        "gold22K": 137289,
+        "silver1Kg": 239246
       },
       {
         "city": "Asansol",
         "state": "West Bengal",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 245220
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 239216
       },
       {
         "city": "Durgapur",
         "state": "West Bengal",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 245220
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 239216
       },
       {
         "city": "Ahmedabad",
         "state": "Gujarat",
-        "gold24K": 151570,
-        "gold22K": 138939,
-        "silver1Kg": 245100
+        "gold24K": 149710,
+        "gold22K": 137234,
+        "silver1Kg": 239096
       },
       {
         "city": "Surat",
         "state": "Gujarat",
-        "gold24K": 151570,
-        "gold22K": 138939,
-        "silver1Kg": 245100
+        "gold24K": 149710,
+        "gold22K": 137234,
+        "silver1Kg": 239096
       },
       {
         "city": "Vadodara",
         "state": "Gujarat",
-        "gold24K": 151580,
-        "gold22K": 138948,
-        "silver1Kg": 245100
+        "gold24K": 149720,
+        "gold22K": 137243,
+        "silver1Kg": 239096
       },
       {
         "city": "Rajkot",
         "state": "Gujarat",
-        "gold24K": 151575,
-        "gold22K": 138944,
-        "silver1Kg": 245100
+        "gold24K": 149715,
+        "gold22K": 137239,
+        "silver1Kg": 239096
       },
       {
         "city": "Bhavnagar",
         "state": "Gujarat",
-        "gold24K": 151580,
-        "gold22K": 138948,
-        "silver1Kg": 245110
+        "gold24K": 149720,
+        "gold22K": 137243,
+        "silver1Kg": 239106
       },
       {
         "city": "Jamnagar",
         "state": "Gujarat",
-        "gold24K": 151580,
-        "gold22K": 138948,
-        "silver1Kg": 245110
+        "gold24K": 149720,
+        "gold22K": 137243,
+        "silver1Kg": 239106
       },
       {
         "city": "Lucknow",
         "state": "Uttar Pradesh",
-        "gold24K": 151690,
-        "gold22K": 139049,
-        "silver1Kg": 245350
+        "gold24K": 149830,
+        "gold22K": 137344,
+        "silver1Kg": 239346
       },
       {
         "city": "Kanpur",
         "state": "Uttar Pradesh",
-        "gold24K": 151690,
-        "gold22K": 139049,
-        "silver1Kg": 245350
+        "gold24K": 149830,
+        "gold22K": 137344,
+        "silver1Kg": 239346
       },
       {
         "city": "Varanasi",
         "state": "Uttar Pradesh",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245400
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239396
       },
       {
         "city": "Agra",
         "state": "Uttar Pradesh",
-        "gold24K": 151685,
-        "gold22K": 139045,
-        "silver1Kg": 245320
+        "gold24K": 149825,
+        "gold22K": 137340,
+        "silver1Kg": 239316
       },
       {
         "city": "Prayagraj (Allahabad)",
         "state": "Uttar Pradesh",
-        "gold24K": 151695,
-        "gold22K": 139054,
-        "silver1Kg": 245360
+        "gold24K": 149835,
+        "gold22K": 137349,
+        "silver1Kg": 239356
       },
       {
         "city": "Meerut",
         "state": "Uttar Pradesh",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Gorakhpur",
         "state": "Uttar Pradesh",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245380
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239376
       },
       {
         "city": "Bareilly",
         "state": "Uttar Pradesh",
-        "gold24K": 151690,
-        "gold22K": 139049,
-        "silver1Kg": 245340
+        "gold24K": 149830,
+        "gold22K": 137344,
+        "silver1Kg": 239336
       },
       {
         "city": "Jaipur",
         "state": "Rajasthan",
-        "gold24K": 151670,
-        "gold22K": 139031,
-        "silver1Kg": 245280
+        "gold24K": 149810,
+        "gold22K": 137326,
+        "silver1Kg": 239276
       },
       {
         "city": "Jodhpur",
         "state": "Rajasthan",
-        "gold24K": 151675,
-        "gold22K": 139035,
-        "silver1Kg": 245290
+        "gold24K": 149815,
+        "gold22K": 137330,
+        "silver1Kg": 239286
       },
       {
         "city": "Udaipur",
         "state": "Rajasthan",
-        "gold24K": 151675,
-        "gold22K": 139035,
-        "silver1Kg": 245290
+        "gold24K": 149815,
+        "gold22K": 137330,
+        "silver1Kg": 239286
       },
       {
         "city": "Kota",
         "state": "Rajasthan",
-        "gold24K": 151675,
-        "gold22K": 139035,
-        "silver1Kg": 245290
+        "gold24K": 149815,
+        "gold22K": 137330,
+        "silver1Kg": 239286
       },
       {
         "city": "Bikaner",
         "state": "Rajasthan",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Ajmer",
         "state": "Rajasthan",
-        "gold24K": 151670,
-        "gold22K": 139031,
-        "silver1Kg": 245280
+        "gold24K": 149810,
+        "gold22K": 137326,
+        "silver1Kg": 239276
       },
       {
         "city": "Kochi",
         "state": "Kerala",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 248200
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 242196
       },
       {
         "city": "Thiruvananthapuram",
         "state": "Kerala",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 248200
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 242196
       },
       {
         "city": "Kozhikode",
         "state": "Kerala",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 248200
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 242196
       },
       {
         "city": "Thrissur",
         "state": "Kerala",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 248200
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 242196
       },
       {
         "city": "Kollam",
         "state": "Kerala",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 248200
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 242196
       },
       {
         "city": "Kannur",
         "state": "Kerala",
-        "gold24K": 151620,
-        "gold22K": 138985,
-        "silver1Kg": 248200
+        "gold24K": 149760,
+        "gold22K": 137280,
+        "silver1Kg": 242196
       },
       {
         "city": "Chandigarh",
         "state": "Punjab / Haryana / UT",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Ludhiana",
         "state": "Punjab",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Amritsar",
         "state": "Punjab",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Jalandhar",
         "state": "Punjab",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Patiala",
         "state": "Punjab",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Panipat",
         "state": "Haryana",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Ambala",
         "state": "Haryana",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Hisar",
         "state": "Haryana",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Karnal",
         "state": "Haryana",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Rohtak",
         "state": "Haryana",
-        "gold24K": 151680,
-        "gold22K": 139040,
-        "silver1Kg": 245300
+        "gold24K": 149820,
+        "gold22K": 137335,
+        "silver1Kg": 239296
       },
       {
         "city": "Bhopal",
         "state": "Madhya Pradesh",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 245250
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 239246
       },
       {
         "city": "Indore",
         "state": "Madhya Pradesh",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 245250
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 239246
       },
       {
         "city": "Jabalpur",
         "state": "Madhya Pradesh",
-        "gold24K": 151670,
-        "gold22K": 139031,
-        "silver1Kg": 245270
+        "gold24K": 149810,
+        "gold22K": 137326,
+        "silver1Kg": 239266
       },
       {
         "city": "Gwalior",
         "state": "Madhya Pradesh",
-        "gold24K": 151665,
-        "gold22K": 139026,
-        "silver1Kg": 245260
+        "gold24K": 149805,
+        "gold22K": 137321,
+        "silver1Kg": 239256
       },
       {
         "city": "Ujjain",
         "state": "Madhya Pradesh",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 245250
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 239246
       },
       {
         "city": "Patna",
         "state": "Bihar",
-        "gold24K": 151710,
-        "gold22K": 139068,
-        "silver1Kg": 245400
+        "gold24K": 149850,
+        "gold22K": 137363,
+        "silver1Kg": 239396
       },
       {
         "city": "Gaya",
         "state": "Bihar",
-        "gold24K": 151720,
-        "gold22K": 139077,
-        "silver1Kg": 245420
+        "gold24K": 149860,
+        "gold22K": 137372,
+        "silver1Kg": 239416
       },
       {
         "city": "Muzaffarpur",
         "state": "Bihar",
-        "gold24K": 151720,
-        "gold22K": 139077,
-        "silver1Kg": 245420
+        "gold24K": 149860,
+        "gold22K": 137372,
+        "silver1Kg": 239416
       },
       {
         "city": "Bhagalpur",
         "state": "Bihar",
-        "gold24K": 151720,
-        "gold22K": 139077,
-        "silver1Kg": 245420
+        "gold24K": 149860,
+        "gold22K": 137372,
+        "silver1Kg": 239416
       },
       {
         "city": "Darbhanga",
         "state": "Bihar",
-        "gold24K": 151720,
-        "gold22K": 139077,
-        "silver1Kg": 245420
+        "gold24K": 149860,
+        "gold22K": 137372,
+        "silver1Kg": 239416
       },
       {
         "city": "Bhubaneswar",
         "state": "Odisha",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 245250
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 239246
       },
       {
         "city": "Cuttack",
         "state": "Odisha",
-        "gold24K": 151650,
-        "gold22K": 139013,
-        "silver1Kg": 245250
+        "gold24K": 149790,
+        "gold22K": 137308,
+        "silver1Kg": 239246
       },
       {
         "city": "Rourkela",
         "state": "Odisha",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 245260
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 239256
       },
       {
         "city": "Berhampur",
         "state": "Odisha",
-        "gold24K": 151655,
-        "gold22K": 139017,
-        "silver1Kg": 245250
+        "gold24K": 149795,
+        "gold22K": 137312,
+        "silver1Kg": 239246
       },
       {
         "city": "Sambalpur",
         "state": "Odisha",
-        "gold24K": 151660,
-        "gold22K": 139022,
-        "silver1Kg": 245260
+        "gold24K": 149800,
+        "gold22K": 137317,
+        "silver1Kg": 239256
       },
       {
         "city": "Ranchi",
         "state": "Jharkhand",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245350
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239346
       },
       {
         "city": "Jamshedpur",
         "state": "Jharkhand",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245350
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239346
       },
       {
         "city": "Dhanbad",
         "state": "Jharkhand",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245350
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239346
       },
       {
         "city": "Bokaro",
         "state": "Jharkhand",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245350
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239346
       },
       {
         "city": "Raipur",
         "state": "Chhattisgarh",
-        "gold24K": 151670,
-        "gold22K": 139031,
-        "silver1Kg": 245280
+        "gold24K": 149810,
+        "gold22K": 137326,
+        "silver1Kg": 239276
       },
       {
         "city": "Bilaspur",
         "state": "Chhattisgarh",
-        "gold24K": 151675,
-        "gold22K": 139035,
-        "silver1Kg": 245290
+        "gold24K": 149815,
+        "gold22K": 137330,
+        "silver1Kg": 239286
       },
       {
         "city": "Durg-Bhilai",
         "state": "Chhattisgarh",
-        "gold24K": 151670,
-        "gold22K": 139031,
-        "silver1Kg": 245280
+        "gold24K": 149810,
+        "gold22K": 137326,
+        "silver1Kg": 239276
       },
       {
         "city": "Guwahati",
         "state": "Assam",
-        "gold24K": 151720,
-        "gold22K": 139077,
-        "silver1Kg": 245450
+        "gold24K": 149860,
+        "gold22K": 137372,
+        "silver1Kg": 239446
       },
       {
         "city": "Dibrugarh",
         "state": "Assam",
-        "gold24K": 151730,
-        "gold22K": 139086,
-        "silver1Kg": 245480
+        "gold24K": 149870,
+        "gold22K": 137381,
+        "silver1Kg": 239476
       },
       {
         "city": "Silchar",
         "state": "Assam",
-        "gold24K": 151730,
-        "gold22K": 139086,
-        "silver1Kg": 245480
+        "gold24K": 149870,
+        "gold22K": 137381,
+        "silver1Kg": 239476
       },
       {
         "city": "Jorhat",
         "state": "Assam",
-        "gold24K": 151730,
-        "gold22K": 139086,
-        "silver1Kg": 245480
+        "gold24K": 149870,
+        "gold22K": 137381,
+        "silver1Kg": 239476
       },
       {
         "city": "Panaji",
         "state": "Goa",
-        "gold24K": 151600,
-        "gold22K": 138967,
-        "silver1Kg": 245150
+        "gold24K": 149740,
+        "gold22K": 137262,
+        "silver1Kg": 239146
       },
       {
         "city": "Margao",
         "state": "Goa",
-        "gold24K": 151600,
-        "gold22K": 138967,
-        "silver1Kg": 245150
+        "gold24K": 149740,
+        "gold22K": 137262,
+        "silver1Kg": 239146
       },
       {
         "city": "Dehradun",
         "state": "Uttarakhand",
-        "gold24K": 151690,
-        "gold22K": 139049,
-        "silver1Kg": 245320
+        "gold24K": 149830,
+        "gold22K": 137344,
+        "silver1Kg": 239316
       },
       {
         "city": "Haridwar",
         "state": "Uttarakhand",
-        "gold24K": 151690,
-        "gold22K": 139049,
-        "silver1Kg": 245320
+        "gold24K": 149830,
+        "gold22K": 137344,
+        "silver1Kg": 239316
       },
       {
         "city": "Haldwani",
         "state": "Uttarakhand",
-        "gold24K": 151695,
-        "gold22K": 139054,
-        "silver1Kg": 245330
+        "gold24K": 149835,
+        "gold22K": 137349,
+        "silver1Kg": 239326
       },
       {
         "city": "Rishikesh",
         "state": "Uttarakhand",
-        "gold24K": 151690,
-        "gold22K": 139049,
-        "silver1Kg": 245320
+        "gold24K": 149830,
+        "gold22K": 137344,
+        "silver1Kg": 239316
       },
       {
         "city": "Shimla",
         "state": "Himachal Pradesh",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245350
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239346
       },
       {
         "city": "Dharamshala",
         "state": "Himachal Pradesh",
-        "gold24K": 151705,
-        "gold22K": 139063,
-        "silver1Kg": 245360
+        "gold24K": 149845,
+        "gold22K": 137358,
+        "silver1Kg": 239356
       },
       {
         "city": "Mandi",
         "state": "Himachal Pradesh",
-        "gold24K": 151705,
-        "gold22K": 139063,
-        "silver1Kg": 245360
+        "gold24K": 149845,
+        "gold22K": 137358,
+        "silver1Kg": 239356
       },
       {
         "city": "Solan",
         "state": "Himachal Pradesh",
-        "gold24K": 151700,
-        "gold22K": 139058,
-        "silver1Kg": 245350
+        "gold24K": 149840,
+        "gold22K": 137353,
+        "silver1Kg": 239346
       },
       {
         "city": "Srinagar",
         "state": "Jammu & Kashmir",
-        "gold24K": 151730,
-        "gold22K": 139086,
-        "silver1Kg": 245500
+        "gold24K": 149870,
+        "gold22K": 137381,
+        "silver1Kg": 239496
       },
       {
         "city": "Jammu",
         "state": "Jammu & Kashmir",
-        "gold24K": 151710,
-        "gold22K": 139068,
-        "silver1Kg": 245400
+        "gold24K": 149850,
+        "gold22K": 137363,
+        "silver1Kg": 239396
       },
       {
         "city": "Anantnag",
         "state": "Jammu & Kashmir",
-        "gold24K": 151730,
-        "gold22K": 139086,
-        "silver1Kg": 245500
+        "gold24K": 149870,
+        "gold22K": 137381,
+        "silver1Kg": 239496
       },
       {
         "city": "Leh",
         "state": "Ladakh",
-        "gold24K": 151750,
-        "gold22K": 139104,
-        "silver1Kg": 245550
+        "gold24K": 149890,
+        "gold22K": 137399,
+        "silver1Kg": 239546
       },
       {
         "city": "Puducherry",
         "state": "Puducherry",
-        "gold24K": 151630,
-        "gold22K": 138994,
-        "silver1Kg": 248400
+        "gold24K": 149770,
+        "gold22K": 137289,
+        "silver1Kg": 242396
       },
       {
         "city": "Agartala",
         "state": "Tripura",
-        "gold24K": 151740,
-        "gold22K": 139095,
-        "silver1Kg": 245500
+        "gold24K": 149880,
+        "gold22K": 137390,
+        "silver1Kg": 239496
       },
       {
         "city": "Shillong",
         "state": "Meghalaya",
-        "gold24K": 151730,
-        "gold22K": 139086,
-        "silver1Kg": 245480
+        "gold24K": 149870,
+        "gold22K": 137381,
+        "silver1Kg": 239476
       },
       {
         "city": "Imphal",
         "state": "Manipur",
-        "gold24K": 151750,
-        "gold22K": 139104,
-        "silver1Kg": 245520
+        "gold24K": 149890,
+        "gold22K": 137399,
+        "silver1Kg": 239516
       },
       {
         "city": "Kohima",
         "state": "Nagaland",
-        "gold24K": 151750,
-        "gold22K": 139104,
-        "silver1Kg": 245520
+        "gold24K": 149890,
+        "gold22K": 137399,
+        "silver1Kg": 239516
       },
       {
         "city": "Dimapur",
         "state": "Nagaland",
-        "gold24K": 151740,
-        "gold22K": 139095,
-        "silver1Kg": 245500
+        "gold24K": 149880,
+        "gold22K": 137390,
+        "silver1Kg": 239496
       },
       {
         "city": "Aizawl",
         "state": "Mizoram",
-        "gold24K": 151750,
-        "gold22K": 139104,
-        "silver1Kg": 245520
+        "gold24K": 149890,
+        "gold22K": 137399,
+        "silver1Kg": 239516
       },
       {
         "city": "Itanagar",
         "state": "Arunachal Pradesh",
-        "gold24K": 151750,
-        "gold22K": 139104,
-        "silver1Kg": 245520
+        "gold24K": 149890,
+        "gold22K": 137399,
+        "silver1Kg": 239516
       },
       {
         "city": "Gangtok",
         "state": "Sikkim",
-        "gold24K": 151720,
-        "gold22K": 139077,
-        "silver1Kg": 245450
+        "gold24K": 149860,
+        "gold22K": 137372,
+        "silver1Kg": 239446
       },
       {
         "city": "Port Blair",
         "state": "Andaman & Nicobar",
-        "gold24K": 151710,
-        "gold22K": 139068,
-        "silver1Kg": 245400
+        "gold24K": 149850,
+        "gold22K": 137363,
+        "silver1Kg": 239396
       },
       {
         "city": "Daman",
         "state": "Dadra & Nagar Haveli and Daman & Diu",
-        "gold24K": 151580,
-        "gold22K": 138948,
-        "silver1Kg": 245100
+        "gold24K": 149720,
+        "gold22K": 137243,
+        "silver1Kg": 239096
       },
       {
         "city": "Silvassa",
         "state": "Dadra & Nagar Haveli and Daman & Diu",
-        "gold24K": 151580,
-        "gold22K": 138948,
-        "silver1Kg": 245100
+        "gold24K": 149720,
+        "gold22K": 137243,
+        "silver1Kg": 239096
       }
     ]
   },
@@ -919,7 +919,7 @@
     {
       "id": "gold-24k",
       "label": "Gold 24K (per 10g)",
-      "value": "₹1,51,530",
+      "value": "₹1,49,670",
       "delta": "Live Spot",
       "isPositive": true,
       "category": "Bullion (MCX / IBJA)"
@@ -927,7 +927,7 @@
     {
       "id": "gold-22k",
       "label": "Gold 22K (Hallmark 916)",
-      "value": "₹1,38,903",
+      "value": "₹1,37,198",
       "delta": "Live Spot",
       "isPositive": true,
       "category": "Jewelry Benchmark"
@@ -935,7 +935,7 @@
     {
       "id": "silver-999",
       "label": "Silver 999 (per 1kg)",
-      "value": "₹2,45,000",
+      "value": "₹2,38,996",
       "delta": "Live Spot",
       "isPositive": true,
       "category": "MCX Spot Bullion"
