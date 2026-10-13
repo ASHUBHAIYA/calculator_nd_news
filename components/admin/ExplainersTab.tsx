@@ -13,12 +13,20 @@ import {
 } from 'lucide-react';
 import { Article, ArticleCategory, ARTICLE_CATEGORIES } from '@/lib/types/article';
 
+import { GitHubSyncBanner } from './GitHubSyncBanner';
+
 interface ExplainersTabProps {
   articles: Article[];
   onOpenCreate: () => void;
   onOpenEdit: (article: Article) => void;
   onOpenDelete: (article: Article) => void;
   loading: boolean;
+  syncStatus?: {
+    state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';
+    message?: string;
+    commitSha?: string;
+    commitUrl?: string;
+  };
 }
 
 export const ExplainersTab: React.FC<ExplainersTabProps> = ({
@@ -27,6 +35,7 @@ export const ExplainersTab: React.FC<ExplainersTabProps> = ({
   onOpenEdit,
   onOpenDelete,
   loading,
+  syncStatus,
 }) => {
   const [search, setSearch] = useState('');
   const [selectedCat, setSelectedCat] = useState<string>('All');
@@ -43,6 +52,8 @@ export const ExplainersTab: React.FC<ExplainersTabProps> = ({
 
   return (
     <div className="space-y-6">
+      {syncStatus && <GitHubSyncBanner status={syncStatus} />}
+
       {/* Action & Filter Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
         <div className="flex flex-1 items-center gap-3">

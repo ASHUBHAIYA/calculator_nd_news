@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { SeoHead } from '@/components/SeoHead';
 import { AdminLogin } from '@/components/admin/AdminLogin';
+import { GitHubPatBar } from '@/components/admin/GitHubPatBar';
 import { ExplainersTab } from '@/components/admin/ExplainersTab';
 import { ExplainerEditorModal } from '@/components/admin/ExplainerEditorModal';
 import { DeleteConfirmModal } from '@/components/admin/DeleteConfirmModal';
@@ -37,6 +38,8 @@ import {
   deleteArticleFromSupabase,
 } from '@/lib/supabase';
 import { Article } from '@/lib/types/article';
+import { getStoredGitHubConfig } from '@/lib/githubClient';
+import { fetchArticlesFromGitHub, commitArticlesToGitHub } from '@/lib/githubArticlesSync';
 
 type AdminTab =
   | 'explainers'
@@ -64,16 +67,30 @@ export const AdminPage: React.FC = () => {
   const [isSavingConfig, setIsSavingConfig] = useState(false);
   const [isResettingConfig, setIsResettingConfig] = useState(false);
 
+  const [articlesSyncStatus, setArticlesSyncStatus] = useState<{
+    state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';
+    message?: string;
+    commitSha?: string;
+    commitUrl?: string;
+  }>({ state: 'idle' });
+
   const { config, updateConfig, resetToDefaults, refreshConfig } = useSiteConfig();
 
-  // Load articles
+  // Load articles: try GitHub REST API first (if PAT set), then Supabase/static fallback
   const loadArticles = async () => {
     setLoadingArticles(true);
     try {
+      const ghRes = await fetchArticlesFromGitHub();
+      if (ghRes.articles && ghRes.articles.length > 0) {
+        setArticles(ghRes.articles);
+        return;
+      }
       const { articles: list } = await fetchArticles();
       setArticles(list);
     } catch (err) {
       console.warn('Error loading articles in admin:', err);
+      const { articles: list } = await fetchArticles();
+      setArticles(list);
     } finally {
       setLoadingArticles(false);
     }
@@ -109,22 +126,61 @@ export const AdminPage: React.FC = () => {
   const handleSaveArticle = async (articleData: Partial<Article>) => {
     setIsSavingArticle(true);
     try {
+      let updatedArticlesList: Article[] = [];
+      let savedArticleTitle = '';
+
       if (articleToEdit) {
         const updated = await updateArticleInSupabase(
           articleToEdit.id || articleToEdit.slug,
           articleData
         );
-        setArticles((prev) =>
-          prev.map((a) =>
-            a.id === updated.id || a.slug === articleToEdit.slug ? updated : a
-          )
+        savedArticleTitle = updated.title;
+        updatedArticlesList = articles.map((a) =>
+          a.id === updated.id || a.slug === articleToEdit.slug ? updated : a
         );
       } else {
         const created = await insertArticle(articleData);
-        setArticles((prev) => [created, ...prev]);
+        savedArticleTitle = created.title;
+        updatedArticlesList = [created, ...articles];
       }
+
+      setArticles(updatedArticlesList);
       setIsEditorOpen(false);
       setArticleToEdit(null);
+
+      // Persist to GitHub data/articles.json
+      const ghConfig = getStoredGitHubConfig();
+      if (ghConfig.token && ghConfig.token.trim()) {
+        setArticlesSyncStatus({
+          state: 'saving',
+          message: 'Committing updated explainers to GitHub (data/articles.json)...',
+        });
+
+        const commitRes = await commitArticlesToGitHub(
+          updatedArticlesList,
+          `chore(articles): ${articleToEdit ? 'update' : 'publish'} "${savedArticleTitle}" [admin]`
+        );
+
+        if (commitRes.success) {
+          setArticlesSyncStatus({
+            state: 'success',
+            message: 'Articles committed to GitHub! Cloudflare deployment started (~60s).',
+            commitSha: commitRes.commitSha,
+            commitUrl: commitRes.commitUrl,
+          });
+        } else {
+          setArticlesSyncStatus({
+            state: 'error',
+            message: commitRes.message || commitRes.error || 'Failed to commit articles to GitHub.',
+          });
+        }
+      } else {
+        setArticlesSyncStatus({
+          state: 'fallback',
+          message:
+            'Saved to preview only. Please enter and save your GitHub Personal Access Token in the top bar to deploy changes globally to Cloudflare Pages.',
+        });
+      }
     } catch (err: any) {
       alert(err.message || 'Error saving article');
     } finally {
@@ -137,10 +193,45 @@ export const AdminPage: React.FC = () => {
     setIsDeletingArticle(true);
     try {
       await deleteArticleFromSupabase(articleToDelete.id || articleToDelete.slug);
-      setArticles((prev) =>
-        prev.filter((a) => a.id !== articleToDelete.id && a.slug !== articleToDelete.slug)
+      const remainingArticles = articles.filter(
+        (a) => a.id !== articleToDelete.id && a.slug !== articleToDelete.slug
       );
+      setArticles(remainingArticles);
       setIsDeleteModalOpen(false);
+
+      // Persist to GitHub data/articles.json
+      const ghConfig = getStoredGitHubConfig();
+      if (ghConfig.token && ghConfig.token.trim()) {
+        setArticlesSyncStatus({
+          state: 'saving',
+          message: `Committing deletion of "${articleToDelete.title}" to GitHub...`,
+        });
+
+        const commitRes = await commitArticlesToGitHub(
+          remainingArticles,
+          `chore(articles): delete "${articleToDelete.title}" [admin]`
+        );
+
+        if (commitRes.success) {
+          setArticlesSyncStatus({
+            state: 'success',
+            message: 'Article deletion committed to GitHub! Cloudflare deployment started (~60s).',
+            commitSha: commitRes.commitSha,
+            commitUrl: commitRes.commitUrl,
+          });
+        } else {
+          setArticlesSyncStatus({
+            state: 'error',
+            message: commitRes.message || commitRes.error || 'Failed to commit deletion to GitHub.',
+          });
+        }
+      } else {
+        setArticlesSyncStatus({
+          state: 'fallback',
+          message:
+            'Deleted from preview only. Please enter and save your GitHub Personal Access Token in the top bar to persist deletion globally.',
+        });
+      }
       setArticleToDelete(null);
     } catch (err: any) {
       alert(err.message || 'Error deleting article');
@@ -245,6 +336,9 @@ export const AdminPage: React.FC = () => {
         canonicalPath="/admin"
       />
 
+      {/* Global GitHub PAT Persistence Bar */}
+      <GitHubPatBar />
+
       {/* Admin Top Header Bar */}
       <section className="bg-slate-950 text-white border-b border-slate-800 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -263,7 +357,7 @@ export const AdminPage: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-xs text-slate-400">
-                  Manage live articles, bullion tickers, tax rules, and site configuration
+                  Direct GitHub API Sync • Auto-Deploying to Cloudflare Pages
                 </p>
               </div>
             </div>
@@ -322,6 +416,7 @@ export const AdminPage: React.FC = () => {
             onOpenEdit={handleOpenEditArticle}
             onOpenDelete={handleOpenDeleteArticle}
             loading={loadingArticles}
+            syncStatus={articlesSyncStatus}
           />
         )}
 

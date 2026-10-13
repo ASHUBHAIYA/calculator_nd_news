@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Sun, Check, Zap } from 'lucide-react';
 import { SiteFinancialConfig } from '@/lib/siteConfig';
+import { syncConfigToGithub } from '@/lib/githubSiteConfigSync';
+import { getStoredGitHubConfig } from '@/lib/githubClient';
+import { GitHubSyncBanner } from './GitHubSyncBanner';
 
 interface SolarSubsidyTabProps {
   config: SiteFinancialConfig;
@@ -16,6 +19,13 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
   const [unitsPerKw, setUnitsPerKw] = useState(config.solarRooftop.dailyUnitsGeneratedPerKw);
   const [successMsg, setSuccessMsg] = useState(false);
 
+  const [ghStatus, setGhStatus] = useState<{
+    state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';
+    message?: string;
+    commitSha?: string;
+    commitUrl?: string;
+  }>({ state: 'idle' });
+
   React.useEffect(() => {
     if (config.solarRooftop) {
       setCostPerKw(config.solarRooftop.benchmarkCostPerKw);
@@ -28,19 +38,69 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave({
+
+    const newSolarData = {
       benchmarkCostPerKw: Number(costPerKw),
       subsidy1Kw: Number(sub1Kw),
       subsidy2Kw: Number(sub2Kw),
       subsidy3KwPlus: Number(sub3Kw),
       dailyUnitsGeneratedPerKw: Number(unitsPerKw),
-    });
+    };
+
+    // 1. Save locally to preview / localStorage
+    await onSave(newSolarData);
     setSuccessMsg(true);
     setTimeout(() => setSuccessMsg(false), 3000);
+
+    // 2. Commit to GitHub directly
+    const ghConfig = getStoredGitHubConfig();
+    if (!ghConfig.token || !ghConfig.token.trim()) {
+      setGhStatus({
+        state: 'fallback',
+        message:
+          'Saved to local browser storage only. Please enter and save your GitHub Personal Access Token in the top bar to commit globally to Cloudflare Pages.',
+      });
+      return;
+    }
+
+    setGhStatus({
+      state: 'saving',
+      message: 'Committing PM Surya Ghar subsidy tiers directly to GitHub (data/site-config.json)...',
+    });
+
+    try {
+      const commitRes = await syncConfigToGithub({
+        updates: { solarRooftop: newSolarData },
+        commitMessage: `chore(solar): update PM Surya Ghar subsidy rules [admin] (${new Date().toLocaleDateString('en-IN')})`,
+      });
+
+      if (commitRes.success) {
+        setGhStatus({
+          state: 'success',
+          message: 'Solar subsidy rules committed to GitHub! Cloudflare deployment started (~60s).',
+          commitSha: commitRes.commitSha,
+          commitUrl: commitRes.commitUrl,
+        });
+      } else {
+        setGhStatus({
+          state: 'error',
+          message: commitRes.message || commitRes.error || 'Failed to commit to GitHub.',
+        });
+      }
+    } catch (err: any) {
+      setGhStatus({
+        state: 'error',
+        message: `GitHub sync error: ${err.message || 'Request failed'}`,
+      });
+    }
   };
+
+  const isCommitting = ghStatus.state === 'saving';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <GitHubSyncBanner status={ghStatus} />
+
       <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-2xs space-y-4">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
@@ -62,10 +122,10 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Benchmark Cost (₹/kW) *
+              Benchmark EPC Installation Cost (₹ / kW) *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -79,12 +139,12 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">Installed cost benchmark</span>
+            <span className="text-[10px] text-slate-400 mt-1 block">Includes tier-1 mono PERC panels &amp; grid inverter</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              1 kW System Subsidy *
+              1 kW Rooftop Subsidy *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -98,12 +158,12 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">MNRE Standard DBT</span>
+            <span className="text-[10px] text-slate-400 mt-1 block">Statutory DBT amount credited directly to bank account</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              2 kW System Subsidy *
+              2 kW Rooftop Subsidy *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -117,12 +177,12 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">MNRE Standard DBT</span>
+            <span className="text-[10px] text-slate-400 mt-1 block">Standard ₹60,000 for 2 kW systems</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              3 kW &amp; Above Max Subsidy *
+              3 kW+ Maximum Subsidy Cap *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -136,7 +196,7 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">Maximum scheme cap</span>
+            <span className="text-[10px] text-slate-400 mt-1 block">Statutory maximum ceiling ₹78,000</span>
           </div>
 
           <div>
@@ -158,10 +218,15 @@ export const SolarSubsidyTab: React.FC<SolarSubsidyTabProps> = ({ config, onSave
       <div className="flex items-center justify-end">
         <button
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || isCommitting}
           className="px-6 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          {isSaving ? (
+          {isCommitting ? (
+            <>
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Committing to GitHub...</span>
+            </>
+          ) : isSaving ? (
             <>
               <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               <span>Saving Subsidies...</span>

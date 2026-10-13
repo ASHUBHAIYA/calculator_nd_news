@@ -4,7 +4,6 @@ import {
   BookOpen,
   Search,
   Filter,
-  Plus,
   Calendar,
   Clock,
   ArrowRight,
@@ -15,7 +14,6 @@ import {
 import { Article, ArticleCategory } from '@/lib/types/article';
 import { INITIAL_ARTICLES } from '@/lib/articlesData';
 import { fetchArticles as fetchArticlesSupabase, getSupabaseStatus } from '@/lib/supabase';
-import { CreateExplainerModal } from '@/components/CreateExplainerModal';
 import { SeoHead } from '@/components/SeoHead';
 import { AdBanner } from '@/components/AdBanner';
 
@@ -80,7 +78,6 @@ export const ExplainersIndexPage: React.FC = () => {
     CATEGORIES.includes(initialCategory) ? initialCategory : 'All'
   );
   const [searchQuery, setSearchQuery] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<'supabase' | 'fallback'>('fallback');
 
@@ -113,10 +110,6 @@ export const ExplainersIndexPage: React.FC = () => {
     setSearchParams(searchParams);
   };
 
-  const handleArticleCreated = (newArticle: Article) => {
-    setArticles((prev) => [newArticle, ...prev]);
-  };
-
   const featuredArticle = articles.length > 0 ? articles[0] : null;
   const remainingArticles = articles.length > 0 ? articles.slice(1) : [];
 
@@ -146,16 +139,6 @@ export const ExplainersIndexPage: React.FC = () => {
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                 Clear, transparent deep dives decoding gold price surges, FY 2025-26 tax slabs, fuel economies, and mortgage amortizations. Every explainer is paired with an interactive calculator.
               </p>
-            </div>
-
-            <div className="shrink-0 flex flex-wrap items-center gap-2.5">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
-              >
-                <Plus className="w-4 h-4 text-emerald-400" />
-                <span>Publish Explainer</span>
-              </button>
             </div>
           </div>
 
@@ -304,13 +287,6 @@ export const ExplainersIndexPage: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Authoring Modal */}
-      <CreateExplainerModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onCreated={handleArticleCreated}
-      />
     </div>
   );
 };

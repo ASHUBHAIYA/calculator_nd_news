@@ -449,12 +449,12 @@ Summarize forward-looking insights, deadlines, or actionable steps for citizens.
               {isSaving ? (
                 <>
                   <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Saving Article...</span>
+                  <span>Committing to GitHub...</span>
                 </>
               ) : (
                 <>
                   <Check className="w-4 h-4 text-emerald-400" />
-                  <span>{articleToEdit ? 'Update Explainer' : 'Publish Explainer'}</span>
+                  <span>{articleToEdit ? 'Commit Updates to GitHub' : 'Publish & Commit to GitHub'}</span>
                 </>
               )}
             </button>

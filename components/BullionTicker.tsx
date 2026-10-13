@@ -33,17 +33,23 @@ export const BullionTicker: React.FC<BullionTickerProps> = ({ onSelectRate, onSe
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [serverData, setServerData] = useState<ServerBullionResponse | null>(null);
 
-  const fetchRates = async (force: boolean = false) => {
+  const fetchRates = async (_force: boolean = false) => {
     setIsRefreshing(true);
     try {
-      const url = `/api/bullion-rates${force ? '?force=true' : ''}`;
-      const res = await fetch(url);
+      const res = await fetch('/data/site-config.json');
       if (res.ok) {
-        const data: ServerBullionResponse = await res.json();
-        setServerData(data);
+        const data = await res.json();
+        if (data?.bullion) {
+          setServerData({
+            gold24KPer10g: data.bullion.gold24KPer10g,
+            gold22KPer10g: data.bullion.gold22KPer10g,
+            silver999PerKg: data.bullion.silver999PerKg,
+            cities: data.bullion.cities || [],
+          });
+        }
       }
     } catch (err) {
-      console.warn('Could not fetch bullion rates, using local fallback:', err);
+      console.warn('Could not fetch static bullion rates, using local fallback:', err);
     } finally {
       setIsRefreshing(false);
     }

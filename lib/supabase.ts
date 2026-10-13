@@ -111,16 +111,26 @@ export async function fetchArticles(
     }
   }
 
-  // Graceful fallback to server API or initial memory seed
+  // Graceful fallback to bundled static data/articles.json or initial memory seed
   try {
-    const params = new URLSearchParams();
-    if (category && category !== 'All') params.append('category', category);
-    if (search && search.trim()) params.append('search', search.trim());
-    const res = await fetch(`/api/articles?${params.toString()}`);
+    const res = await fetch('/data/articles.json');
     if (res.ok) {
       const json = await res.json();
-      if (json.articles && Array.isArray(json.articles)) {
-        return { articles: json.articles, source: 'fallback' };
+      if (Array.isArray(json) && json.length > 0) {
+        let list = json;
+        if (category && category !== 'All') {
+          list = list.filter((a: any) => a.category?.toLowerCase() === category.toLowerCase());
+        }
+        if (search && search.trim()) {
+          const q = search.trim().toLowerCase();
+          list = list.filter(
+            (a: any) =>
+              a.title?.toLowerCase().includes(q) ||
+              a.summary?.toLowerCase().includes(q) ||
+              a.fullContent?.toLowerCase().includes(q)
+          );
+        }
+        return { articles: list, source: 'fallback' };
       }
     }
   } catch {
@@ -169,13 +179,16 @@ export async function fetchArticleBySlug(
     }
   }
 
-  // Fallback to server API
+  // Fallback to bundled static data/articles.json
   try {
-    const res = await fetch(`/api/articles/${cleanSlug}`);
+    const res = await fetch('/data/articles.json');
     if (res.ok) {
       const json = await res.json();
-      if (json.article) {
-        return { article: json.article, source: 'fallback' };
+      if (Array.isArray(json)) {
+        const found = json.find((a: any) => a.slug === cleanSlug);
+        if (found) {
+          return { article: found, source: 'fallback' };
+        }
       }
     }
   } catch {}
@@ -222,20 +235,19 @@ export async function insertArticle(articleData: Partial<Article>): Promise<Arti
     }
   }
 
-  // Fallback to Node.js backend
-  const res = await fetch('/api/articles', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(articleData),
-  });
-
-  if (!res.ok) {
-    const errJson = await res.json().catch(() => ({}));
-    throw new Error(errJson.error || 'Failed to publish explainer');
-  }
-
-  const json = await res.json();
-  return json.article;
+  // Fallback: return formatted Article object (persisted via GitHub sync)
+  return {
+    id: `art-${Date.now()}`,
+    title,
+    slug,
+    summary: payload.summary,
+    fullContent: payload.full_content,
+    category: payload.category as any,
+    relatedCalculator: payload.related_calculator as any,
+    sources: payload.sources as any,
+    publishedAt: payload.published_at,
+    updatedAt: payload.updated_at,
+  };
 }
 
 export async function updateArticleInSupabase(
@@ -277,20 +289,19 @@ export async function updateArticleInSupabase(
     }
   }
 
-  // Fallback to Server API
-  const res = await fetch(`/api/articles/${idOrSlug}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(articleData),
-  });
-
-  if (!res.ok) {
-    const errJson = await res.json().catch(() => ({}));
-    throw new Error(errJson.error || 'Failed to update article');
-  }
-
-  const json = await res.json();
-  return json.article;
+  // Fallback: return formatted updated Article (persisted via GitHub sync)
+  return {
+    id: idOrSlug,
+    title: payload.title || articleData.title || '',
+    slug: payload.slug || articleData.slug || idOrSlug,
+    summary: payload.summary || articleData.summary || '',
+    fullContent: payload.full_content || articleData.fullContent || '',
+    category: (payload.category || articleData.category || 'Market Trends') as any,
+    relatedCalculator: (payload.related_calculator || articleData.relatedCalculator || 'none') as any,
+    sources: payload.sources || articleData.sources || [],
+    publishedAt: articleData.publishedAt || now,
+    updatedAt: now,
+  };
 }
 
 export async function deleteArticleFromSupabase(idOrSlug: string): Promise<boolean> {
@@ -311,16 +322,6 @@ export async function deleteArticleFromSupabase(idOrSlug: string): Promise<boole
     } catch (err) {
       console.warn('Supabase delete error:', err);
     }
-  }
-
-  // Fallback to Server API
-  const res = await fetch(`/api/articles/${idOrSlug}`, {
-    method: 'DELETE',
-  });
-
-  if (!res.ok) {
-    const errJson = await res.json().catch(() => ({}));
-    throw new Error(errJson.error || 'Failed to delete article');
   }
 
   return true;

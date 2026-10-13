@@ -171,10 +171,12 @@ export const HomePage: React.FC = () => {
   const [trendingArticles, setTrendingArticles] = useState<Article[]>(INITIAL_ARTICLES.slice(0, 3));
 
   useEffect(() => {
-    fetch('/api/articles')
+    fetch('/data/articles.json')
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.articles && Array.isArray(data.articles)) {
+        if (Array.isArray(data)) {
+          setTrendingArticles(data.slice(0, 3));
+        } else if (data?.articles && Array.isArray(data.articles)) {
           setTrendingArticles(data.articles.slice(0, 3));
         }
       })

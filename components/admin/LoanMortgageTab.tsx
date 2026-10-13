@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Home, Check } from 'lucide-react';
 import { SiteFinancialConfig } from '@/lib/siteConfig';
+import { syncConfigToGithub } from '@/lib/githubSiteConfigSync';
+import { getStoredGitHubConfig } from '@/lib/githubClient';
+import { GitHubSyncBanner } from './GitHubSyncBanner';
 
 interface LoanMortgageTabProps {
   config: SiteFinancialConfig;
@@ -15,6 +18,13 @@ export const LoanMortgageTab: React.FC<LoanMortgageTabProps> = ({ config, onSave
   const [defaultTenure, setDefaultTenure] = useState(config.homeLoan.defaultTenureYears);
   const [successMsg, setSuccessMsg] = useState(false);
 
+  const [ghStatus, setGhStatus] = useState<{
+    state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';
+    message?: string;
+    commitSha?: string;
+    commitUrl?: string;
+  }>({ state: 'idle' });
+
   React.useEffect(() => {
     if (config.homeLoan) {
       setMinRate(config.homeLoan.primeRateMin);
@@ -26,18 +36,68 @@ export const LoanMortgageTab: React.FC<LoanMortgageTabProps> = ({ config, onSave
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave({
+
+    const newLoanData = {
       primeRateMin: Number(minRate),
       primeRateMax: Number(maxRate),
       defaultInterestRate: Number(defaultRate),
       defaultTenureYears: Number(defaultTenure),
-    });
+    };
+
+    // 1. Save locally to preview / localStorage
+    await onSave(newLoanData);
     setSuccessMsg(true);
     setTimeout(() => setSuccessMsg(false), 3000);
+
+    // 2. Commit to GitHub directly
+    const ghConfig = getStoredGitHubConfig();
+    if (!ghConfig.token || !ghConfig.token.trim()) {
+      setGhStatus({
+        state: 'fallback',
+        message:
+          'Saved to local browser storage only. Please enter and save your GitHub Personal Access Token in the top bar to commit globally to Cloudflare Pages.',
+      });
+      return;
+    }
+
+    setGhStatus({
+      state: 'saving',
+      message: 'Committing home loan benchmarks directly to GitHub (data/site-config.json)...',
+    });
+
+    try {
+      const commitRes = await syncConfigToGithub({
+        updates: { homeLoan: newLoanData },
+        commitMessage: `chore(rates): update loan benchmarks [admin] (${new Date().toLocaleDateString('en-IN')})`,
+      });
+
+      if (commitRes.success) {
+        setGhStatus({
+          state: 'success',
+          message: 'Loan benchmarks committed to GitHub! Cloudflare deployment started (~60s).',
+          commitSha: commitRes.commitSha,
+          commitUrl: commitRes.commitUrl,
+        });
+      } else {
+        setGhStatus({
+          state: 'error',
+          message: commitRes.message || commitRes.error || 'Failed to commit to GitHub.',
+        });
+      }
+    } catch (err: any) {
+      setGhStatus({
+        state: 'error',
+        message: `GitHub sync error: ${err.message || 'Request failed'}`,
+      });
+    }
   };
+
+  const isCommitting = ghStatus.state === 'saving';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <GitHubSyncBanner status={ghStatus} />
+
       <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-2xs space-y-4">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
@@ -59,62 +119,50 @@ export const LoanMortgageTab: React.FC<LoanMortgageTabProps> = ({ config, onSave
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Prime Rate Range Min (%) *
+              Prime Rate Min (% p.a.) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.05"
-                value={minRate}
-                onChange={(e) => setMinRate(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                %
-              </span>
-            </div>
+            <input
+              type="number"
+              step="0.05"
+              value={minRate}
+              onChange={(e) => setMinRate(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+            <span className="text-[10px] text-slate-400 mt-1 block">Best-tier borrower rate (e.g. 8.25%)</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Prime Rate Range Max (%) *
+              Prime Rate Max (% p.a.) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.05"
-                value={maxRate}
-                onChange={(e) => setMaxRate(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                %
-              </span>
-            </div>
+            <input
+              type="number"
+              step="0.05"
+              value={maxRate}
+              onChange={(e) => setMaxRate(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+            <span className="text-[10px] text-slate-400 mt-1 block">Standard PSU / Private bank ceiling (e.g. 9.75%)</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Calculator Default Rate (%) *
+              Default Prepayment Model Rate (% p.a.) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.05"
-                value={defaultRate}
-                onChange={(e) => setDefaultRate(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                % p.a.
-              </span>
-            </div>
+            <input
+              type="number"
+              step="0.05"
+              value={defaultRate}
+              onChange={(e) => setDefaultRate(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+            <span className="text-[10px] text-slate-400 mt-1 block">Pre-filled interest rate on Home Loan calculator</span>
           </div>
 
           <div>
@@ -135,10 +183,15 @@ export const LoanMortgageTab: React.FC<LoanMortgageTabProps> = ({ config, onSave
       <div className="flex items-center justify-end">
         <button
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || isCommitting}
           className="px-6 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          {isSaving ? (
+          {isCommitting ? (
+            <>
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Committing to GitHub...</span>
+            </>
+          ) : isSaving ? (
             <>
               <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               <span>Saving Loan Rates...</span>

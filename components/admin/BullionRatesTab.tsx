@@ -69,6 +69,16 @@ export const BullionRatesTab: React.FC<BullionRatesTabProps> = ({ config, onSave
   const [isTestingGitHub, setIsTestingGitHub] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
 
+  useEffect(() => {
+    const handleConfigChange = () => {
+      setGitHubConfig(getStoredGitHubConfig());
+    };
+    window.addEventListener('bharatcalc_github_config_changed', handleConfigChange);
+    return () => {
+      window.removeEventListener('bharatcalc_github_config_changed', handleConfigChange);
+    };
+  }, []);
+
   // GitHub Save State
   const [gitHubSyncStatus, setGitHubSyncStatus] = useState<{
     state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';

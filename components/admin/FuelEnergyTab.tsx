@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Fuel, Check, Zap } from 'lucide-react';
 import { SiteFinancialConfig } from '@/lib/siteConfig';
+import { syncConfigToGithub } from '@/lib/githubSiteConfigSync';
+import { getStoredGitHubConfig } from '@/lib/githubClient';
+import { GitHubSyncBanner } from './GitHubSyncBanner';
 
 interface FuelEnergyTabProps {
   config: SiteFinancialConfig;
@@ -19,6 +22,13 @@ export const FuelEnergyTab: React.FC<FuelEnergyTabProps> = ({ config, onSave, is
   const [evEfficiency, setEvEfficiency] = useState(config.fuelAndEv.evAvgEfficiencyKmPerKwh);
   const [successMsg, setSuccessMsg] = useState(false);
 
+  const [ghStatus, setGhStatus] = useState<{
+    state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';
+    message?: string;
+    commitSha?: string;
+    commitUrl?: string;
+  }>({ state: 'idle' });
+
   React.useEffect(() => {
     if (config.fuelAndEv) {
       setPetrol(config.fuelAndEv.petrolPricePerLitre);
@@ -34,7 +44,8 @@ export const FuelEnergyTab: React.FC<FuelEnergyTabProps> = ({ config, onSave, is
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave({
+
+    const newFuelData = {
       petrolPricePerLitre: Number(petrol),
       dieselPricePerLitre: Number(diesel),
       cngPricePerKg: Number(cng),
@@ -43,13 +54,62 @@ export const FuelEnergyTab: React.FC<FuelEnergyTabProps> = ({ config, onSave, is
       petrolAvgMileageKmpl: Number(petrolMileage),
       dieselAvgMileageKmpl: Number(dieselMileage),
       evAvgEfficiencyKmPerKwh: Number(evEfficiency),
-    });
+    };
+
+    // 1. Save locally to preview / localStorage
+    await onSave(newFuelData);
     setSuccessMsg(true);
     setTimeout(() => setSuccessMsg(false), 3000);
+
+    // 2. Commit to GitHub directly
+    const ghConfig = getStoredGitHubConfig();
+    if (!ghConfig.token || !ghConfig.token.trim()) {
+      setGhStatus({
+        state: 'fallback',
+        message:
+          'Saved to local browser storage only. Please enter and save your GitHub Personal Access Token in the top bar to commit globally to Cloudflare Pages.',
+      });
+      return;
+    }
+
+    setGhStatus({
+      state: 'saving',
+      message: 'Committing fuel rates and EV tariffs directly to GitHub (data/site-config.json)...',
+    });
+
+    try {
+      const commitRes = await syncConfigToGithub({
+        updates: { fuelAndEv: newFuelData },
+        commitMessage: `chore(rates): update fuel & EV benchmarks [admin] (${new Date().toLocaleDateString('en-IN')})`,
+      });
+
+      if (commitRes.success) {
+        setGhStatus({
+          state: 'success',
+          message: 'Fuel rates committed to GitHub! Cloudflare deployment started (~60s).',
+          commitSha: commitRes.commitSha,
+          commitUrl: commitRes.commitUrl,
+        });
+      } else {
+        setGhStatus({
+          state: 'error',
+          message: commitRes.message || commitRes.error || 'Failed to commit to GitHub.',
+        });
+      }
+    } catch (err: any) {
+      setGhStatus({
+        state: 'error',
+        message: `GitHub sync error: ${err.message || 'Request failed'}`,
+      });
+    }
   };
+
+  const isCommitting = ghStatus.state === 'saving';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <GitHubSyncBanner status={ghStatus} />
+
       <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-2xs space-y-4">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
@@ -66,117 +126,98 @@ export const FuelEnergyTab: React.FC<FuelEnergyTabProps> = ({ config, onSave, is
           {successMsg && (
             <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 animate-fade-in flex items-center gap-1">
               <Check className="w-3.5 h-3.5" />
-              <span>Saved Fuel Tariffs!</span>
+              <span>Saved Energy Rates!</span>
             </span>
           )}
         </div>
 
-        {/* Rates */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Petrol (₹/Litre) *
+              Petrol Price (₹ / Litre) *
             </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                ₹
-              </span>
-              <input
-                type="number"
-                step="0.01"
-                value={petrol}
-                onChange={(e) => setPetrol(Number(e.target.value))}
-                className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-            </div>
+            <input
+              type="number"
+              step="0.01"
+              value={petrol}
+              onChange={(e) => setPetrol(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Diesel (₹/Litre) *
+              Diesel Price (₹ / Litre) *
             </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                ₹
-              </span>
-              <input
-                type="number"
-                step="0.01"
-                value={diesel}
-                onChange={(e) => setDiesel(Number(e.target.value))}
-                className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-            </div>
+            <input
+              type="number"
+              step="0.01"
+              value={diesel}
+              onChange={(e) => setDiesel(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              CNG (₹/Kg) *
+              CNG Price (₹ / kg) *
             </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                ₹
-              </span>
-              <input
-                type="number"
-                step="0.01"
-                value={cng}
-                onChange={(e) => setCng(Number(e.target.value))}
-                className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-            </div>
+            <input
+              type="number"
+              step="0.01"
+              value={cng}
+              onChange={(e) => setCng(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="pt-2 border-t border-slate-100">
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-4 h-4 text-emerald-600" />
+            <span className="text-xs font-bold text-slate-900">Electric Vehicle (EV) Tariffs</span>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              EV Home (₹/kWh) *
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                ₹
-              </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Home Charging Tariff (₹ / kWh) *
+              </label>
               <input
                 type="number"
-                step="0.01"
+                step="0.1"
                 value={evHome}
                 onChange={(e) => setEvHome(Number(e.target.value))}
-                className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+                className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
                 required
               />
+              <span className="text-[10px] text-slate-400 mt-1 block">Domestic DISCOM slab benchmark (₹6-₹9)</span>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              EV Fast Charge (₹/kWh)
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                ₹
-              </span>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Public Commercial Fast Charging (₹ / kWh) *
+              </label>
               <input
                 type="number"
-                step="0.01"
+                step="0.1"
                 value={evCommercial}
                 onChange={(e) => setEvCommercial(Number(e.target.value))}
-                className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+                className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
                 required
               />
+              <span className="text-[10px] text-slate-400 mt-1 block">Highway &amp; commercial hub charging rates (₹14-₹19)</span>
             </div>
           </div>
         </div>
 
-        {/* Default Mileage Benchmarks */}
-        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider pt-2">
-          Vehicle Fuel Economy Defaults
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="pt-2 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Petrol Car Mileage (km/L)
+              Petrol Avg Mileage (km/L)
             </label>
             <input
               type="number"
@@ -189,7 +230,7 @@ export const FuelEnergyTab: React.FC<FuelEnergyTabProps> = ({ config, onSave, is
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Diesel Car Mileage (km/L)
+              Diesel Avg Mileage (km/L)
             </label>
             <input
               type="number"
@@ -218,10 +259,15 @@ export const FuelEnergyTab: React.FC<FuelEnergyTabProps> = ({ config, onSave, is
       <div className="flex items-center justify-end">
         <button
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || isCommitting}
           className="px-6 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          {isSaving ? (
+          {isCommitting ? (
+            <>
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Committing to GitHub...</span>
+            </>
+          ) : isSaving ? (
             <>
               <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               <span>Saving Energy Rates...</span>

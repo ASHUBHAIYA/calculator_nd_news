@@ -29,7 +29,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
           <div className="space-y-1.5 flex-1">
             <h3 className="text-base font-bold text-slate-900">Delete Explainer</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Are you sure you want to permanently delete this explainer article? This action will remove it from Supabase and search indexes.
+              Are you sure you want to permanently delete this explainer article? This action will commit the change directly to <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">data/articles.json</code> on GitHub.
             </p>
           </div>
           <button
@@ -64,12 +64,12 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             {isDeleting ? (
               <>
                 <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                <span>Deleting...</span>
+                <span>Committing to GitHub...</span>
               </>
             ) : (
               <>
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Delete Explainer</span>
+                <span>Delete &amp; Commit to GitHub</span>
               </>
             )}
           </button>

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { IndianRupee, Check } from 'lucide-react';
 import { SiteFinancialConfig } from '@/lib/siteConfig';
+import { syncConfigToGithub } from '@/lib/githubSiteConfigSync';
+import { getStoredGitHubConfig } from '@/lib/githubClient';
+import { GitHubSyncBanner } from './GitHubSyncBanner';
 
 interface TaxSalaryTabProps {
   config: SiteFinancialConfig;
@@ -17,6 +20,13 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
   const [profTax, setProfTax] = useState(config.taxAndSalary.professionalTaxDefault);
   const [successMsg, setSuccessMsg] = useState(false);
 
+  const [ghStatus, setGhStatus] = useState<{
+    state: 'idle' | 'saving' | 'success' | 'error' | 'fallback';
+    message?: string;
+    commitSha?: string;
+    commitUrl?: string;
+  }>({ state: 'idle' });
+
   React.useEffect(() => {
     if (config.taxAndSalary) {
       setStdDeduction(config.taxAndSalary.standardDeduction);
@@ -30,20 +40,70 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave({
+
+    const newTaxData = {
       standardDeduction: Number(stdDeduction),
       sec87aRebateLimit: Number(sec87aLimit),
       epfStatutoryRate: Number(epfRate),
       employerPfRate: Number(employerPfRate),
       healthEducationCess: Number(cess),
       professionalTaxDefault: Number(profTax),
-    });
+    };
+
+    // 1. Save locally to preview / localStorage
+    await onSave(newTaxData);
     setSuccessMsg(true);
     setTimeout(() => setSuccessMsg(false), 3000);
+
+    // 2. Commit to GitHub directly
+    const ghConfig = getStoredGitHubConfig();
+    if (!ghConfig.token || !ghConfig.token.trim()) {
+      setGhStatus({
+        state: 'fallback',
+        message:
+          'Saved to local browser storage only. Please enter and save your GitHub Personal Access Token in the top bar to commit globally to Cloudflare Pages.',
+      });
+      return;
+    }
+
+    setGhStatus({
+      state: 'saving',
+      message: 'Committing tax slabs and salary defaults directly to GitHub (data/site-config.json)...',
+    });
+
+    try {
+      const commitRes = await syncConfigToGithub({
+        updates: { taxAndSalary: newTaxData },
+        commitMessage: `chore(tax): update tax slabs & deduction rules [admin] (${new Date().toLocaleDateString('en-IN')})`,
+      });
+
+      if (commitRes.success) {
+        setGhStatus({
+          state: 'success',
+          message: 'Tax rules committed to GitHub! Cloudflare deployment started (~60s).',
+          commitSha: commitRes.commitSha,
+          commitUrl: commitRes.commitUrl,
+        });
+      } else {
+        setGhStatus({
+          state: 'error',
+          message: commitRes.message || commitRes.error || 'Failed to commit to GitHub.',
+        });
+      }
+    } catch (err: any) {
+      setGhStatus({
+        state: 'error',
+        message: `GitHub sync error: ${err.message || 'Request failed'}`,
+      });
+    }
   };
+
+  const isCommitting = ghStatus.state === 'saving';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <GitHubSyncBanner status={ghStatus} />
+
       <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-2xs space-y-4">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
@@ -65,10 +125,10 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Standard Deduction (Salaried) *
+              Standard Deduction (Sec 115BAC) *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -82,12 +142,12 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">Union Budget FY 2025-26</span>
+            <span className="text-[10px] text-slate-400 mt-1 block">FY 2025-26 statutory ₹75,000 for salaried class</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Section 87A Full Rebate Limit *
+              Sec 87A Zero Tax Rebate Limit *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -101,70 +161,57 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">
-              Zero Tax up to ₹{((sec87aLimit + stdDeduction) / 100000).toFixed(2)} Lakhs gross
-            </span>
+            <span className="text-[10px] text-slate-400 mt-1 block">Income threshold eligible for full 100% tax rebate (₹7,00,000)</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              EPFO Statutory Annual Interest *
+              Employee EPF Contribution Rate (%) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.01"
-                value={epfRate}
-                onChange={(e) => setEpfRate(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
-                required
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                % p.a.
-              </span>
-            </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">Official CBT Gazette rate</span>
+            <input
+              type="number"
+              step="0.1"
+              value={epfRate}
+              onChange={(e) => setEpfRate(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+            <span className="text-[10px] text-slate-400 mt-1 block">Statutory 12.0% of Basic Pay</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Employer PF Contribution Rate
+              Employer PF Contribution Rate (%) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.1"
-                value={employerPfRate}
-                onChange={(e) => setEmployerPfRate(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                % of Basic
-              </span>
-            </div>
+            <input
+              type="number"
+              step="0.1"
+              value={employerPfRate}
+              onChange={(e) => setEmployerPfRate(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+            <span className="text-[10px] text-slate-400 mt-1 block">Statutory 12.0% split into EPF + EPS pension</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Health &amp; Education Cess
+              Health &amp; Education Cess (%) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.1"
-                value={cess}
-                onChange={(e) => setCess(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                % on Tax
-              </span>
-            </div>
+            <input
+              type="number"
+              step="0.1"
+              value={cess}
+              onChange={(e) => setCess(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs font-bold focus:ring-2 focus:ring-slate-900"
+              required
+            />
+            <span className="text-[10px] text-slate-400 mt-1 block">Statutory 4.0% surcharge across all slabs</span>
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Default Professional Tax (Monthly)
+              Professional Tax Default (₹ / month) *
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
@@ -185,10 +232,15 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
       <div className="flex items-center justify-end">
         <button
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || isCommitting}
           className="px-6 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          {isSaving ? (
+          {isCommitting ? (
+            <>
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Committing to GitHub...</span>
+            </>
+          ) : isSaving ? (
             <>
               <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               <span>Saving Tax Rules...</span>
