@@ -12,6 +12,11 @@ import {
   decodeBase64Utf8,
   GitHubCommitResult,
 } from './githubClient';
+import {
+  getCachedArticles,
+  setCachedArticles,
+  sortArticlesLatestFirst,
+} from './articlesStorage';
 
 const ARTICLES_FILE_PATH = 'data/articles.json';
 const PUBLIC_ARTICLES_FILE_PATH = 'public/data/articles.json';
@@ -21,8 +26,9 @@ const PUBLIC_ARTICLES_FILE_PATH = 'public/data/articles.json';
  */
 export async function fetchArticlesFromGitHub(): Promise<{
   articles: Article[];
-  source: 'github' | 'static' | 'seed';
+  source: 'github' | 'static' | 'cache' | 'seed';
 }> {
+  const localCached = getCachedArticles();
   const config = getStoredGitHubConfig();
   const token = config.token.trim();
 
@@ -44,13 +50,20 @@ export async function fetchArticlesFromGitHub(): Promise<{
           const decoded = decodeBase64Utf8(data.content);
           const parsed = JSON.parse(decoded);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            return { articles: parsed, source: 'github' };
+            const sorted = sortArticlesLatestFirst(parsed);
+            setCachedArticles(sorted);
+            return { articles: sorted, source: 'github' };
           }
         }
       }
     } catch (err) {
-      console.warn('Failed to fetch articles from GitHub, falling back to static:', err);
+      console.warn('Failed to fetch articles from GitHub, falling back to static/cache:', err);
     }
+  }
+
+  // Check local cache
+  if (localCached && localCached.length > 0) {
+    return { articles: sortArticlesLatestFirst(localCached), source: 'cache' };
   }
 
   // Fallback: fetch bundled static file
@@ -59,7 +72,9 @@ export async function fetchArticlesFromGitHub(): Promise<{
     if (staticRes.ok) {
       const parsed = await staticRes.json();
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return { articles: parsed, source: 'static' };
+        const sorted = sortArticlesLatestFirst(parsed);
+        setCachedArticles(sorted);
+        return { articles: sorted, source: 'static' };
       }
     }
   } catch {
@@ -67,7 +82,7 @@ export async function fetchArticlesFromGitHub(): Promise<{
   }
 
   // In-memory seed
-  return { articles: INITIAL_ARTICLES, source: 'seed' };
+  return { articles: sortArticlesLatestFirst(INITIAL_ARTICLES), source: 'seed' };
 }
 
 /**
@@ -77,6 +92,10 @@ export async function commitArticlesToGitHub(
   articles: Article[],
   commitMessage: string
 ): Promise<GitHubCommitResult> {
+  // Always update local cache so the change is instantly reflected across the site
+  const sortedArticles = sortArticlesLatestFirst(articles);
+  setCachedArticles(sortedArticles);
+
   const config = getStoredGitHubConfig();
 
   if (!config.token.trim()) {
@@ -87,7 +106,7 @@ export async function commitArticlesToGitHub(
     };
   }
 
-  const jsonString = JSON.stringify(articles, null, 2);
+  const jsonString = JSON.stringify(sortedArticles, null, 2);
 
   const res = await commitFileToGithub({
     path: ARTICLES_FILE_PATH,

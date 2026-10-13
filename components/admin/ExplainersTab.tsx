@@ -10,10 +10,17 @@ import {
   Calendar,
   Layers,
   Filter,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react';
 import { Article, ArticleCategory, ARTICLE_CATEGORIES } from '@/lib/types/article';
+import { sortArticlesLatestFirst } from '@/lib/articlesStorage';
 
 import { GitHubSyncBanner } from './GitHubSyncBanner';
+
+const ADMIN_ARTICLES_PER_PAGE = 8;
 
 interface ExplainersTabProps {
   articles: Article[];
@@ -39,8 +46,12 @@ export const ExplainersTab: React.FC<ExplainersTabProps> = ({
 }) => {
   const [search, setSearch] = useState('');
   const [selectedCat, setSelectedCat] = useState<string>('All');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const filteredArticles = articles.filter((art) => {
+  // Always ensure articles are sorted latest published first
+  const sortedArticles = sortArticlesLatestFirst(articles);
+
+  const filteredArticles = sortedArticles.filter((art) => {
     const matchesCat = selectedCat === 'All' || art.category === selectedCat;
     const matchesSearch =
       !search.trim() ||
@@ -49,6 +60,14 @@ export const ExplainersTab: React.FC<ExplainersTabProps> = ({
       art.slug.toLowerCase().includes(search.toLowerCase());
     return matchesCat && matchesSearch;
   });
+
+  const totalItems = filteredArticles.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / ADMIN_ARTICLES_PER_PAGE));
+  const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
+
+  const startIndex = (safeCurrentPage - 1) * ADMIN_ARTICLES_PER_PAGE;
+  const endIndex = Math.min(startIndex + ADMIN_ARTICLES_PER_PAGE, totalItems);
+  const paginatedArticles = filteredArticles.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-6">
@@ -128,7 +147,7 @@ export const ExplainersTab: React.FC<ExplainersTabProps> = ({
                   </td>
                 </tr>
               ) : (
-                filteredArticles.map((art) => {
+                paginatedArticles.map((art) => {
                   const pubDate = new Date(art.publishedAt).toLocaleDateString('en-IN', {
                     day: 'numeric',
                     month: 'short',
@@ -194,6 +213,79 @@ export const ExplainersTab: React.FC<ExplainersTabProps> = ({
             </tbody>
           </table>
         </div>
+
+        {/* Admin Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="text-slate-500 font-medium">
+              Showing <span className="font-semibold text-slate-800">{startIndex + 1}</span> to{' '}
+              <span className="font-semibold text-slate-800">{endIndex}</span> of{' '}
+              <span className="font-semibold text-slate-800">{totalItems}</span> explainers
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setCurrentPage(1)}
+                disabled={safeCurrentPage === 1}
+                aria-label="First page"
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-white disabled:opacity-35 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              >
+                <ChevronsLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={safeCurrentPage === 1}
+                aria-label="Previous page"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold text-slate-700 hover:bg-white disabled:opacity-35 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>Prev</span>
+              </button>
+
+              <div className="flex items-center gap-1 mx-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+                  const isActive = p === safeCurrentPage;
+                  return (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => setCurrentPage(p)}
+                      className={`w-7 h-7 rounded-lg font-bold transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-slate-950 text-white shadow-xs'
+                          : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safeCurrentPage === totalPages}
+                aria-label="Next page"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold text-slate-700 hover:bg-white disabled:opacity-35 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              >
+                <span>Next</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={safeCurrentPage === totalPages}
+                aria-label="Last page"
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-white disabled:opacity-35 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              >
+                <ChevronsRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

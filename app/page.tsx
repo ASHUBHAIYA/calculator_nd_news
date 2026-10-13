@@ -26,6 +26,8 @@ import { formatINR } from '@/lib/formatters';
 import { INITIAL_ARTICLES } from '@/lib/articlesData';
 import { Article } from '@/lib/types/article';
 import { useSiteConfig } from '@/lib/siteConfig';
+import { fetchArticles } from '@/lib/supabase';
+import { sortArticlesLatestFirst } from '@/lib/articlesStorage';
 
 interface BenchmarkItem {
   id: string;
@@ -168,16 +170,16 @@ export const HomePage: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const { config } = useSiteConfig();
-  const [trendingArticles, setTrendingArticles] = useState<Article[]>(INITIAL_ARTICLES.slice(0, 3));
+  const [trendingArticles, setTrendingArticles] = useState<Article[]>(
+    sortArticlesLatestFirst(INITIAL_ARTICLES).slice(0, 3)
+  );
 
   useEffect(() => {
-    fetch('/data/articles.json')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setTrendingArticles(data.slice(0, 3));
-        } else if (data?.articles && Array.isArray(data.articles)) {
-          setTrendingArticles(data.articles.slice(0, 3));
+    fetchArticles()
+      .then(({ articles }) => {
+        if (articles && articles.length > 0) {
+          const sorted = sortArticlesLatestFirst(articles);
+          setTrendingArticles(sorted.slice(0, 3));
         }
       })
       .catch(() => {});

@@ -1,6 +1,11 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Article, ArticleCategory, RelatedCalculator, generateSlug } from './types/article';
 import { INITIAL_ARTICLES } from './articlesData';
+import {
+  getCachedArticles,
+  setCachedArticles,
+  sortArticlesLatestFirst,
+} from './articlesStorage';
 
 // Safe environment variable helper working in Vite (browser), Node.js, and Cloudflare Pages
 function getEnvVar(key: string): string {
@@ -80,6 +85,9 @@ export async function fetchArticles(
   category?: string,
   search?: string
 ): Promise<{ articles: Article[]; source: 'supabase' | 'fallback' }> {
+  // Check if localStorage has freshly published/synced articles
+  const localCached = getCachedArticles();
+
   if (supabase) {
     try {
       let query = supabase
@@ -98,8 +106,11 @@ export async function fetchArticles(
 
       const { data, error } = await query;
       if (!error && data && data.length > 0) {
+        const mapped = sortArticlesLatestFirst(data.map(mapRowToArticle));
+        // Keep cache up to date
+        setCachedArticles(mapped);
         return {
-          articles: data.map(mapRowToArticle),
+          articles: mapped,
           source: 'supabase',
         };
       }
@@ -111,46 +122,69 @@ export async function fetchArticles(
     }
   }
 
-  // Graceful fallback to bundled static data/articles.json or initial memory seed
+  // Graceful fallback to bundled static data/articles.json
+  let fullList: Article[] = [];
   try {
     const res = await fetch('/data/articles.json');
     if (res.ok) {
       const json = await res.json();
       if (Array.isArray(json) && json.length > 0) {
-        let list = json;
-        if (category && category !== 'All') {
-          list = list.filter((a: any) => a.category?.toLowerCase() === category.toLowerCase());
-        }
-        if (search && search.trim()) {
-          const q = search.trim().toLowerCase();
-          list = list.filter(
-            (a: any) =>
-              a.title?.toLowerCase().includes(q) ||
-              a.summary?.toLowerCase().includes(q) ||
-              a.fullContent?.toLowerCase().includes(q)
-          );
-        }
-        return { articles: list, source: 'fallback' };
+        fullList = json;
       }
     }
   } catch {
     // offline/static build mode
   }
 
-  // Pure in-memory fallback
-  let list = [...INITIAL_ARTICLES];
+  // If local cache exists, merge/prefer it if newer or contains more items
+  if (localCached && localCached.length > 0) {
+    if (fullList.length === 0) {
+      fullList = localCached;
+    } else {
+      // Merge unique articles by slug or id, preferring local cached version
+      const seen = new Set<string>();
+      const combined: Article[] = [];
+      for (const a of localCached) {
+        const key = a.slug || a.id;
+        if (!seen.has(key)) {
+          seen.add(key);
+          combined.push(a);
+        }
+      }
+      for (const a of fullList) {
+        const key = a.slug || a.id;
+        if (!seen.has(key)) {
+          seen.add(key);
+          combined.push(a);
+        }
+      }
+      fullList = combined;
+    }
+  }
+
+  // If still empty, fall back to initial seed
+  if (fullList.length === 0) {
+    fullList = [...INITIAL_ARTICLES];
+  }
+
+  // Always ensure sorted latest first
+  fullList = sortArticlesLatestFirst(fullList);
+
+  // Filter by category and search
+  let list = fullList;
   if (category && category !== 'All') {
-    list = list.filter((a) => a.category.toLowerCase() === category.toLowerCase());
+    list = list.filter((a) => a.category?.toLowerCase() === category.toLowerCase());
   }
   if (search && search.trim()) {
     const q = search.trim().toLowerCase();
     list = list.filter(
       (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.summary.toLowerCase().includes(q) ||
-        a.fullContent.toLowerCase().includes(q)
+        a.title?.toLowerCase().includes(q) ||
+        a.summary?.toLowerCase().includes(q) ||
+        a.fullContent?.toLowerCase().includes(q)
     );
   }
+
   return { articles: list, source: 'fallback' };
 }
 
@@ -158,6 +192,15 @@ export async function fetchArticleBySlug(
   slug: string
 ): Promise<{ article: Article | null; source: 'supabase' | 'fallback' }> {
   const cleanSlug = slug.toLowerCase().trim();
+
+  // Check local cache first for instant access
+  const localCached = getCachedArticles();
+  if (localCached) {
+    const cachedMatch = localCached.find((a) => a.slug === cleanSlug);
+    if (cachedMatch) {
+      return { article: cachedMatch, source: 'fallback' };
+    }
+  }
 
   if (supabase) {
     try {

@@ -40,6 +40,7 @@ import {
 import { Article } from '@/lib/types/article';
 import { getStoredGitHubConfig } from '@/lib/githubClient';
 import { fetchArticlesFromGitHub, commitArticlesToGitHub } from '@/lib/githubArticlesSync';
+import { setCachedArticles, sortArticlesLatestFirst } from '@/lib/articlesStorage';
 
 type AdminTab =
   | 'explainers'
@@ -144,7 +145,9 @@ export const AdminPage: React.FC = () => {
         updatedArticlesList = [created, ...articles];
       }
 
-      setArticles(updatedArticlesList);
+      const sortedList = sortArticlesLatestFirst(updatedArticlesList);
+      setArticles(sortedList);
+      setCachedArticles(sortedList);
       setIsEditorOpen(false);
       setArticleToEdit(null);
 
@@ -157,7 +160,7 @@ export const AdminPage: React.FC = () => {
         });
 
         const commitRes = await commitArticlesToGitHub(
-          updatedArticlesList,
+          sortedList,
           `chore(articles): ${articleToEdit ? 'update' : 'publish'} "${savedArticleTitle}" [admin]`
         );
 
@@ -196,7 +199,9 @@ export const AdminPage: React.FC = () => {
       const remainingArticles = articles.filter(
         (a) => a.id !== articleToDelete.id && a.slug !== articleToDelete.slug
       );
-      setArticles(remainingArticles);
+      const sortedRemaining = sortArticlesLatestFirst(remainingArticles);
+      setArticles(sortedRemaining);
+      setCachedArticles(sortedRemaining);
       setIsDeleteModalOpen(false);
 
       // Persist to GitHub data/articles.json
@@ -208,7 +213,7 @@ export const AdminPage: React.FC = () => {
         });
 
         const commitRes = await commitArticlesToGitHub(
-          remainingArticles,
+          sortedRemaining,
           `chore(articles): delete "${articleToDelete.title}" [admin]`
         );
 
