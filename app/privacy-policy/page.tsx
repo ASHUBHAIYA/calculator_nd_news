@@ -34,7 +34,7 @@ export const PrivacyPolicyPage: React.FC = () => {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900 font-display">1. Introduction &amp; Commitment to Privacy</h2>
           <p>
-            At <strong>BharatCalc</strong> (accessible at https://bharatcalc.in and associated subdomains), the privacy of our visitors is of paramount importance. This Privacy Policy outlines the types of personal information received, collected, and how it is used.
+            At <strong>BharatCalc</strong> (accessible at https://authorizetech.in/bharatcalc and associated subdomains), the privacy of our visitors is of paramount importance. This Privacy Policy outlines the types of personal information received, collected, and how it is used.
           </p>
         </section>
 
@@ -95,7 +95,7 @@ export const PrivacyPolicyPage: React.FC = () => {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900 font-display">5. GDPR &amp; CCPA Compliance Rights</h2>
           <p>
-            If you are a resident of the European Economic Area (EEA) or California (CCPA), you have specific data protection rights regarding your personal information, including the right to request access, rectification, erasure, or restriction of processing. To exercise any statutory data protection rights, please contact our Grievance Officer at <strong>grievance@bharatcalc.in</strong>.
+            If you are a resident of the European Economic Area (EEA) or California (CCPA), you have specific data protection rights regarding your personal information, including the right to request access, rectification, erasure, or restriction of processing. To exercise any statutory data protection rights, please contact our Grievance Officer at <strong>contact@authorizetech.in</strong>.
           </p>
         </section>
 
@@ -106,8 +106,8 @@ export const PrivacyPolicyPage: React.FC = () => {
           </p>
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono space-y-1">
             <div>Grievance Desk: BharatCalc Compliance Division</div>
-            <div>Email: privacy@bharatcalc.in / grievance@bharatcalc.in</div>
-            <div>Website: https://bharatcalc.in</div>
+            <div>Email: contact@authorizetech.in</div>
+            <div>Website: https://authorizetech.in/bharatcalc</div>
           </div>
         </section>
       </div>

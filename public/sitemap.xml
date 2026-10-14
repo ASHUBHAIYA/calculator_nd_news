@@ -1,41 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Hub & Homepage -->
   <url>
-    <loc>https://authorizetech.in/bharatcalc/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <loc>https://authorizetech.in/bharatcalc</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Personal Finance, Tax & Commodity Calculators -->
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/calculators/in-hand-salary</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/calculators/gold-jewelry-bill</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://authorizetech.in/bharatcalc/calculators/in-hand-salary</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://authorizetech.in/bharatcalc/calculators/home-loan-prepayment</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/calculators/commute-fuel</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/calculators/solar-rooftop</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/calculators/electricity-bill</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/calculators/sip-investment</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/calculators/fd-rd-calculator</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/calculators/inflation-calculator</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Business & Trade Calculators Suite -->
   <url>
     <loc>https://authorizetech.in/bharatcalc/business-calculators</loc>
     <lastmod>2026-10-13</lastmod>
@@ -79,38 +108,108 @@
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://authorizetech.in/bharatcalc/explainers</loc>
-    <lastmod>2026-10-12</lastmod>
+    <loc>https://authorizetech.in/bharatcalc/business-calculators/inventory-reorder-calculator</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/business-calculators/working-capital-calculator</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Educational Guides & Explainers -->
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/hyundai-bayon-india-specs-revealed-dual-12-inch-displays-perplexity-genai-assistant-15l-petrol-engine</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/breaking-bad-star-rj-mitte-dies-at-34-cause-of-death-confirmed</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/why-did-gold-prices-surge-today</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/new-tax-regime-fy-2025-26-standard-deduction-in-hand-salary</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/silver-999-vs-925-hallmark-purity-and-billing</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/petrol-vs-ev-commuting-india-daily-cost-break-even-2026</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/explainers/rbi-floating-rate-mortgage-rules-extra-emi-strategy</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/guide</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://authorizetech.in/bharatcalc/faq</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Legal & Regulatory Information Pages -->
+  <url>
     <loc>https://authorizetech.in/bharatcalc/about-us</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/contact</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/privacy-policy</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/terms-of-service</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://authorizetech.in/bharatcalc/disclaimer</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>

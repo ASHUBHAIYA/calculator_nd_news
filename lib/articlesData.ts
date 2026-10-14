@@ -68,10 +68,10 @@ When purchasing jewelry, showrooms quote a consolidated price that often conceal
   },
   {
     id: 'art-salary-tax-2025-26',
-    title: 'New Tax Regime FY 2025-26: How the ₹75,000 Standard Deduction Impacts Your In-Hand Paycheck',
+    title: 'New Tax Regime FY 2026-27: How the ₹75,000 Standard Deduction Impacts Your In-Hand Paycheck',
     slug: 'new-tax-regime-fy-2025-26-standard-deduction-in-hand-salary',
     summary:
-      'Salaried employees in FY 2025-26 benefit from an increased standard deduction of ₹75,000 under Section 115BAC, wider tax slabs, and Section 87A rebate. Explore detailed slab breakdowns, zero tax thresholds up to ₹7.75 Lakhs, and take-home salary calculations.',
+      'Salaried employees in FY 2026-27 benefit from an increased standard deduction of ₹75,000 under Section 115BAC, wider tax slabs, and Section 87A rebate. Explore detailed slab breakdowns, zero tax thresholds up to ₹7.75 Lakhs, and take-home salary calculations.',
     category: 'Tax & Salary',
     relatedCalculator: 'salary',
     sources: [
@@ -80,11 +80,11 @@ When purchasing jewelry, showrooms quote a consolidated price that often conceal
       { label: 'Employees’ Provident Fund Organisation (EPFO) Statutory Rules', url: 'https://www.epfindia.gov.in' },
     ],
     publishedAt: '2026-09-20T11:00:00.000Z',
-    updatedAt: '2026-09-23T12:00:00.000Z',
+    updatedAt: '2026-10-14T02:00:00.000Z',
     fullContent: `
-### Overview: Why FY 2025-26 Is More Favourable for Salaried Class
+### Overview: Why FY 2026-27 Is More Favourable for Salaried Class
 
-Under the statutory provisions of the Finance Act governing **Financial Year 2025-26 (Assessment Year 2026-27)**, the New Tax Regime (Section 115BAC) serves as the default income tax regime. Substantial amendments were introduced to ease middle-class tax liabilities:
+Under the statutory provisions of the Finance Act governing **Financial Year 2026-27 (Assessment Year 2027-28)**, the New Tax Regime (Section 115BAC) serves as the default income tax regime. Substantial amendments were introduced to ease middle-class tax liabilities:
 
 - **Enhanced Standard Deduction**: Hiked from ₹50,000 to **₹75,000** exclusively for salaried individuals and pensioners.
 - **Effective Zero-Tax Income Threshold**: Anyone earning a gross salary up to **₹7,75,000** pays **₹0 income tax**, combining the ₹75,000 deduction with the ₹25,000 tax rebate under Section 87A.
@@ -92,7 +92,7 @@ Under the statutory provisions of the Finance Act governing **Financial Year 202
 
 ---
 
-### FY 2025-26 Section 115BAC Slabs Table
+### FY 2026-27 Section 115BAC Slabs Table
 
 | Taxable Income Slabs (Post-Deduction) | Applicable Tax Rate | Cumulative Tax at Slab Ceiling |
 | :--- | :--- | :--- |
@@ -114,7 +114,7 @@ When companies offer a Cost to Company (CTC) package, the actual amount credited
 3. **Tax Deducted at Source (TDS)**: Your annual income tax liability divided evenly across 12 monthly pay cycles.
 4. **Gratuity & Employer Component**: Often inflated inside CTC packages as non-cash deferred retirement reserves.
 
-### Example Comparison: CTC ₹12 Lakhs vs ₹18 Lakhs in FY 2025-26
+### Example Comparison: CTC ₹12 Lakhs vs ₹18 Lakhs in FY 2026-27
 
 | Package | Standard Deduction | Taxable Income | Total Annual Tax (incl. 4% Cess) | Est. Monthly In-Hand |
 | :--- | :--- | :--- | :--- | :--- |

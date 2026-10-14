@@ -10,16 +10,16 @@ interface FaqItem {
 
 const FAQ_SECTIONS: Array<{ category: string; icon: React.ComponentType<{ className?: string }>; faqs: FaqItem[] }> = [
   {
-    category: 'Income Tax & In-Hand Salary (FY 2025-26)',
+    category: 'Income Tax & In-Hand Salary (FY 2026-27)',
     icon: IndianRupee,
     faqs: [
       {
-        question: 'What are the revised tax slabs under the Section 115BAC New Tax Regime for FY 2025-26?',
+        question: 'What are the revised tax slabs under the Section 115BAC New Tax Regime for FY 2026-27?',
         answer:
-          'Under the Union Budget for FY 2025-26 (AY 2026-27), the New Tax Regime revised slabs are: Up to ₹3,00,000: Nil (0%); ₹3,00,001 to ₹7,00,000: 5%; ₹7,00,001 to ₹10,00,000: 10%; ₹10,00,001 to ₹12,00,000: 15%; ₹12,00,001 to ₹15,00,000: 20%; and Above ₹15,00,000: 30%.',
+          'Under the Union Budget for FY 2026-27 (AY 2027-28), the New Tax Regime revised slabs are: Up to ₹3,00,000: Nil (0%); ₹3,00,001 to ₹7,00,000: 5%; ₹7,00,001 to ₹10,00,000: 10%; ₹10,00,001 to ₹12,00,000: 15%; ₹12,00,001 to ₹15,00,000: 20%; and Above ₹15,00,000: 30%.',
       },
       {
-        question: 'How much is the Standard Deduction for salaried individuals in FY 2025-26?',
+        question: 'How much is the Standard Deduction for salaried individuals in FY 2026-27?',
         answer:
           'The standard deduction for salaried employees under the New Tax Regime is ₹75,000 (increased from ₹50,000). Salaried individuals earning up to ₹7,75,000 pay zero income tax after combining the ₹75,000 standard deduction and the Section 87A rebate.',
       },
@@ -118,7 +118,7 @@ export const FaqPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <SeoHead
         title="Frequently Asked Questions (FAQ) – Indian Tax, Bullion & Utilities"
-        description="Comprehensive FAQs covering FY 2025-26 New Tax Regime slabs, Section 115BAC deductions, gold jewelry 3% GST formulas, home loan prepayments, and PM Surya Ghar solar subsidies."
+        description="Comprehensive FAQs covering FY 2026-27 New Tax Regime slabs, Section 115BAC deductions, gold jewelry 3% GST formulas, home loan prepayments, and PM Surya Ghar solar subsidies."
         canonicalPath="/faq"
         breadcrumbs={[
           { name: 'Home', path: '/' },

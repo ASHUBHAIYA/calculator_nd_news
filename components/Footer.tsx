@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="font-medium text-slate-300">
-              Statutory Accuracy Engine: Updated for FY 2025-26 & MNRE Surya Ghar Guidelines.
+              Statutory Accuracy Engine: Updated for FY 2026-27 & MNRE Surya Ghar Guidelines.
             </span>
           </div>
           <div className="flex items-center gap-6">
@@ -93,12 +93,44 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
               </li>
               <li>
                 <Link
+                  to="/calculators/sip-investment"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  SIP &amp; Mutual Fund Growth
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/calculators/fd-rd-calculator"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  FD &amp; RD Term Deposit Calculator
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/calculators/electricity-bill"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  Electricity Bill &amp; Slab Tariffs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/calculators/inflation-calculator"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  Inflation &amp; Purchasing Power
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/business-calculators"
                   className="text-emerald-400 font-semibold hover:text-white transition-colors flex items-center gap-1"
                 >
-                  <span>Business &amp; Trade Calculators</span>
+                  <span>Business &amp; Trade Suite</span>
                   <span className="text-[9px] px-1 py-0.2 bg-emerald-950 text-emerald-300 rounded border border-emerald-800">
-                    6 New
+                    8 Tools
                   </span>
                 </Link>
               </li>
@@ -214,7 +246,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenComplianceModal }) => {
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-2 sm:mt-0">
               <span className="text-[11px] text-slate-400">100% Private Client-Side Calculation</span>
               <span className="text-slate-700">•</span>
-              <span className="text-[11px] text-slate-400">Updated for FY 2025-26</span>
+              <span className="text-[11px] text-slate-400">Updated for FY 2026-27</span>
               <span className="text-slate-700">•</span>
               <span className="text-[11px] text-slate-400">Zero Registration Required</span>
             </div>

@@ -68,7 +68,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
   const silverSubtotal = rawSilverCost + silverMaking;
   const totalSilverInvoice = Math.round(silverSubtotal * 1.03 + 41.3);
 
-  // Salary estimation (FY 2025-26 rules)
+  // Salary estimation (FY 2026-27 rules)
   const estMonthlyInHand = Math.round((ctc * 0.82) / 12);
 
   // Fuel calculation
@@ -273,7 +273,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
             </div>
             <div>
               <h3 className="font-bold text-slate-900 text-sm">In-Hand Salary Quick Tool</h3>
-              <p className="text-[11px] text-slate-500">FY 2025-26 New Tax Regime</p>
+              <p className="text-[11px] text-slate-500">FY 2026-27 New Tax Regime</p>
             </div>
           </div>
           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -421,7 +421,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
           to="/calculators/in-hand-salary"
           className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-800 transition-colors"
         >
-          <span>In-Hand Salary (FY 2025-26)</span>
+          <span>In-Hand Salary (FY 2026-27)</span>
           <ArrowRight className="w-3.5 h-3.5 text-emerald-600" />
         </Link>
         <Link

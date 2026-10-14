@@ -113,7 +113,7 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
             <div>
               <h2 className="text-sm font-bold text-slate-900">Income Tax &amp; Salary Engine Defaults</h2>
               <p className="text-[11px] text-slate-500">
-                FY 2025-26 New Tax Regime (Sec 115BAC), EPFO statutory compounding rates, and deduction rules.
+                FY 2026-27 New Tax Regime (Sec 115BAC), EPFO statutory compounding rates, and deduction rules.
               </p>
             </div>
           </div>
@@ -142,7 +142,7 @@ export const TaxSalaryTab: React.FC<TaxSalaryTabProps> = ({ config, onSave, isSa
                 required
               />
             </div>
-            <span className="text-[10px] text-slate-400 mt-1 block">FY 2025-26 statutory ₹75,000 for salaried class</span>
+            <span className="text-[10px] text-slate-400 mt-1 block">FY 2026-27 statutory ₹75,000 for salaried class</span>
           </div>
 
           <div>

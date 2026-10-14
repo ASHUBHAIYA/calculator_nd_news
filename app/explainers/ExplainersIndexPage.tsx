@@ -156,7 +156,7 @@ export const ExplainersIndexPage: React.FC = () => {
     <div className="w-full pb-16">
       <SeoHead
         title="Trending Financial, Tax & Commodity Explainers | BharatCalc"
-        description="Authoritative, data-backed explainers on Indian gold surges, New Tax Regime slabs (FY 2025-26), commute fuel economies, and RBI floating mortgage rules."
+        description="Authoritative, data-backed explainers on Indian gold surges, New Tax Regime slabs (FY 2026-27), commute fuel economies, and RBI floating mortgage rules."
         canonicalPath="/explainers"
         breadcrumbs={[
           { name: 'Home', path: '/' },
@@ -176,7 +176,7 @@ export const ExplainersIndexPage: React.FC = () => {
                 Trending Financial & Commodity Explainers
               </h1>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                Clear, transparent deep dives decoding gold price surges, FY 2025-26 tax slabs, fuel economies, and mortgage amortizations. Every explainer is paired with an interactive calculator.
+                Clear, transparent deep dives decoding gold price surges, FY 2026-27 tax slabs, fuel economies, and mortgage amortizations. Every explainer is paired with an interactive calculator.
               </p>
             </div>
           </div>

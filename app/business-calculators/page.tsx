@@ -8,6 +8,8 @@ import {
   Scale,
   CreditCard,
   FileText,
+  Boxes,
+  Wallet,
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
@@ -102,6 +104,34 @@ export const BUSINESS_CALCULATOR_ITEMS = [
     badgeColor: 'bg-teal-50 text-teal-800 border-teal-200',
     stats: 'Intra vs Inter-State Splitting',
   },
+  {
+    id: 'inventory-reorder',
+    title: 'Inventory Reorder & Safety Stock Calculator',
+    shortTitle: 'Inventory ROP',
+    subtitle: 'Safety Stock, Lead Time Demand & Wilson EOQ',
+    description:
+      'Calculate reorder points (ROP), buffer safety stock, and suggested batch quantities (EOQ) to prevent stockouts while controlling inventory holding costs.',
+    path: '/business-calculators/inventory-reorder-calculator',
+    icon: Boxes,
+    accentColor: 'from-cyan-500 to-blue-700',
+    badge: 'Supply Chain Engine',
+    badgeColor: 'bg-cyan-50 text-cyan-800 border-cyan-200',
+    stats: 'Lead Time × Demand + Safety',
+  },
+  {
+    id: 'working-capital',
+    title: 'Working Capital & Current Ratio Calculator',
+    shortTitle: 'Working Capital',
+    subtitle: 'Net Working Capital, Current & Quick Liquidity Ratios',
+    description:
+      'Calculate Net Working Capital (NWC), Current Ratio, and Quick Ratio for Indian MSMEs and trading businesses to monitor operational solvency.',
+    path: '/business-calculators/working-capital-calculator',
+    icon: Wallet,
+    accentColor: 'from-emerald-500 to-teal-800',
+    badge: 'Solvency & Liquidity',
+    badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    stats: 'Benchmark Current Ratio 1.33–2.0',
+  },
 ];
 
 export const BusinessCalculatorsHubPage: React.FC = () => {
@@ -126,7 +156,7 @@ export const BusinessCalculatorsHubPage: React.FC = () => {
     <div className="w-full pb-16">
       <SeoHead
         title="Business & Trade Calculators for Indian Retailers & Wholesalers | BharatCalc"
-        description="Free, high-performance business calculators for India: Wholesale Profit Margins, Supplier Scheme Comparisons, Landed Costs, Margin vs Markup, Credit Sale Cost, and GST-Inclusive Prices."
+        description="Free, high-performance business calculators for India: Wholesale Margins, Supplier Schemes, Landed Costs, Margin vs Markup, Credit Sales, GST Prices, Inventory Reorder, and Working Capital."
         canonicalPath="/business-calculators"
         breadcrumbs={[
           { name: 'Home', path: '/' },

@@ -8,6 +8,13 @@ import { calculateGoldInvoice } from '../gold';
 import { calculateLoanPrepayment, calculateMonthlyEMI } from '../loan';
 import { calculateFuelSpend } from '../fuel';
 import { calculateSolarSubsidy, calculateCentralSubsidy } from '../solar';
+import { calculateInventoryReorder } from '../inventory';
+import { calculateWorkingCapital } from '../workingCapital';
+import { calculateElectricityBill } from '../electricity';
+import { calculateSipGrowth } from '../investment';
+import { calculateDeposit } from '../deposit';
+import { calculateInflation } from '../inflation';
+import { buildCanonicalUrl } from '../../seoUtils';
 import { formatINR, parseInput } from '../../formatters';
 
 export interface TestResult {
@@ -57,7 +64,7 @@ export function runAllUnitTests(): TestResult[] {
   );
 
   // -------------------------------------------------------------
-  // 2. Salary Engine Tests (FY 2025-26 New Tax Regime)
+  // 2. Salary Engine Tests (FY 2026-27 New Tax Regime)
   // -------------------------------------------------------------
   // Test A: Standard Deduction of ₹75,000
   const sal7L = calculateInHandSalary({ annualCTC: 750000, epfType: 'none', professionalTaxAnnual: 0 });
@@ -67,7 +74,7 @@ export function runAllUnitTests(): TestResult[] {
     sal7L.standardDeduction === 75000,
     sal7L.standardDeduction,
     75000,
-    'Standard deduction must be exactly ₹75,000 under FY 2025-26 New Regime'
+    'Standard deduction must be exactly ₹75,000 under FY 2026-27 New Regime'
   );
 
   // Test B: Zero Tax on Gross <= ₹7.75 Lakhs due to Standard Deduction + Sec 87A
@@ -234,6 +241,167 @@ export function runAllUnitTests(): TestResult[] {
     calculateCentralSubsidy(5),
     78000,
     '3 kW+ residential installations must cap at ₹78,000 central assistance'
+  );
+
+  // -------------------------------------------------------------
+  // 7. SEO Canonical URL Generation Tests
+  // -------------------------------------------------------------
+  assert(
+    'Canonical URL for Home Page',
+    'SEO Engine',
+    buildCanonicalUrl('/') === 'https://authorizetech.in/bharatcalc',
+    buildCanonicalUrl('/'),
+    'https://authorizetech.in/bharatcalc',
+    'Root path must resolve to base production URL without trailing slash'
+  );
+
+  assert(
+    'Canonical URL for Subpage',
+    'SEO Engine',
+    buildCanonicalUrl('/calculators/in-hand-salary') === 'https://authorizetech.in/bharatcalc/calculators/in-hand-salary',
+    buildCanonicalUrl('/calculators/in-hand-salary'),
+    'https://authorizetech.in/bharatcalc/calculators/in-hand-salary',
+    'Subpage path must resolve with /bharatcalc base'
+  );
+
+  assert(
+    'Canonical URL Strips Accidental Trailing Slash',
+    'SEO Engine',
+    buildCanonicalUrl('/business-calculators/') === 'https://authorizetech.in/bharatcalc/business-calculators',
+    buildCanonicalUrl('/business-calculators/'),
+    'https://authorizetech.in/bharatcalc/business-calculators',
+    'Trailing slash must be stripped for consistency'
+  );
+
+  assert(
+    'Canonical URL Prevents Duplicate /bharatcalc prefix',
+    'SEO Engine',
+    buildCanonicalUrl('/bharatcalc/explainers') === 'https://authorizetech.in/bharatcalc/explainers',
+    buildCanonicalUrl('/bharatcalc/explainers'),
+    'https://authorizetech.in/bharatcalc/explainers',
+    'Duplicate /bharatcalc prefix must be stripped cleanly'
+  );
+
+  // -------------------------------------------------------------
+  // 8. Inventory Reorder Calculator Tests
+  // -------------------------------------------------------------
+  const inv = calculateInventoryReorder({
+    averageDailyDemand: 40,
+    leadTimeDays: 10,
+    safetyStock: 50,
+  });
+  // Lead time demand: 40 * 10 = 400. ROP: 400 + 50 = 450.
+  assert(
+    'Inventory Reorder Point Calculation',
+    'Inventory Engine',
+    inv.leadTimeDemand === 400 && inv.reorderPoint === 450,
+    inv.reorderPoint,
+    450,
+    'ROP must equal (Demand × Lead Time) + Safety Stock'
+  );
+
+  // -------------------------------------------------------------
+  // 9. Working Capital Calculator Tests
+  // -------------------------------------------------------------
+  const wc = calculateWorkingCapital({
+    cashAndBank: 200000,
+    accountsReceivable: 300000,
+    inventory: 500000,
+    accountsPayable: 400000,
+    shortTermDebt: 100000,
+    accruedExpenses: 0,
+  });
+  // Current Assets = 10L, Current Liabilities = 5L. NWC = 5L, Ratio = 2.0.
+  assert(
+    'Working Capital & Current Ratio Calculation',
+    'Working Capital Engine',
+    wc.netWorkingCapital === 500000 && wc.currentRatio === 2.0,
+    { nwc: wc.netWorkingCapital, ratio: wc.currentRatio },
+    { nwc: 500000, ratio: 2.0 },
+    'Net working capital must equal Assets - Liabilities, and ratio = Assets / Liabilities'
+  );
+
+  // -------------------------------------------------------------
+  // 10. Electricity Bill Calculator Tests
+  // -------------------------------------------------------------
+  const elec = calculateElectricityBill({
+    consumptionKWh: 150,
+    fixedCharges: 50,
+    dutyPercentage: 5,
+    fppcaRatePerUnit: 0.20,
+    tariffSlabs: [
+      { min: 0, max: 100, rate: 3.0 },
+      { min: 100, max: 200, rate: 5.0 },
+    ],
+  });
+  // 100 * 3 = 300; 50 * 5 = 250. Energy = 550.
+  // Fixed = 50. FPPCA = 150 * 0.2 = 30. Subtotal = 630.
+  // Duty = 5% of 630 = 31.5. Total = 661.5 -> 662.
+  assert(
+    'Electricity Telescopic Slab Math',
+    'Electricity Engine',
+    elec.totalEnergyCharges === 550 && elec.totalEstimatedBill === 662,
+    { energy: elec.totalEnergyCharges, total: elec.totalEstimatedBill },
+    { energy: 550, total: 662 },
+    'Telescopic slab charging must correctly compute slab progression and fixed/duty charges'
+  );
+
+  // -------------------------------------------------------------
+  // 11. SIP Investment Calculator Tests
+  // -------------------------------------------------------------
+  const sip = calculateSipGrowth({
+    monthlyInvestment: 10000,
+    annualReturnRate: 12,
+    tenureYears: 1, // 1 year = 12 months
+  });
+  // Total invested = 10,000 * 12 = 120,000.
+  // At 12% p.a. (1% monthly), 10,000 monthly for 12 months annuity-due ~ 128,093.
+  assert(
+    'SIP Growth Compounding Math',
+    'SIP Engine',
+    sip.totalInvested === 120000 && sip.maturityValue > 125000,
+    sip.maturityValue,
+    'Maturity > ₹1,25,000',
+    'SIP 12 months at 12% p.a. must produce compounding returns above invested principal'
+  );
+
+  // -------------------------------------------------------------
+  // 12. FD & RD Calculator Tests
+  // -------------------------------------------------------------
+  const fd = calculateDeposit({
+    depositType: 'fixed',
+    amount: 100000,
+    interestRate: 8.0,
+    tenureMonths: 12,
+    compoundingFrequency: 'quarterly',
+  });
+  // P = 100,000, r = 8%, quarterly (2% per quarter), 4 quarters -> 100000 * (1.02)^4 = 108,243.21 -> 108,243.
+  assert(
+    'Fixed Deposit Quarterly Compounding',
+    'Deposit Engine',
+    fd.maturityAmount === 108243,
+    fd.maturityAmount,
+    108243,
+    'FD 100k at 8% quarterly for 1 year must mature to exactly ₹1,08,243'
+  );
+
+  // -------------------------------------------------------------
+  // 13. Inflation Calculator Tests
+  // -------------------------------------------------------------
+  const inf = calculateInflation({
+    amount: 100000,
+    annualInflationRate: 10,
+    tenureYears: 2,
+    mode: 'future_cost',
+  });
+  // 100,000 * (1.1)^2 = 121,000.
+  assert(
+    'Inflation Future Cost Compounding',
+    'Inflation Engine',
+    inf.projectedFutureCost === 121000 && inf.absoluteCostIncrease === 21000,
+    inf.projectedFutureCost,
+    121000,
+    '100k at 10% annual inflation over 2 years must compound to ₹1,21,000'
   );
 
   return results;

@@ -31,7 +31,7 @@ interface ExplainerEditorModalProps {
 const CALCULATOR_OPTIONS: Array<{ value: RelatedCalculator; label: string }> = [
   { value: 'none', label: 'None (Pure Editorial - No Embedded Calculator)' },
   { value: 'gold', label: 'Gold & Silver Jewelry Bill Calculator' },
-  { value: 'salary', label: 'In-Hand Salary Calculator (FY 2025-26)' },
+  { value: 'salary', label: 'In-Hand Salary Calculator (FY 2026-27)' },
   { value: 'loan', label: 'Home Loan Prepayment Saver' },
   { value: 'fuel', label: 'Commute Fuel vs EV Calculator' },
   { value: 'solar', label: 'PM Surya Ghar Solar Rooftop Calculator' },

@@ -155,16 +155,16 @@ export const ContactPage: React.FC = () => {
             </h3>
             <div className="space-y-3 text-xs text-slate-600">
               <div>
-                <div className="font-semibold text-slate-900">General & Editorial Inquiries:</div>
-                <div className="font-mono text-emerald-700 mt-0.5">editorial@bharatcalc.in</div>
+                <div className="font-semibold text-slate-900">General, Editorial & Technical Inquiries:</div>
+                <a href="mailto:contact@authorizetech.in" className="font-mono text-emerald-700 hover:underline mt-0.5 block">
+                  contact@authorizetech.in
+                </a>
               </div>
               <div>
-                <div className="font-semibold text-slate-900">Technical & Statutory Desk:</div>
-                <div className="font-mono text-emerald-700 mt-0.5">support@bharatcalc.in</div>
-              </div>
-              <div>
-                <div className="font-semibold text-slate-900">Grievance & Privacy Officer:</div>
-                <div className="font-mono text-emerald-700 mt-0.5">grievance@bharatcalc.in</div>
+                <div className="font-semibold text-slate-900">Grievance, Privacy & Statutory Desk:</div>
+                <a href="mailto:contact@authorizetech.in" className="font-mono text-emerald-700 hover:underline mt-0.5 block">
+                  contact@authorizetech.in
+                </a>
               </div>
             </div>
           </div>

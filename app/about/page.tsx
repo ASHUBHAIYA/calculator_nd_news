@@ -8,7 +8,7 @@ export const AboutPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <SeoHead
         title="About BharatCalc – Mission, Team & Statutory Accuracy Policy"
-        description="Learn about BharatCalc, India's premier open financial and utility calculation suite. Built with 100% client-side privacy, official Union Budget FY 2025-26 rules, and BIS Hallmarking standards."
+        description="Learn about BharatCalc, India's premier open financial and utility calculation suite. Built with 100% client-side privacy, official Union Budget FY 2026-27 rules, and BIS Hallmarking standards."
         canonicalPath="/about-us"
         breadcrumbs={[
           { name: 'Home', path: '/' },
@@ -46,7 +46,7 @@ export const AboutPage: React.FC = () => {
           <ul className="space-y-2.5 pt-2">
             <li className="flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <span><strong>Income Tax Act (Section 115BAC):</strong> Updated for FY 2025-26 with the ₹75,000 standard deduction, ₹7 Lakh Section 87A rebate, marginal relief, and EPF/PT rules.</span>
+              <span><strong>Income Tax Act (Section 115BAC):</strong> Updated for FY 2026-27 with the ₹75,000 standard deduction, ₹7 Lakh Section 87A rebate, marginal relief, and EPF/PT rules.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />

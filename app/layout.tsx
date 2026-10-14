@@ -7,11 +7,11 @@ import { ComplianceModal, ComplianceTab } from '@/components/ComplianceModal';
 export const metadata = {
   title: 'BharatCalc – Indian Financial & Utility Calculators',
   description:
-    'Modern, high-performance financial and utility calculators for India: In-Hand Salary (FY 2025-26), Gold Jewelry Invoice, Home Loan Prepayment, Fuel Spend, and PM Surya Ghar Solar Subsidy.',
+    'Modern, high-performance financial and utility calculators for India: In-Hand Salary (FY 2026-27), Gold Jewelry Invoice, Home Loan Prepayment, Fuel Spend, and PM Surya Ghar Solar Subsidy.',
   keywords: [
     'BharatCalc',
     'In-Hand Salary Calculator',
-    'New Tax Regime FY 2025-26',
+    'New Tax Regime FY 2026-27',
     'Gold GST Calculator',
     'Home Loan Prepayment',
     'PM Surya Ghar Solar Subsidy',

@@ -60,7 +60,7 @@ export const RunningTickerBanner: React.FC = () => {
     },
     {
       id: 't-tax-deduction',
-      label: 'Standard Deduction FY 2025-26',
+      label: 'Standard Deduction FY 2026-27',
       value: formatBenchmarkINR(stdDeduction),
       delta: 'Sec 115BAC',
       isBullion: false,

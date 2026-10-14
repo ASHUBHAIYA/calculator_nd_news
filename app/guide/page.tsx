@@ -39,7 +39,7 @@ export const GuidePage: React.FC = () => {
             <span>Taxation & Salary Engineering</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-950 font-display">
-            Mastering the FY 2025-26 New Tax Regime (Section 115BAC)
+            Mastering the FY 2026-27 New Tax Regime (Section 115BAC)
           </h2>
           <p className="text-slate-600 text-sm leading-relaxed">
             The Union Budget enhanced the default New Tax Regime to make it universally lucrative for middle-income taxpayers. Key statutory pillars include:

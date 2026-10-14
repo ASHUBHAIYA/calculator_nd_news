@@ -24,6 +24,12 @@ import { LandedCostPage } from '@/app/business-calculators/landed-cost-calculato
 import { MarginVsMarkupPage } from '@/app/business-calculators/margin-vs-markup-calculator/page';
 import { CreditSaleCostPage } from '@/app/business-calculators/credit-sale-cost-calculator/page';
 import { GstInclusivePricePage } from '@/app/business-calculators/gst-inclusive-price-calculator/page';
+import { InventoryReorderPage } from '@/app/business-calculators/inventory-reorder-calculator/page';
+import { WorkingCapitalPage } from '@/app/business-calculators/working-capital-calculator/page';
+import { ElectricityBillPage } from '@/app/calculators/electricity-bill/page';
+import { SipInvestmentPage } from '@/app/calculators/sip-investment/page';
+import { FdRdCalculatorPage } from '@/app/calculators/fd-rd-calculator/page';
+import { InflationCalculatorPage } from '@/app/calculators/inflation-calculator/page';
 
 /**
  * Automatically scrolls window to top upon navigating to any route
@@ -50,6 +56,10 @@ export default function App() {
           <Route path="/calculators/home-loan-prepayment" element={<HomeLoanPrepaymentPage />} />
           <Route path="/calculators/commute-fuel" element={<CommuteFuelPage />} />
           <Route path="/calculators/solar-rooftop" element={<SolarRooftopPage />} />
+          <Route path="/calculators/electricity-bill" element={<ElectricityBillPage />} />
+          <Route path="/calculators/sip-investment" element={<SipInvestmentPage />} />
+          <Route path="/calculators/fd-rd-calculator" element={<FdRdCalculatorPage />} />
+          <Route path="/calculators/inflation-calculator" element={<InflationCalculatorPage />} />
           <Route path="/business-calculators" element={<BusinessCalculatorsHubPage />} />
           <Route path="/business-calculators/wholesale-profit-margin-calculator" element={<WholesaleProfitMarginPage />} />
           <Route path="/business-calculators/supplier-scheme-calculator" element={<SupplierSchemePage />} />
@@ -57,6 +67,8 @@ export default function App() {
           <Route path="/business-calculators/margin-vs-markup-calculator" element={<MarginVsMarkupPage />} />
           <Route path="/business-calculators/credit-sale-cost-calculator" element={<CreditSaleCostPage />} />
           <Route path="/business-calculators/gst-inclusive-price-calculator" element={<GstInclusivePricePage />} />
+          <Route path="/business-calculators/inventory-reorder-calculator" element={<InventoryReorderPage />} />
+          <Route path="/business-calculators/working-capital-calculator" element={<WorkingCapitalPage />} />
           <Route path="/explainers" element={<ExplainersIndexPage />} />
           <Route path="/explainers/:slug" element={<ExplainerDetailPage />} />
           <Route path="/about-us" element={<AboutPage />} />

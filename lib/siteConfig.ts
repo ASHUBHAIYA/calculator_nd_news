@@ -40,7 +40,7 @@ export interface SiteFinancialConfig {
     cities: CityBullionRateConfig[];
   };
 
-  // 2. Tax & Salary Engine (FY 2025-26 Union Budget)
+  // 2. Tax & Salary Engine (FY 2026-27 Union Budget)
   taxAndSalary: {
     standardDeduction: number; // ₹75,000
     sec87aRebateLimit: number; // ₹7,00,000 taxable limit
@@ -120,11 +120,11 @@ export const DEFAULT_BENCHMARKS: BenchmarkCardConfig[] = [
   },
   {
     id: 'std-deduction',
-    label: 'Standard Deduction (FY 2025-26)',
+    label: 'Standard Deduction (FY 2026-27)',
     value: '₹75,000',
     delta: 'Sec 115BAC',
     isPositive: true,
-    category: 'FY 2025-26',
+    category: 'FY 2026-27',
   },
   {
     id: 'surya-ghar',

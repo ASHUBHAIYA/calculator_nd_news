@@ -19,6 +19,8 @@ import {
   BookOpen,
   Clock,
   Briefcase,
+  Landmark,
+  TrendingDown,
 } from 'lucide-react';
 import { AdBanner } from '@/components/AdBanner';
 import { BullionTicker } from '@/components/BullionTicker';
@@ -74,11 +76,11 @@ const INITIAL_BENCHMARKS: BenchmarkItem[] = [
   },
   {
     id: 'std-deduction',
-    label: 'Standard Deduction (FY 2025-26)',
+    label: 'Standard Deduction (FY 2026-27)',
     value: '₹75,000',
     delta: 'Sec 115BAC',
     isPositive: true,
-    category: 'FY 2025-26',
+    category: 'FY 2026-27',
   },
   {
     id: 'surya-ghar',
@@ -102,7 +104,7 @@ const CALCULATOR_CARDS = [
   {
     id: 'salary',
     title: 'In-Hand Salary Calculator',
-    subtitle: 'FY 2025-26 New Tax Regime Engine',
+    subtitle: 'FY 2026-27 New Tax Regime Engine',
     description:
       'Compute accurate monthly take-home from CTC with the enhanced ₹75,000 standard deduction, Section 87A rebate up to ₹7 Lakhs, and EPF/PT rules.',
     href: '/calculators/in-hand-salary',
@@ -165,17 +167,69 @@ const CALCULATOR_CARDS = [
     stats: '25-Year Cumulative Savings Matrix',
   },
   {
+    id: 'electricity',
+    title: 'Electricity Bill & Slab Tariffs',
+    subtitle: 'Telescopic Slabs & Energy Charges',
+    description:
+      'Calculate monthly electricity bills with multi-tier telescopic slab rates, configurable DISCOM tariffs, fixed meter charges, and fuel surcharges.',
+    href: '/calculators/electricity-bill',
+    icon: Zap,
+    accentColor: 'from-amber-500 to-yellow-600',
+    badge: 'Telescopic Slabs',
+    badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+    stats: 'Configurable Discom Tariffs',
+  },
+  {
+    id: 'sip',
+    title: 'SIP & Investment Growth',
+    subtitle: 'Mutual Fund Compounding & Step-Up',
+    description:
+      'Model monthly mutual fund compounding, total wealth expansion, and annual step-up top-up across 5 to 30 year wealth creation horizons.',
+    href: '/calculators/sip-investment',
+    icon: TrendingUp,
+    accentColor: 'from-teal-500 to-emerald-700',
+    badge: 'Wealth Compounding',
+    badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
+    stats: 'Annuity-Due Monthly Compounding',
+  },
+  {
+    id: 'deposit',
+    title: 'FD & RD Calculator',
+    subtitle: 'Fixed & Recurring Deposit Returns',
+    description:
+      'Compute quarterly compounding term deposit returns, senior citizen interest rate bonuses (+0.5%), and Section 194A TDS thresholds for Indian banks.',
+    href: '/calculators/fd-rd-calculator',
+    icon: Landmark,
+    accentColor: 'from-blue-600 to-indigo-800',
+    badge: 'RBI Formulations',
+    badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
+    stats: 'Quarterly Compounding Standards',
+  },
+  {
+    id: 'inflation',
+    title: 'Inflation & Purchasing Power',
+    subtitle: 'Future Cost & Purchasing Erosion',
+    description:
+      'Project future living costs and purchasing power erosion under constant annual inflation rates. Plan retirement corpus and lifestyle goals.',
+    href: '/calculators/inflation-calculator',
+    icon: TrendingDown,
+    accentColor: 'from-rose-500 to-red-700',
+    badge: 'Purchasing Power',
+    badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+    stats: 'Constant Compounding Projections',
+  },
+  {
     id: 'business',
     title: 'Business & Trade Calculators',
-    subtitle: '6 Wholesale, Vendor Scheme & GST Engines',
+    subtitle: '8 Wholesale, Inventory & Finance Tools',
     description:
-      'Engineered for Indian retailers, distributors & MSMEs: Wholesale Margins, "Buy 10 Get 1" Schemes, Landed Costs, Margin vs Markup, Credit Drag, and GST Invoicing.',
+      'Engineered for Indian retailers, distributors & MSMEs: Wholesale Margins, Supplier Schemes, Landed Costs, Margin vs Markup, Credit Drag, GST Invoicing, Inventory ROP, and Working Capital.',
     href: '/business-calculators',
     icon: Briefcase,
     accentColor: 'from-teal-600 to-emerald-800',
-    badge: '6 New Tools',
+    badge: '8 Trade Engines',
     badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
-    stats: 'B2B Trade & Retail Suite',
+    stats: 'B2B Trade & MSME Suite',
   },
 ];
 
@@ -207,15 +261,15 @@ export const HomePage: React.FC = () => {
   const HOME_FAQS = [
     {
       q: 'What is BharatCalc and how are calculations kept accurate with Indian regulations?',
-      a: 'BharatCalc is a high-performance suite of financial, tax, and consumer utility calculators tailored specifically for India. Every algorithm is continuously calibrated against statutory Indian regulatory mandates, including Ministry of Finance FY 2025-26 income tax amendments (Section 115BAC), RBI floating-rate prepayment guidelines, Bureau of Indian Standards (BIS) gold & silver hallmarking rules, and MNRE PM Surya Ghar subsidy guidelines.',
+      a: 'BharatCalc is a high-performance suite of financial, tax, and consumer utility calculators tailored specifically for India. Every algorithm is continuously calibrated against statutory Indian regulatory mandates, including Ministry of Finance FY 2026-27 income tax amendments (Section 115BAC), RBI floating-rate prepayment guidelines, Bureau of Indian Standards (BIS) gold & silver hallmarking rules, and MNRE PM Surya Ghar subsidy guidelines.',
     },
     {
       q: 'Why are gold prices in India different across Yahoo Finance, GoldAPI, and local jewelry showrooms?',
       a: 'Precious metal prices in India depend on several regulatory layers: (1) International OTC Spot vs COMEX Futures, (2) Statutory Indian Customs Import Duty (reduced to 6% in Budget 2024), (3) Local bullion association city premiums, (4) Showroom making charges (typically 8%–18%), and (5) Statutory 3% GST on jewelry. BharatCalc provides live institutional spot and domestic import-duty adjusted feeds so you know the exact pure bullion benchmark before negotiating at the showroom.',
     },
     {
-      q: 'How does the enhanced ₹75,000 standard deduction under the New Tax Regime affect take-home salary in FY 2025-26?',
-      a: 'Under the New Tax Regime for FY 2025-26 (Section 115BAC), the standard deduction for salaried employees is ₹75,000. In addition, the 5% tax bracket covers ₹3L–₹7L, 10% covers ₹7L–₹10L, and 15% covers ₹10L–₹12L. Combined with the Section 87A full rebate for taxable income up to ₹7 Lakhs, individuals earning up to ₹7,75,000 pay zero income tax, while higher earners save up to ₹17,500 annually in taxes.',
+      q: 'How does the enhanced ₹75,000 standard deduction under the New Tax Regime affect take-home salary in FY 2026-27?',
+      a: 'Under the New Tax Regime for FY 2026-27 (Section 115BAC), the standard deduction for salaried employees is ₹75,000. In addition, the 5% tax bracket covers ₹3L–₹7L, 10% covers ₹7L–₹10L, and 15% covers ₹10L–₹12L. Combined with the Section 87A full rebate for taxable income up to ₹7 Lakhs, individuals earning up to ₹7,75,000 pay zero income tax, while higher earners save up to ₹17,500 annually in taxes.',
     },
     {
       q: 'How can paying 1 extra EMI per year cut a 20-year home loan down to 12 years?',
@@ -235,7 +289,7 @@ export const HomePage: React.FC = () => {
     <div className="flex flex-col w-full">
       <SeoHead
         title="BharatCalc – Fast Indian Financial, Tax & Utility Calculators"
-        description="Free, high-performance financial calculators for India: In-Hand Salary (FY 2025-26), Gold Jewelry 3% GST Bills, Home Loan Prepayment Saver, Fuel Spend, and PM Surya Ghar Solar Subsidy."
+        description="Free, high-performance financial, energy, and trade calculators for India: In-Hand Salary (FY 2026-27), Gold Jewelry 3% GST Bills, Home Loans, Electricity Slabs, SIP Growth, and Trade Suite."
         canonicalPath="/"
         breadcrumbs={[{ name: 'Home', path: '/' }]}
         faqs={HOME_FAQS}
@@ -256,7 +310,7 @@ export const HomePage: React.FC = () => {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
-                Calculate your true In-Hand Salary under the revised FY 2025-26 New Tax Regime, decode jewelers&apos; 3% GST bills, save ₹10+ Lakhs on Home Loans, and compute PM Surya Ghar rooftop solar subsidies with 100% mathematical fidelity.
+                Calculate your true In-Hand Salary under the revised FY 2026-27 New Tax Regime, decode jewelers&apos; 3% GST bills, save ₹10+ Lakhs on Home Loans, and compute PM Surya Ghar rooftop solar subsidies with 100% mathematical fidelity.
               </p>
 
               <div className="flex flex-wrap gap-4 pt-2">
@@ -284,7 +338,7 @@ export const HomePage: React.FC = () => {
               <div className="pt-4 flex flex-wrap items-center gap-5 text-xs text-slate-600 border-t border-slate-200/80">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>FY 2025-26 Slabs & ₹75k Deduction</span>
+                  <span>FY 2026-27 Slabs & ₹75k Deduction</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -313,7 +367,7 @@ export const HomePage: React.FC = () => {
                     </div>
                   </div>
                   <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md">
-                    FY 2025-26
+                    FY 2026-27
                   </span>
                 </div>
 
@@ -352,7 +406,7 @@ export const HomePage: React.FC = () => {
                     <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                       <span className="text-[11px] text-slate-500 block">Standard Deduction</span>
                       <span className="text-lg font-black text-emerald-700 font-mono">₹75,000</span>
-                      <span className="text-[10px] text-slate-500 block mt-0.5">FY 2025-26 Deduction</span>
+                      <span className="text-[10px] text-slate-500 block mt-0.5">FY 2026-27 Deduction</span>
                     </div>
                   </div>
 
@@ -517,7 +571,7 @@ export const HomePage: React.FC = () => {
               </div>
               <h3 className="font-bold text-base text-slate-900">Statutory Tax & Regulatory Accuracy</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Calculators are calibrated strictly with official Indian statutory mandates — including FY 2025-26 Section 115BAC slabs, ₹75,000 standard deduction, Section 87A marginal rebate, BIS hallmarking rules, and PM Surya Ghar central subsidies.
+                Calculators are calibrated strictly with official Indian statutory mandates — including FY 2026-27 Section 115BAC slabs, ₹75,000 standard deduction, Section 87A marginal rebate, BIS hallmarking rules, and PM Surya Ghar central subsidies.
               </p>
             </div>
 

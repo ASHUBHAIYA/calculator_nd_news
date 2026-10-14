@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { buildCanonicalUrl, PRODUCTION_DOMAIN, BASE_PATH } from '@/lib/seoUtils';
 
 interface FaqItem {
   q: string;
@@ -22,6 +23,7 @@ interface SeoHeadProps {
   faqs?: FaqItem[];
   applicationCategory?: string;
   newsArticle?: NewsArticleSchema;
+  noindex?: boolean;
 }
 
 export const SeoHead: React.FC<SeoHeadProps> = ({
@@ -32,6 +34,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
   faqs = [],
   applicationCategory = 'FinanceApplication',
   newsArticle,
+  noindex = false,
 }) => {
   useEffect(() => {
     // 1. Update Title & Meta Tags
@@ -55,21 +58,43 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
     setMeta('description', description);
     setMeta('og:title', title, true);
     setMeta('og:description', description, true);
+    setMeta('og:site_name', 'BharatCalc', true);
+    setMeta('og:type', newsArticle ? 'article' : 'website', true);
+    setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', title);
     setMeta('twitter:description', description);
 
-    // Canonical link
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://bharatcalc.in';
-    const fullUrl = `${origin}${canonicalPath}`;
+    // Robots meta directive
+    if (noindex) {
+      setMeta('robots', 'noindex, nofollow');
+    } else {
+      setMeta('robots', 'index, follow');
+    }
+
+    // Absolute Canonical URL generation
+    const fullUrl = buildCanonicalUrl(canonicalPath);
     setMeta('og:url', fullUrl, true);
 
-    let linkCanonical = document.querySelector('link[rel="canonical"]');
-    if (!linkCanonical) {
-      linkCanonical = document.createElement('link');
-      linkCanonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(linkCanonical);
+    // Deduplicate & set canonical tag
+    const existingCanonicals = document.querySelectorAll('link[rel="canonical"]');
+    if (noindex) {
+      // Remove canonical tag on private/noindex pages to prevent conflicting indexing directives
+      existingCanonicals.forEach((el) => el.remove());
+    } else {
+      let linkCanonical: HTMLLinkElement;
+      if (existingCanonicals.length > 0) {
+        linkCanonical = existingCanonicals[0] as HTMLLinkElement;
+        // Remove duplicate canonical tags if more than one exists
+        for (let i = 1; i < existingCanonicals.length; i++) {
+          existingCanonicals[i].remove();
+        }
+      } else {
+        linkCanonical = document.createElement('link');
+        linkCanonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(linkCanonical);
+      }
+      linkCanonical.setAttribute('href', fullUrl);
     }
-    linkCanonical.setAttribute('href', fullUrl);
 
     // 2. Inject Dynamic Schema.org JSON-LD
     const scriptId = 'seo-schema-jsonld';
@@ -83,13 +108,22 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
 
     // NewsArticle Schema
     if (newsArticle) {
-      const articleSchema: any = {
+      const articleSchema: Record<string, any> = {
         '@context': 'https://schema.org',
         '@type': 'NewsArticle',
         headline: newsArticle.headline,
         description: newsArticle.description,
         datePublished: newsArticle.datePublished,
         dateModified: newsArticle.dateModified,
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': fullUrl,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'BharatCalc',
+          url: `${PRODUCTION_DOMAIN}${BASE_PATH}`,
+        },
         citation: newsArticle.citation || [],
       };
 
@@ -102,7 +136,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
             '@type': 'ListItem',
             position: idx + 1,
             name: crumb.name,
-            item: `${origin}${crumb.path}`,
+            item: buildCanonicalUrl(crumb.path),
           })),
         });
       }
@@ -141,7 +175,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
           '@type': 'ListItem',
           position: idx + 1,
           name: crumb.name,
-          item: `${origin}${crumb.path}`,
+          item: buildCanonicalUrl(crumb.path),
         })),
       });
     }
@@ -167,11 +201,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
       null,
       2
     );
-
-    return () => {
-      // Cleanup tag if needed on unmount
-    };
-  }, [title, description, canonicalPath, breadcrumbs, faqs, applicationCategory, newsArticle]);
+  }, [title, description, canonicalPath, breadcrumbs, faqs, applicationCategory, newsArticle, noindex]);
 
   return null;
 };

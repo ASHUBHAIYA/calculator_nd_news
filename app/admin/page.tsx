@@ -316,6 +316,7 @@ export const AdminPage: React.FC = () => {
           title="Admin Login | BharatCalc"
           description="Administrative control console for BharatCalc."
           canonicalPath="/admin"
+          noindex={true}
         />
         <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
       </div>
@@ -339,6 +340,7 @@ export const AdminPage: React.FC = () => {
         title="Admin Control Center | BharatCalc"
         description="Manage financial explainers, live bullion spot rates, and site constants."
         canonicalPath="/admin"
+        noindex={true}
       />
 
       {/* Global GitHub PAT Persistence Bar */}

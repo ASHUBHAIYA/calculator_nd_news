@@ -235,7 +235,7 @@ export const LiveTickerTab: React.FC<LiveTickerTabProps> = ({ config, onSave, is
                     type="text"
                     value={card.category}
                     onChange={(e) => handleBenchmarkChange(idx, 'category', e.target.value)}
-                    placeholder="e.g. Bullion / FY 2025-26"
+                    placeholder="e.g. Bullion / FY 2026-27"
                     className="w-full px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs"
                     required
                   />

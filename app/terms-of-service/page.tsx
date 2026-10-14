@@ -34,7 +34,7 @@ export const TermsOfServicePage: React.FC = () => {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900 font-display">1. Agreement to Terms</h2>
           <p>
-            By accessing or using BharatCalc (https://bharatcalc.in), you agree to be bound by these Terms of Service and all applicable laws and regulations in India. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
+            By accessing or using BharatCalc (https://authorizetech.in/bharatcalc), you agree to be bound by these Terms of Service and all applicable laws and regulations in India. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
           </p>
         </section>
 

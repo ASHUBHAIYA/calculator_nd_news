@@ -60,8 +60,8 @@ export const InHandSalaryPage: React.FC = () => {
 
   const FAQS = [
     {
-      q: 'How does the revised New Tax Regime for FY 2025-26 affect in-hand salary?',
-      a: 'For Financial Year 2025-26 (Assessment Year 2026-27), salaried employees under the New Tax Regime (Section 115BAC) receive a statutory Standard Deduction of ₹75,000. Furthermore, the rationalized tax slabs mean the 5% slab covers ₹3 Lakh – ₹7 Lakh, the 10% slab covers ₹7 Lakh – ₹10 Lakh, and the 15% slab covers ₹10 Lakh – ₹12 Lakh. Combined with the Section 87A rebate, salaried employees earning up to ₹7,75,000 pay zero income tax, while higher earners save up to ₹17,500 annually in taxes.',
+      q: 'How does the revised New Tax Regime for FY 2026-27 affect in-hand salary?',
+      a: 'For Financial Year 2026-27 (Assessment Year 2027-28), salaried employees under the New Tax Regime (Section 115BAC) receive a statutory Standard Deduction of ₹75,000. Furthermore, the rationalized tax slabs mean the 5% slab covers ₹3 Lakh – ₹7 Lakh, the 10% slab covers ₹7 Lakh – ₹10 Lakh, and the 15% slab covers ₹10 Lakh – ₹12 Lakh. Combined with the Section 87A rebate, salaried employees earning up to ₹7,75,000 pay zero income tax, while higher earners save up to ₹17,500 annually in taxes.',
     },
     {
       q: 'Why is there ₹0 income tax on taxable income up to ₹7,00,000?',
@@ -84,8 +84,8 @@ export const InHandSalaryPage: React.FC = () => {
       a: 'No, Gratuity is not a monthly cash deduction from your paycheck. However, companies frequently list Gratuity (calculated at 4.81% of Basic salary as per the Payment of Gratuity Act 1972) as part of your annual CTC package. You only receive Gratuity when leaving the company after at least 5 years of continuous service. Toggle the "Include Gratuity in CTC" option in our calculator to see how your take-home adjusts if your employer includes this provision in your CTC offer letter.',
     },
     {
-      q: 'What are the New Tax Regime income tax slabs for FY 2025-26?',
-      a: 'Under Section 115BAC for FY 2025-26 (AY 2026-27): (1) Up to ₹3,00,000: Nil (0%), (2) ₹3,00,001 to ₹7,00,000: 5%, (3) ₹7,00,001 to ₹10,00,000: 10%, (4) ₹10,00,001 to ₹12,00,000: 15%, (5) ₹12,00,001 to ₹15,00,000: 20%, (6) Above ₹15,00,000: 30%. A 4% Health & Education Cess applies to total tax payable.',
+      q: 'What are the New Tax Regime income tax slabs for FY 2026-27?',
+      a: 'Under Section 115BAC for FY 2026-27 (AY 2027-28): (1) Up to ₹3,00,000: Nil (0%), (2) ₹3,00,001 to ₹7,00,000: 5%, (3) ₹7,00,001 to ₹10,00,000: 10%, (4) ₹10,00,001 to ₹12,00,000: 15%, (5) ₹12,00,001 to ₹15,00,000: 20%, (6) Above ₹15,00,000: 30%. A 4% Health & Education Cess applies to total tax payable.',
     },
     {
       q: 'What is Professional Tax and how much is deducted across Indian states?',
@@ -96,8 +96,8 @@ export const InHandSalaryPage: React.FC = () => {
   return (
     <div className="w-full pb-16">
       <SeoHead
-        title="In-Hand Salary Calculator (FY 2025-26) | CTC to Take-Home Pay India"
-        description="Calculate exact monthly take-home in-hand salary from CTC under the New Tax Regime (Section 115BAC) for FY 2025-26, ₹75,000 Standard Deduction, EPF, and PT rules."
+        title="In-Hand Salary Calculator (FY 2026-27) | CTC to Take-Home Pay India"
+        description="Calculate exact monthly take-home in-hand salary from CTC under the New Tax Regime (Section 115BAC) for FY 2026-27, ₹75,000 Standard Deduction, EPF, and PT rules."
         canonicalPath="/calculators/in-hand-salary"
         breadcrumbs={[
           { name: 'Home', path: '/' },
@@ -117,10 +117,10 @@ export const InHandSalaryPage: React.FC = () => {
                 <span className="text-slate-500">Income Tax & Payroll</span>
               </div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 font-display tracking-tight">
-                In-Hand Salary Calculator (FY 2025-26)
+                In-Hand Salary Calculator (FY 2026-27)
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 max-w-3xl">
-                Accurately convert your annual Cost to Company (CTC) into exact monthly take-home salary using the New Tax Regime (Section 115BAC) for FY 2025-26, ₹75,000 Standard Deduction, and statutory EPF/PT rules.
+                Accurately convert your annual Cost to Company (CTC) into exact monthly take-home salary using the New Tax Regime (Section 115BAC) for FY 2026-27, ₹75,000 Standard Deduction, and statutory EPF/PT rules.
               </p>
             </div>
           </div>
@@ -465,7 +465,7 @@ export const InHandSalaryPage: React.FC = () => {
             <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                  New Tax Regime Slab Calculation (FY 2025-26)
+                  New Tax Regime Slab Calculation (FY 2026-27)
                 </h3>
                 <span className="text-[11px] font-mono text-slate-500">
                   Taxable: {formatINR(breakdown.taxableIncome)}
@@ -532,7 +532,7 @@ export const InHandSalaryPage: React.FC = () => {
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 space-y-8 text-slate-700 text-sm leading-relaxed">
         <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-xs space-y-6">
           <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-display">
-            Comprehensive Guide to CTC vs In-Hand Salary under the FY 2025-26 New Tax Regime
+            Comprehensive Guide to CTC vs In-Hand Salary under the FY 2026-27 New Tax Regime
           </h2>
 
           <p>
@@ -540,7 +540,7 @@ export const InHandSalaryPage: React.FC = () => {
           </p>
 
           <h3 className="text-lg font-bold text-slate-900">
-            The FY 2025-26 Standard Deduction & Slabs Structure
+            The FY 2026-27 Standard Deduction & Slabs Structure
           </h3>
 
           <p>

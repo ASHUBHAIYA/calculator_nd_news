@@ -1,7 +1,7 @@
 /**
  * CTC to In-Hand Salary Engine
  * Incorporates:
- * - FY 2025-26 New Tax Regime (Section 115BAC)
+ * - FY 2026-27 New Tax Regime (Section 115BAC)
  * - Revised Standard Deduction of ₹75,000
  * - Statutory Section 87A tax rebate (up to ₹7,00,000 taxable income) with marginal relief
  * - 4% Health & Education Cess
@@ -16,7 +16,7 @@ export interface SalaryInput {
   includeGratuityInCTC?: boolean; // 4.81% of basic
   professionalTaxAnnual?: number; // default ₹2,400
   otherTaxDeductions?: number; // optional employee NPS tier 1 (Sec 80CCD(2))
-  standardDeduction?: number; // FY 2025-26 statutory ₹75,000 or admin config
+  standardDeduction?: number; // FY 2026-27 statutory ₹75,000 or admin config
   sec87aRebateLimit?: number; // default ₹7,00,000
   epfStatutoryRate?: number; // default 8.25% p.a.
   employerPfRate?: number; // default 12%
@@ -120,7 +120,7 @@ export function calculateInHandSalary(input: SalaryInput): SalaryBreakdown {
   // Remaining allowance as Special / Flexible allowance
   const annualSpecialAllowance = Math.max(0, annualGrossSalary - annualBasic - annualHRA);
 
-  // 5. Tax Calculation under FY 2025-26 New Tax Regime (Sec 115BAC)
+  // 5. Tax Calculation under FY 2026-27 New Tax Regime (Sec 115BAC)
   const stdDeductionCap = input.standardDeduction ?? STANDARD_DEDUCTION_NEW_REGIME;
   const standardDeduction = annualGrossSalary > 0 ? Math.min(stdDeductionCap, annualGrossSalary) : 0;
   const additionalDeductions = Math.max(0, input.otherTaxDeductions ?? 0);

@@ -13,6 +13,9 @@ import {
   ArrowRight,
   TrendingUp,
   Briefcase,
+  Zap,
+  Landmark,
+  TrendingDown,
 } from 'lucide-react';
 import { useSiteConfig } from '@/lib/siteConfig';
 
@@ -26,8 +29,8 @@ export const FINANCIAL_TOOLS = [
     shortName: 'Salary',
     path: '/calculators/in-hand-salary',
     icon: IndianRupee,
-    desc: 'FY 2025-26 New Tax Regime, ₹75k standard deduction & Sec 87A rebate.',
-    tag: 'FY 2025-26',
+    desc: 'FY 2026-27 New Tax Regime, ₹75k standard deduction & Sec 87A rebate.',
+    tag: 'FY 2026-27',
     color: 'text-emerald-600',
     bgColor: 'bg-emerald-50',
   },
@@ -40,6 +43,36 @@ export const FINANCIAL_TOOLS = [
     tag: 'Tenure Saver',
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
+  },
+  {
+    name: 'SIP & Investment Growth',
+    shortName: 'SIP Growth',
+    path: '/calculators/sip-investment',
+    icon: TrendingUp,
+    desc: 'Monthly mutual fund wealth compounding and annual step-up top-up.',
+    tag: 'Wealth Builder',
+    color: 'text-teal-600',
+    bgColor: 'bg-teal-50',
+  },
+  {
+    name: 'FD & RD Calculator',
+    shortName: 'FD / RD',
+    path: '/calculators/fd-rd-calculator',
+    icon: Landmark,
+    desc: 'Quarterly compounding fixed and recurring deposit maturity returns.',
+    tag: 'Term Deposits',
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50',
+  },
+  {
+    name: 'Inflation Impact Calculator',
+    shortName: 'Inflation',
+    path: '/calculators/inflation-calculator',
+    icon: TrendingDown,
+    desc: 'Future cost projections and cash purchasing power erosion.',
+    tag: 'Purchasing Power',
+    color: 'text-rose-600',
+    bgColor: 'bg-rose-50',
   },
 ];
 
@@ -73,6 +106,16 @@ export const COMMODITY_UTILITY_TOOLS = [
     tag: 'PM Subsidy',
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-50',
+  },
+  {
+    name: 'Electricity Bill Calculator',
+    shortName: 'Electricity Bill',
+    path: '/calculators/electricity-bill',
+    icon: Zap,
+    desc: 'Telescopic slab tariff estimator with configurable Discom rates.',
+    tag: 'Slab Tariffs',
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-50',
   },
 ];
 
