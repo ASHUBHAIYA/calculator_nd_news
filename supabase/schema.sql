@@ -162,12 +162,12 @@ While the Union Budget 2024 brought welcome relief by reducing Customs Import Du
   '2026-09-23T14:15:00.000Z'
 ),
 (
-  'New Tax Regime FY 2025-26: How the ₹75,000 Standard Deduction Impacts Your In-Hand Paycheck',
-  'new-tax-regime-fy-2025-26-standard-deduction-in-hand-salary',
-  'Salaried employees in FY 2025-26 benefit from an increased standard deduction of ₹75,000 under Section 115BAC, wider tax slabs, and Section 87A rebate. Explore detailed slab breakdowns, zero tax thresholds up to ₹7.75 Lakhs, and take-home salary calculations.',
-  '### Overview: Why FY 2025-26 Is More Favourable for Salaried Class
+  'New Tax Regime FY 2026-27: How the ₹75,000 Standard Deduction Impacts Your In-Hand Paycheck',
+  'new-tax-regime-fy-2026-27-standard-deduction-in-hand-salary',
+  'Salaried employees in FY 2026-27 benefit from an increased standard deduction of ₹75,000 under Section 115BAC, wider tax slabs, and Section 87A rebate. Explore detailed slab breakdowns, zero tax thresholds up to ₹7.75 Lakhs, and take-home salary calculations.',
+  '### Overview: Why FY 2026-27 Is More Favourable for Salaried Class
 
-Under the statutory provisions of the Finance Act governing **Financial Year 2025-26 (Assessment Year 2026-27)**, the New Tax Regime (Section 115BAC) serves as the default income tax regime. Substantial amendments were introduced to ease middle-class tax liabilities:
+Under the statutory provisions of the Finance Act governing **Financial Year 2026-27 (Assessment Year 2027-28)**, the New Tax Regime (Section 115BAC) serves as the default income tax regime. Substantial amendments were introduced to ease middle-class tax liabilities:
 
 - **Enhanced Standard Deduction**: Hiked from ₹50,000 to **₹75,000** exclusively for salaried individuals and pensioners.
 - **Effective Zero-Tax Income Threshold**: Anyone earning a gross salary up to **₹7,75,000** pays **₹0 income tax**, combining the ₹75,000 deduction with the ₹25,000 tax rebate under Section 87A.

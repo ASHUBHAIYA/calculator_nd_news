@@ -117,7 +117,7 @@ export const ComplianceModal: React.FC<ComplianceModalProps> = ({
             <div className="space-y-3">
               <h4 className="text-base font-bold text-slate-900">Privacy Policy (Digital Personal Data Protection Act Compliant)</h4>
               <p>
-                Last updated: January 2025. At BharatCalc, your financial privacy is paramount.
+                Last updated: October 2026. At BharatCalc, your financial privacy is paramount.
               </p>
               <h5 className="font-semibold text-slate-800">1. Information Collection & Processing</h5>
               <p>
@@ -129,7 +129,7 @@ export const ComplianceModal: React.FC<ComplianceModalProps> = ({
               </p>
               <h5 className="font-semibold text-slate-800">3. Contact for Inquiries</h5>
               <p>
-                For privacy questions or data protection queries, contact our editorial team at <code>privacy@bharatcalc.org</code>.
+                For privacy questions or data protection queries, contact our editorial desk at <a href="mailto:contact@authorizetech.in" className="text-emerald-700 underline font-mono">contact@authorizetech.in</a>.
               </p>
             </div>
           )}

@@ -5,6 +5,7 @@ export type AdBannerFormat = 'leaderboard' | 'rectangle' | 'in-feed' | 'sticky-r
 interface AdBannerProps {
   format?: AdBannerFormat;
   slotId?: string;
+  placement?: string;
   className?: string;
   label?: string;
   showPlaceholderInDev?: boolean;

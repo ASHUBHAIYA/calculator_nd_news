@@ -44,6 +44,10 @@ export interface Article {
   sources: (string | ArticleSource)[];
   publishedAt: string; // ISO 8601 string
   updatedAt: string; // ISO 8601 string
+  calculatorType?: string | null;
+  relatedCalculators?: string[];
+  wordCount?: number;
+  content?: string;
 }
 
 export function generateSlug(title: string): string {

@@ -6,16 +6,17 @@ import {
   ExternalLink,
   ChevronRight,
   ArrowLeft,
-  Share2,
-  TrendingUp,
-  Bookmark,
   CheckCircle2,
-  Tag,
-  BookOpen,
+  ShieldCheck,
+  Share2,
+  Bookmark,
+  Zap,
+  Calculator,
+  ArrowRight,
+  Info,
 } from 'lucide-react';
-import { Article, ArticleCategory, normalizeSources } from '@/lib/types/article';
-import { INITIAL_ARTICLES } from '@/lib/articlesData';
-import { fetchArticleBySlug, fetchArticles } from '@/lib/supabase';
+import { Article, normalizeSources } from '@/lib/types/article';
+import { fetchLiveExplainerBySlug, fetchLiveExplainers, normalizeCategory } from '@/lib/explainersApi';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { ExplainerCalculatorWidget } from '@/components/ExplainerCalculatorWidget';
 import { SeoHead, NewsArticleSchema } from '@/components/SeoHead';
@@ -24,97 +25,118 @@ import { AdBanner } from '@/components/AdBanner';
 function formatHumanDate(isoString: string): string {
   try {
     const d = new Date(isoString);
+    if (isNaN(d.getTime())) return 'Recently Published';
     return d.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
     });
   } catch {
-    return 'Sep 24, 2026';
+    return 'Recently Published';
   }
 }
 
-function calculateReadingTime(text: string): number {
+function calculateReadingTime(text?: string, wordCount?: number): number {
+  if (wordCount && wordCount > 0) {
+    return Math.max(1, Math.ceil(wordCount / 180));
+  }
   const words = text ? text.trim().split(/\s+/).length : 0;
-  return Math.max(1, Math.ceil(words / 200));
+  return Math.max(1, Math.ceil(words / 180));
 }
 
-function getCategoryColor(cat: ArticleCategory) {
-  switch (cat) {
-    case 'Gold & Commodities':
-      return {
-        badge: 'bg-amber-50 text-amber-800 border-amber-200',
-        dot: 'bg-amber-500',
-      };
-    case 'Tax & Salary':
-      return {
-        badge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-        dot: 'bg-emerald-500',
-      };
-    case 'Fuel & Energy':
-      return {
-        badge: 'bg-blue-50 text-blue-800 border-blue-200',
-        dot: 'bg-blue-500',
-      };
-    case 'Market Trends':
-    default:
-      return {
-        badge: 'bg-purple-50 text-purple-800 border-purple-200',
-        dot: 'bg-purple-500',
-      };
+function getCalculatorRoute(calcName: string): { path: string; label: string } {
+  const c = calcName.toLowerCase();
+  if (c.includes('salary') || c.includes('tax') || c.includes('pay') || c.includes('fitment')) {
+    return { path: '/calculators/in-hand-salary', label: 'In-Hand Salary Calculator (FY 2026-27)' };
   }
+  if (c.includes('gold') || c.includes('jewelry')) {
+    return { path: '/calculators/gold-jewelry-bill', label: 'Gold Jewelry GST & Bill Estimator' };
+  }
+  if (c.includes('silver')) {
+    return { path: '/calculators/gold-jewelry-bill', label: 'Silver & Sterling Purity Tool' };
+  }
+  if (c.includes('loan') || c.includes('emi') || c.includes('mortgage')) {
+    return { path: '/calculators/home-loan-prepayment', label: 'Home Loan 1 Extra EMI Saver' };
+  }
+  if (c.includes('fuel') || c.includes('commute') || c.includes('petrol') || c.includes('ev')) {
+    return { path: '/calculators/commute-fuel', label: 'Daily Commute Fuel vs EV Cost Calculator' };
+  }
+  if (c.includes('solar') || c.includes('rooftop')) {
+    return { path: '/calculators/solar-rooftop', label: 'PM Surya Ghar Solar Rooftop Subsidy' };
+  }
+  // Generic fallback to clean name
+  const formatted = calcName.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+  return { path: '/calculators/in-hand-salary', label: `${formatted} Tool` };
 }
 
 export const ExplainerDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [article, setArticle] = useState<Article | null>(() => {
-    // Immediate fallback to memory seed if present
-    const found = INITIAL_ARTICLES.find((a) => a.slug === slug);
-    return found || null;
-  });
-  const [allArticles, setAllArticles] = useState<Article[]>(INITIAL_ARTICLES);
-  const [loading, setLoading] = useState<boolean>(!article);
+  const [article, setArticle] = useState<Article | null>(null);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [copied, setCopied] = useState<boolean>(false);
 
   useEffect(() => {
     if (!slug) return;
+    let isMounted = true;
     setLoading(true);
 
-    fetchArticleBySlug(slug)
-      .then(({ article: foundArticle }) => {
-        if (foundArticle) {
-          setArticle(foundArticle);
-        }
+    fetchLiveExplainerBySlug(slug)
+      .then((data) => {
+        if (!isMounted) return;
+        setArticle(data);
       })
       .catch((err) => {
-        console.error('Error fetching explainer:', err);
+        console.warn('Failed to load explainer details:', err);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
 
-    // Fetch all articles for "Trending in Other Categories"
-    fetchArticles()
-      .then(({ articles: list }) => {
-        if (list && list.length > 0) {
-          setAllArticles(list);
-        }
+    // Also fetch a few related explainers for bottom recommendations
+    fetchLiveExplainers()
+      .then((list) => {
+        if (!isMounted) return;
+        const others = list.filter((a) => a.slug !== slug).slice(0, 3);
+        setRelatedArticles(others);
       })
       .catch(() => {});
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
-  if (loading && !article) {
+  const handleShare = async () => {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      }
+    } catch {}
+  };
+
+  if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-slate-600 text-sm font-semibold">Loading Explainer...</p>
+      <div className="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
+        <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-slate-600 text-sm font-semibold">Loading Live Financial Explainer...</p>
       </div>
     );
   }
 
   if (!article) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
-        <h1 className="text-2xl font-bold text-slate-900">Explainer Not Found</h1>
-        <p className="text-sm text-slate-600">
-          The requested financial or commodity explainer could not be located.
+      <div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-5">
+        <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mx-auto">
+          <Info className="w-7 h-7" />
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
+          Explainer Not Found
+        </h1>
+        <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+          The requested financial or statutory guide could not be retrieved. It may have moved or been updated.
         </p>
         <Link
           to="/explainers"
@@ -127,83 +149,73 @@ export const ExplainerDetailPage: React.FC = () => {
     );
   }
 
-  const categoryStyle = getCategoryColor(article.category);
-  const readingTime = calculateReadingTime(article.fullContent);
+  const categoryName = normalizeCategory(article.category);
+  const readingTime = calculateReadingTime(article.fullContent, article.wordCount);
   const normalizedSources = normalizeSources(article.sources);
-  const sourceUrls = normalizedSources.map((s) => s.url);
+  const primaryCalcType = article.calculatorType || article.relatedCalculator || 'in-hand-salary';
 
-  // Trending in other categories (exclude current article, prefer different categories)
-  const otherPosts = allArticles
-    .filter((a) => a.slug !== article.slug)
-    .sort((a, b) => {
-      // Prioritize different categories
-      const aDiff = a.category !== article.category ? 1 : 0;
-      const bDiff = b.category !== article.category ? 1 : 0;
-      return bDiff - aDiff;
-    })
-    .slice(0, 3);
+  // Build list of all related calculators
+  const allCalculatorPills = Array.from(
+    new Set([
+      ...(article.calculatorType ? [article.calculatorType] : []),
+      ...(article.relatedCalculators || []),
+    ])
+  );
 
-  // Schema.org NewsArticle structured data
+  // Structured schema for Google News / Search
   const newsArticleSchema: NewsArticleSchema = {
     headline: article.title,
     description: article.summary,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt || article.publishedAt,
-    citation: sourceUrls,
-    articleSection: article.category,
+    citation: normalizedSources.map((s) => s.url),
+    articleSection: categoryName,
   };
 
   return (
-    <div className="w-full pb-16">
-      {/* Dynamic SEO & Schema.org JSON-LD */}
+    <div className="w-full pb-20 bg-slate-50/50 min-h-screen">
       <SeoHead
-        title={`${article.title} | BharatCalc`}
+        title={`${article.title} | BharatCalc Explainers`}
         description={article.summary}
         canonicalPath={`/explainers/${article.slug}`}
         breadcrumbs={[
           { name: 'Home', path: '/' },
           { name: 'Explainers', path: '/explainers' },
-          { name: article.category, path: `/explainers?category=${encodeURIComponent(article.category)}` },
+          { name: categoryName, path: `/explainers?category=${encodeURIComponent(categoryName)}` },
           { name: article.title, path: `/explainers/${article.slug}` },
         ]}
         newsArticle={newsArticleSchema}
       />
 
-      {/* 1. Header Area with Breadcrumbs, Category Pill, Human-Readable Date */}
-      <header className="bg-white border-b border-slate-200/80 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumbs: Home > Explainers > [Category] > Title */}
+      {/* 1. Article Header */}
+      <header className="bg-white border-b border-slate-200/80 pt-8 pb-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          {/* Breadcrumb Navigation: Home / Explainers / {Article Category} */}
           <nav
             aria-label="Breadcrumb"
-            className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 mb-4"
+            className="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium"
           >
             <Link to="/" className="hover:text-emerald-700 transition-colors">
               Home
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronRight className="w-3 h-3 text-slate-400" />
             <Link to="/explainers" className="hover:text-emerald-700 transition-colors">
               Explainers
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronRight className="w-3 h-3 text-slate-400" />
             <Link
-              to={`/explainers?category=${encodeURIComponent(article.category)}`}
-              className="hover:text-emerald-700 font-medium transition-colors"
+              to={`/explainers?category=${encodeURIComponent(categoryName)}`}
+              className="text-emerald-700 hover:text-emerald-800 font-bold transition-colors"
             >
-              {article.category}
+              {categoryName}
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-800 font-semibold line-clamp-1 max-w-xs sm:max-w-md">
-              {article.title}
-            </span>
           </nav>
 
-          {/* Category Pill & Meta Stats */}
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${categoryStyle.badge}`}
-            >
-              <span className={`w-2 h-2 rounded-full ${categoryStyle.dot}`} />
-              {article.category}
+          {/* Meta bar: Date, Read Time, and Verified Badge */}
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Fact-Checked &amp; Educational</span>
             </span>
 
             <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
@@ -217,148 +229,173 @@ export const ExplainerDetailPage: React.FC = () => {
               <Clock className="w-3.5 h-3.5 text-slate-400" />
               <span>{readingTime} min read</span>
             </div>
+
+            <div className="ml-auto flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <Share2 className="w-3.5 h-3.5 text-slate-500" />
+                <span>{copied ? 'Link Copied!' : 'Share'}</span>
+              </button>
+            </div>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-950 font-display tracking-tight leading-tight max-w-4xl">
+          {/* Bold Title */}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 font-display tracking-tight leading-[1.18]">
             {article.title}
           </h1>
 
-          {/* Meta Summary / Lead paragraph */}
-          <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-sm sm:text-base leading-relaxed max-w-4xl font-normal">
-            <span className="font-bold text-slate-900 block text-xs uppercase tracking-wider mb-1 text-emerald-800">
-              Executive Summary
+          {/* Prominent Lead Paragraph / Summary Callout Box */}
+          <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-emerald-50/70 via-slate-50 to-slate-50 border-l-4 border-emerald-600 border border-slate-200/80 shadow-2xs">
+            <span className="text-[11px] font-black uppercase tracking-wider text-emerald-800 block mb-1.5">
+              Key Takeaway &amp; Summary
             </span>
-            {article.summary}
+            <p className="text-slate-800 text-sm sm:text-base leading-relaxed font-normal">
+              {article.summary}
+            </p>
           </div>
         </div>
       </header>
 
-      {/* Main Two-Column Layout (Article Body on Left, Sticky Calculator on Right) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Main Content Column */}
-          <main className="lg:col-span-8 space-y-8">
-            {/* Markdown Body */}
-            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs">
-              <MarkdownContent content={article.fullContent} />
+      {/* Main Container */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-10">
+        {/* 2. Featured Interactive Calculator Section */}
+        <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md">
+          <div className="mb-6 space-y-1.5 pb-4 border-b border-slate-100">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 uppercase tracking-wider">
+              <Zap className="w-4 h-4 text-emerald-600 animate-pulse" />
+              <span>Live Scenario Tool</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-950 font-display tracking-tight">
+              Interactive Scenario Calculator
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Test your own numbers against the statutory regulations discussed in this guide. Instant, zero-lag client-side computation.
+            </p>
+          </div>
+
+          {/* Interactive Calculator Widget */}
+          <ExplainerCalculatorWidget type={primaryCalcType} />
+        </section>
+
+        {/* 3. Typography & Content Body */}
+        <main className="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-2xs space-y-8">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400 pb-2 border-b border-slate-100">
+            Complete Analysis &amp; Technical Breakdown
+          </div>
+
+          <div className="reading-content">
+            <MarkdownContent content={article.content || article.fullContent || ''} />
+          </div>
+
+          {/* Sources and Verifications */}
+          {normalizedSources.length > 0 && (
+            <div className="pt-8 border-t border-slate-200 space-y-3">
+              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                Statutory Citations &amp; Official References:
+              </h4>
+              <ul className="space-y-1.5">
+                {normalizedSources.map((src, index) => (
+                  <li key={index} className="flex items-center gap-2 text-xs text-slate-600">
+                    <ExternalLink className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <a
+                      href={src.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-700 hover:text-emerald-900 hover:underline font-medium break-all"
+                    >
+                      {src.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </main>
+
+        {/* 4. Related Calculators & Next Steps */}
+        {allCalculatorPills.length > 0 && (
+          <section className="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xs space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700">
+                <Calculator className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  Related Interactive Calculators &amp; Next Steps
+                </h3>
+                <p className="text-[11px] text-slate-500">Explore complementary financial engines</p>
+              </div>
             </div>
 
-            {/* AdSense In-Article Placement with safe clearance */}
-            {/* <div className="my-8">
-              <AdBanner format="rectangle" slotId={`explainer-${article.slug}-inarticle`} />
-            </div> */}
-
-            {/* Sources Box: Primary Sources & References */}
-            {normalizedSources.length > 0 && (
-              <section
-                aria-label="Primary Sources & References"
-                className="bg-slate-50 rounded-2xl p-6 border border-slate-200/90 shadow-2xs"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
-                    <CheckCircle2 className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h2 className="text-sm font-bold text-slate-900">Primary Sources & References</h2>
-                    <p className="text-[11px] text-slate-500">
-                      Authoritative citations, regulatory gazettes, and market benchmarks
-                    </p>
-                  </div>
-                </div>
-
-                <ul className="space-y-2.5 pt-2 border-t border-slate-200/70">
-                  {normalizedSources.map((source, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700">
-                      <span className="text-slate-400 font-mono mt-0.5">{idx + 1}.</span>
-                      <a
-                        href={source.url}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-emerald-700 hover:text-emerald-900 hover:underline font-medium break-all"
-                      >
-                        <span>{source.label || source.url}</span>
-                        <ExternalLink className="w-3 h-3 shrink-0 text-slate-400" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-          </main>
-
-          {/* Embedded Sticky Utility / Sidebar on Right */}
-          <aside className="lg:col-span-4">
-            <div className="lg:sticky lg:top-24 space-y-6">
-              {/* Relevant Interactive Calculator Widget */}
-              <ExplainerCalculatorWidget relatedCalculator={article.relatedCalculator} />
-
-              {/* Sidebar Ad Placement */}
-              {/* <AdBanner format="rectangle" slotId={`explainer-${article.slug}-sidebar`} /> */}
+            <div className="flex flex-wrap gap-2.5 pt-2">
+              {allCalculatorPills.map((calcName) => {
+                const info = getCalculatorRoute(calcName);
+                return (
+                  <Link
+                    key={calcName}
+                    to={info.path}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-xs font-bold text-slate-800 hover:text-emerald-800 transition-all group"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>{info.label}</span>
+                    <ArrowRight className="w-3 h-3 text-slate-400 group-hover:translate-x-1 group-hover:text-emerald-700 transition-transform" />
+                  </Link>
+                );
+              })}
             </div>
-          </aside>
+          </section>
+        )}
+
+        {/* Recommended Explainers */}
+        {relatedArticles.length > 0 && (
+          <section className="max-w-3xl mx-auto space-y-4">
+            <h3 className="text-base font-bold text-slate-900">
+              More Financial &amp; Market Explainers
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {relatedArticles.map((rel) => (
+                <Link
+                  key={rel.slug}
+                  to={`/explainers/${rel.slug}`}
+                  className="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all flex flex-col justify-between group"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-bold text-emerald-700 uppercase">
+                      {normalizeCategory(rel.category)}
+                    </span>
+                    <h4 className="text-xs font-bold text-slate-900 group-hover:text-emerald-700 line-clamp-2">
+                      {rel.title}
+                    </h4>
+                  </div>
+                  <span className="text-[11px] font-bold text-emerald-600 inline-flex items-center gap-1 mt-3">
+                    <span>Read</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Compliant Financial Disclosure Banner */}
+        <div className="max-w-3xl mx-auto p-5 rounded-2xl bg-amber-50/70 border border-amber-200/90 text-amber-900 text-xs leading-relaxed space-y-1">
+          <div className="font-bold flex items-center gap-1.5 text-amber-950">
+            <Info className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+            <span>Editorial &amp; Regulatory Disclaimer</span>
+          </div>
+          <p className="text-amber-900/90">
+            Disclaimer: All calculations, rates, and scenarios are for educational purposes based on current Indian market and regulatory frameworks. Please consult a qualified tax or investment advisor for personal portfolio decisions.
+          </p>
+        </div>
+
+        {/* AdSense Unit */}
+        <div className="max-w-3xl mx-auto pt-2">
+          <AdBanner placement="explainer_detail_bottom" />
         </div>
       </div>
-
-      {/* Pre-footer: "Trending in Other Categories" showing 2-3 related posts */}
-      {otherPosts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-12 border-t border-slate-200">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-emerald-600" />
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
-                Trending in Other Categories
-              </h2>
-            </div>
-            <Link
-              to="/explainers"
-              className="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline flex items-center gap-1"
-            >
-              <span>View All Explainers</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {otherPosts.map((post) => {
-              const pill = getCategoryColor(post.category);
-              return (
-                <Link
-                  key={post.id}
-                  to={`/explainers/${post.slug}`}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between group"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${pill.badge}`}
-                      >
-                        {post.category}
-                      </span>
-                      <span className="text-[11px] text-slate-400 font-medium">
-                        {formatHumanDate(post.publishedAt)}
-                      </span>
-                    </div>
-
-                    <h3 className="font-bold text-slate-900 text-sm group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
-                      {post.title}
-                    </h3>
-
-                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                      {post.summary}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700">
-                    <span>Read Full Explainer</span>
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      )}
     </div>
   );
 };

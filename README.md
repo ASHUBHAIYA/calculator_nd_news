@@ -25,7 +25,7 @@
 **BharatCalc** is an all-in-one financial intelligence web application engineered specifically for the Indian economy. It unifies:
 
 - **Admin Control Center (`/admin`)**: Fully encrypted, password-protected administrative portal to add, edit, and delete explainers, as well as live-edit all bullion spot rates, home loan prime rates, standard deductions, solar subsidies, fuel prices, and the 7 homepage hero ticker cards in real time.
-- **5 High-Precision Interactive Calculators**: In-Hand Salary (FY 2025-26 Union Budget rules), Gold & Silver Jewelry Billing (with BIS hallmark purity, making charges, and GST), Home Loan Prepayment & Amortization, Daily Commute Fuel vs EV Cost comparison, and PM Surya Ghar Solar Rooftop ROI.
+- **5 High-Precision Interactive Calculators**: In-Hand Salary (FY 2026-27 Union Budget rules), Gold & Silver Jewelry Billing (with BIS hallmark purity, making charges, and GST), Home Loan Prepayment & Amortization, Daily Commute Fuel vs EV Cost comparison, and PM Surya Ghar Solar Rooftop ROI.
 - **Trending Regulatory Explainers**: Authoritative, data-backed editorial deep-dives explaining market movements, tax amendments, and regulatory shifts, each paired with an embedded live calculator widget.
 - **Supabase Cloud Persistence**: Scalable PostgreSQL persistence with Row-Level Security (RLS) for dynamic article publishing and user calculation history.
 - **SEO & Social Sharing Optimization**: Schema.org JSON-LD structured data, dynamic OpenGraph meta tags, canonical link management, XML sitemaps, and robots.txt.
@@ -72,7 +72,7 @@ Access the administration dashboard at **`/admin`** (or click the "Admin" link i
 │   │   ├── commute-fuel/page.tsx       # Petrol vs EV Commute Fuel Calculator UI
 │   │   ├── gold-jewelry-bill/page.tsx  # 24K/22K/18K Gold & Silver Hallmarking Bill UI
 │   │   ├── home-loan-prepayment/page.tsx # RBI Prepayment & Loan Amortization UI
-│   │   ├── in-hand-salary/page.tsx     # FY 2025-26 New vs Old Tax Regime Salary UI
+│   │   ├── in-hand-salary/page.tsx     # FY 2026-27 New vs Old Tax Regime Salary UI
 │   │   └── solar-rooftop/page.tsx      # PM Surya Ghar Solar Rooftop Subsidy UI
 │   ├── explainers/                     # Trending Explainers Editorial Hub
 │   │   ├── ExplainerDetailPage.tsx     # Deep-dive article reader + interactive widget + SEO
@@ -104,7 +104,7 @@ Access the administration dashboard at **`/admin`** (or click the "Admin" link i
 │   │   ├── fuel.ts                     # Commute fuel & EV mileage calculations
 │   │   ├── gold.ts                     # Bullion purity, making charges, and GST logic
 │   │   ├── loan.ts                     # EMI amortization & prepayment reduction logic
-│   │   ├── salary.ts                   # FY 2025-26 Section 115BAC & Old Regime tax engine
+│   │   ├── salary.ts                   # FY 2026-27 Section 115BAC & Old Regime tax engine
 │   │   └── solar.ts                    # MNRE PM Surya Ghar subsidy & rooftop solar ROI
 │   └── types/                          # TypeScript definitions
 │       └── article.ts                  # Article schema, categories, sources, and helpers
@@ -245,7 +245,7 @@ If you want to bundle explainers directly into the source code for static genera
 All mathematical models are isolated in `lib/calculators/` and verified with test suites (`lib/calculators/__tests__/`):
 
 1. **In-Hand Salary Calculator (`lib/calculators/salary.ts`)**:
-   - Implements **FY 2025-26 Union Budget** New Tax Regime (Section 115BAC).
+   - Implements **FY 2026-27 Union Budget** New Tax Regime (Section 115BAC).
    - Standard Deduction: **₹75,000** for salaried employees.
    - Section 87A Tax Rebate for taxable income up to ₹7,00,000 (effective **₹0 tax up to ₹7,75,000** gross salary).
    - Accurate PF (Provident Fund at 12% of Basic), Professional Tax (state-tiered), and 4% Health & Education Cess.

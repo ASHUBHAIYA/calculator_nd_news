@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { Article, ArticleCategory, RelatedCalculator, generateSlug } from './types/article';
 import { INITIAL_ARTICLES } from './articlesData';
 import {
@@ -29,27 +29,12 @@ function getEnvVar(key: string): string {
 const supabaseUrl = getEnvVar('VITE_SUPABASE_URL') || getEnvVar('SUPABASE_URL');
 const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY') || getEnvVar('SUPABASE_ANON_KEY');
 
-// Validate whether real credentials (not placeholders) are provided
-export const isSupabaseConfigured = (): boolean => {
-  return (
-    typeof supabaseUrl === 'string' &&
-    supabaseUrl.trim().length > 0 &&
-    !supabaseUrl.includes('your-project.supabase.co') &&
-    typeof supabaseAnonKey === 'string' &&
-    supabaseAnonKey.trim().length > 0 &&
-    !supabaseAnonKey.includes('your-anon-key')
-  );
-};
+// Supabase is completely retired and bypassed in favor of the live FastAPI backend
+// (https://api.authorizetech.in/api) and local JSON storage. Zero requests will go to *.supabase.co.
+export const isSupabaseConfigured = (): boolean => false;
 
-// Singleton client
-export const supabase: SupabaseClient | null = isSupabaseConfigured()
-  ? createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    })
-  : null;
+// Singleton client - permanently null to prevent any network activity
+export const supabase: SupabaseClient | null = null;
 
 export interface SavedCalculation {
   id: string;
@@ -512,13 +497,10 @@ export interface SupabaseStatus {
 }
 
 export function getSupabaseStatus(): SupabaseStatus {
-  const configured = isSupabaseConfigured();
   return {
-    isConfigured: configured,
-    endpointUrl: configured ? supabaseUrl : null,
-    mode: configured ? 'supabase_cloud' : 'local_fallback',
-    statusMessage: configured
-      ? 'Connected to Supabase PostgreSQL Database'
-      : 'Running in Local/Server Fallback Mode (Add VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY to link Supabase)',
+    isConfigured: false,
+    endpointUrl: null,
+    mode: 'local_fallback',
+    statusMessage: 'FastAPI Backend & Local Storage Active (Supabase Retired)',
   };
 }

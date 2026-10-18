@@ -15,10 +15,26 @@ import { formatINR } from '@/lib/formatters';
 import { useSiteConfig } from '@/lib/siteConfig';
 
 interface Props {
-  relatedCalculator: RelatedCalculator;
+  relatedCalculator?: RelatedCalculator;
+  type?: string | null;
 }
 
-export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }) => {
+export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator, type }) => {
+  const effectiveType = (type || relatedCalculator || 'none').toLowerCase();
+  const effectiveCalc: RelatedCalculator =
+    effectiveType.includes('salary') || effectiveType.includes('tax') || effectiveType.includes('pay') || effectiveType.includes('fitment')
+      ? 'salary'
+      : effectiveType.includes('gold') || effectiveType.includes('jewelry')
+      ? 'gold'
+      : effectiveType.includes('silver')
+      ? 'silver'
+      : effectiveType.includes('fuel') || effectiveType.includes('petrol') || effectiveType.includes('commute') || effectiveType.includes('ev')
+      ? 'petrol'
+      : effectiveType.includes('loan') || effectiveType.includes('emi')
+      ? 'loan'
+      : effectiveType.includes('solar')
+      ? 'solar'
+      : (relatedCalculator || 'none');
   const { config } = useSiteConfig();
 
   // Gold interactive mini-state
@@ -75,7 +91,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
   const monthlyLitres = (dailyKm * 26) / (mileage || 1);
   const monthlyFuelCost = Math.round(monthlyLitres * fuelPrice);
 
-  if (relatedCalculator === 'gold') {
+  if (effectiveCalc === 'gold') {
     return (
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-amber-200/90 shadow-md">
         <div className="flex items-center justify-between pb-3 border-b border-amber-100 mb-4">
@@ -169,7 +185,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
     );
   }
 
-  if (relatedCalculator === 'silver') {
+  if (effectiveCalc === 'silver') {
     return (
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-300 shadow-md">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -263,7 +279,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
     );
   }
 
-  if (relatedCalculator === 'salary') {
+  if (effectiveCalc === 'salary') {
     return (
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-emerald-200 shadow-md">
         <div className="flex items-center justify-between pb-3 border-b border-emerald-100 mb-4">
@@ -332,7 +348,7 @@ export const ExplainerCalculatorWidget: React.FC<Props> = ({ relatedCalculator }
     );
   }
 
-  if (relatedCalculator === 'petrol') {
+  if (effectiveCalc === 'petrol') {
     return (
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-blue-200 shadow-md">
         <div className="flex items-center justify-between pb-3 border-b border-blue-100 mb-4">

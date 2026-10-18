@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from './supabase';
 import { computeAllIndianCityRates, ALL_INDIAN_STATE_CITIES } from './indianCitiesBullion';
 import bundledSiteConfigJson from '../data/site-config.json';
 
@@ -346,25 +345,6 @@ export async function saveSiteConfig(
     window.dispatchEvent(new CustomEvent('site_config_updated', { detail: merged }));
   }
 
-  // 3. Supabase Cloud Sync (if connected)
-  if (supabase) {
-    try {
-      await supabase
-        .from('site_config')
-        .upsert(
-          {
-            id: 'global_config',
-            config_data: merged,
-            updated_at: merged.lastUpdated,
-            updated_by: updatedBy,
-          },
-          { onConflict: 'id' }
-        );
-    } catch (err) {
-      console.warn('Supabase site_config upsert warning:', err);
-    }
-  }
-
   return merged;
 }
 
@@ -390,26 +370,8 @@ export function useSiteConfig(): {
 
   const refreshConfig = async () => {
     setLoading(true);
-    // Try Supabase first
-    if (supabase) {
-      try {
-        const { data, error } = await supabase
-          .from('site_config')
-          .select('config_data')
-          .eq('id', 'global_config')
-          .single();
 
-        if (!error && data?.config_data) {
-          const loaded = data.config_data as SiteFinancialConfig;
-          setConfig(loaded);
-          localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(loaded));
-          setLoading(false);
-          return;
-        }
-      } catch {}
-    }
-
-    // Try bundled static /data/site-config.json (for static hosts like Cloudflare Pages)
+    // Try bundled static /data/site-config.json (or local bundled JSON)
     try {
       const staticRes = await fetch('/data/site-config.json');
       if (staticRes.ok) {

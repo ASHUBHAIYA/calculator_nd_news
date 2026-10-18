@@ -29,7 +29,7 @@ import { formatINR } from '@/lib/formatters';
 import { INITIAL_ARTICLES } from '@/lib/articlesData';
 import { Article } from '@/lib/types/article';
 import { useSiteConfig } from '@/lib/siteConfig';
-import { fetchArticles } from '@/lib/supabase';
+import { fetchLiveExplainers } from '@/lib/explainersApi';
 import { sortArticlesLatestFirst } from '@/lib/articlesStorage';
 
 interface BenchmarkItem {
@@ -243,8 +243,8 @@ export const HomePage: React.FC = () => {
   );
 
   useEffect(() => {
-    fetchArticles()
-      .then(({ articles }) => {
+    fetchLiveExplainers()
+      .then((articles) => {
         if (articles && articles.length > 0) {
           const sorted = sortArticlesLatestFirst(articles);
           setTrendingArticles(sorted.slice(0, 3));

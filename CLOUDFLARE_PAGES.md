@@ -17,7 +17,7 @@ This application is engineered for deployment on **Cloudflare Pages** backed by 
 +------------------------------------+          +------------------------------------+
 |  Client Browser (React 19 + Vite)  | -------->|  Supabase Cloud (PostgreSQL 15+)   |
 |   - Real-time Bullion Calculators  | (Direct) |   - articles (Trending Explainers) |
-|   - FY 2025-26 Tax & Loan Engines  |          |   - saved_calculations             |
+|   - FY 2026-27 Tax & Loan Engines  |          |   - saved_calculations             |
 |   - SEO Meta & Schema.org JSON-LD  |          |   - Row Level Security (RLS)       |
 +------------------------------------+          +------------------------------------+
 ```

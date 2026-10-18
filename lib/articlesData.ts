@@ -67,9 +67,9 @@ When purchasing jewelry, showrooms quote a consolidated price that often conceal
 `,
   },
   {
-    id: 'art-salary-tax-2025-26',
+    id: 'art-salary-tax-2026-27',
     title: 'New Tax Regime FY 2026-27: How the ₹75,000 Standard Deduction Impacts Your In-Hand Paycheck',
-    slug: 'new-tax-regime-fy-2025-26-standard-deduction-in-hand-salary',
+    slug: 'new-tax-regime-fy-2026-27-standard-deduction-in-hand-salary',
     summary:
       'Salaried employees in FY 2026-27 benefit from an increased standard deduction of ₹75,000 under Section 115BAC, wider tax slabs, and Section 87A rebate. Explore detailed slab breakdowns, zero tax thresholds up to ₹7.75 Lakhs, and take-home salary calculations.',
     category: 'Tax & Salary',
